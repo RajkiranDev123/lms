@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-
+import jwt from "jsonwebtoken"
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -71,5 +71,11 @@ userSchema.methods.generateVerificationCode = function () {
     return verificationCode
 
 }
+
+// generate access token
+userSchema.methods.generateToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE })
+}
+
 
 export const UserModel = mongoose.model("User", userSchema)

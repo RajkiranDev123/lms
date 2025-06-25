@@ -3,6 +3,7 @@ npm init -y
 npm i bcrypt cloudinary cookie-parser cors dotenv express express-fileupload mongoose node-cron nodemailer
 
 npm install --save-dev nodemon
+npm i jsonwebtoken
 
 git init
 git add .
