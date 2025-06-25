@@ -1,0 +1,13 @@
+npm init -y
+
+npm i bcrypt cloudinary cookie-parser cors dotenv express express-fileupload mongoose node-cron nodemailer
+
+npm install --save-dev nodemon
+
+git init
+git add .
+git commit -m "first setup"
+git branch -M main
+git remote add origin https://github.com/RajkiranDev123/lms.git
+git push -u origin main
+
