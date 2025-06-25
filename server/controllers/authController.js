@@ -34,16 +34,30 @@ export const register = catchAsyncErrors(
                 email,
                 password: hashedPassword
             })
-            const verificationCode = await UserModel.generateVerificationCode()
+            const verificationCode = await user.generateVerificationCode()
             await user.save()
             sendVerificationCode(verificationCode, email, res)
-            res.status(200).json({
-                success: true,
-                message: "User Created Successfully!"
-            })
+            // res.status(200).json({
+            //     success: true,
+            //     message: "User Created Successfully!"
+            // })
         } catch (error) {
             next(error)
         }
 
     }, console.log("register is called!")
+)
+
+//////////////////////////////////////////////////// verify otp //////////////////////////////////////////
+
+export const verifyOtp = catchAsyncErrors(
+
+    async (req, res, next) => {
+        try {
+
+        } catch (error) {
+           return next(error)
+        }
+
+    }
 )

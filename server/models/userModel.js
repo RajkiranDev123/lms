@@ -56,6 +56,7 @@ const userSchema = new mongoose.Schema({
 
 }, { timestamps: true })
 
+//call this method on instance like : user not on UserModel
 userSchema.methods.generateVerificationCode = function () {
 
     function generate5digits() {
@@ -65,7 +66,7 @@ userSchema.methods.generateVerificationCode = function () {
         return parseInt(firstDigit + remainingDigits)
     }
     const verificationCode = generate5digits()
-    this.verificationCode = verificationCode
+    this.verificationCode = verificationCode//save to db too!
     this.verificationCodeExpire = Date.now() + 15 * 60 * 1000
     return verificationCode
 
