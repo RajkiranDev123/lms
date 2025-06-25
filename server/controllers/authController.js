@@ -4,8 +4,10 @@ import { UserModel } from "../models/userModel.js"
 import bcrypt from "bcrypt"
 import crypto from "crypto"
 
+import { sendVerificationCode } from "../utils/sendVerificationCode.js"
+
 export const register = catchAsyncErrors(
-   
+
     async (req, res, next) => {
         try {
             const { name, email, password } = req.body
@@ -26,18 +28,21 @@ export const register = catchAsyncErrors(
             if (password.length < 5 || password.length > 16) {
                 return next(new ErrorHandler("Password must be between 8 & 16 characters!", 400))
             }
-            const hashedPassword=await bcrypt.hash(password,10)
-            const user=await UserModel.create({
+            const hashedPassword = await bcrypt.hash(password, 10)
+            const user = await UserModel.create({
                 name,
                 email,
-                password:hashedPassword
+                password: hashedPassword
             })
-            const verificationCode=await UserModel.generateVerificationCode()
-
-
-
+            const verificationCode = await UserModel.generateVerificationCode()
+            await user.save()
+            sendVerificationCode(verificationCode, email, res)
+            res.status(200).json({
+                success: true,
+                message: "User Created Successfully!"
+            })
         } catch (error) {
-
+            next(error)
         }
 
     }, console.log("register is called!")
