@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ["Admin", "User"],
-        default: "User"
+        default: "User"         // automatically saved to db because of (default :) even role is not supplied!
     },
     accountVerified: { type: Boolean, default: false },
     avatar: { public_id: String, url: String },
@@ -41,8 +41,9 @@ const userSchema = new mongoose.Schema({
             },
 
             bookTitle: String,
-            borrowedDate: Date,
-            dueDate: Date
+
+            borrowedDate: Date, // when booked
+            dueDate: Date //when to return
         }
     ],
 
@@ -50,7 +51,7 @@ const userSchema = new mongoose.Schema({
     verificationCode: Number,
     verificationCodeExpire: Date,
 
-    resetPasswordToken: String,
+    resetPasswordToken: String, // not in db after just creating new acc because of absence of ==> (required or default)
     resetPasswordExpire: Date,
 
 
@@ -81,7 +82,6 @@ userSchema.methods.generateToken = function () {
 // getResetPasswordToken
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex")
-
     this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex")
     this.resetPasswordExpire = Date.now() + 15 * 60 * 1000
     return resetToken
