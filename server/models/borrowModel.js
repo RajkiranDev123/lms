@@ -1,5 +1,7 @@
 import mongoose from "mongoose"
 
+//record borrow info
+
 const borrowSchema = new mongoose.Schema({
     user: {
         id: {
