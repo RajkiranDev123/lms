@@ -15,7 +15,7 @@ export const addBook = catchAsyncErrors(async (req, res, next) => {
         const book = await BookModel.create({
             title, author, description, price, quantity
         })
-        res.status(201).json({
+        return res.status(201).json({
             success: true, message: "Book added!", book
         })
     } catch (error) {
@@ -27,7 +27,7 @@ export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
     try {
         const books = await BookModel.find()
         res.status(200).json({
-            success: true, message: "Book added!", books
+            success: true, message: "All books fetched successfully!", books
         })
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error", 500))
