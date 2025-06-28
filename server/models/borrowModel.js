@@ -18,7 +18,7 @@ const borrowSchema = new mongoose.Schema({
         }
     },
 
-    price: {
+    price: { // price to borrow the book
         type: Number,
         required: true,
 
