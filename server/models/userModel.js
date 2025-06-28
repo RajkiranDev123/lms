@@ -25,10 +25,12 @@ const userSchema = new mongoose.Schema({
         default: "User"
     },
     accountVerified: { type: Boolean, default: false },
+    avatar: { public_id: String, url: String },
+
 
     borrowedBooks: [
         {
-            
+
             bookId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Borrow"
@@ -44,7 +46,6 @@ const userSchema = new mongoose.Schema({
         }
     ],
 
-    avatar: { public_id: String, url: String },
 
     verificationCode: Number,
     verificationCodeExpire: Date,
