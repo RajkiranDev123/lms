@@ -10,8 +10,8 @@ import ErrorHandler from "../middlewares/errorMiddleware.js"
 // aim : admin will record borrowed book by user!
 
 export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
-    const { id } = req.params
-    const { email } = req.body
+    const { id } = req.params // book id
+    const { email } = req.body // email of user that wants to borrow
 
     try {
         // find the book by id of the book
@@ -26,16 +26,20 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         // do next when (user and id of book) is present :
         if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
 
+        // bookId is borrow info
+        //
         const isAlreadyBorrowed = user.borrowedBooks.find(
-            b => b.bookId.toString() == id && b.returned == false
+            b => b.bookId.toString() == id && b.returned == false // checked also whether borrowed book is returned!
         )
 
         if (isAlreadyBorrowed) return next(new ErrorHandler("Book already borrowed!", 400))
 
+        // now (if not borrowed) then first change that (book info) in db ===>
+
         book.quantity -= 1
         book.availability = book.quantity > 0
-
         await book.save()
+        // book info is saved in db and now go do changes in user too!
 
         user.borrowedBooks.push({
             bookId: book._id,
@@ -45,6 +49,8 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
         })
         await user.save()
+
+        // now finally put borrow info in db!
         await BorrowModel.create({
             user: {
                 id: user._id,
@@ -57,7 +63,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         })
 
         return res.status(200).json({
-            success: true, message: "Borrowed book recored Successfully!"
+            success: true, message: "recorded borrowed book Successfully!"
         })
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
