@@ -58,7 +58,6 @@ export const registerNewAdmin = catchAsyncErrors(
                 }
             })
 
-
             res.status(201).json({
                 success: true, message: "Admin registered Successfully!", admin
             })
