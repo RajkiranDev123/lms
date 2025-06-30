@@ -127,18 +127,35 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
                     `The book has been returned!, Total charges is ${book.price + fine}+`
         })
     } catch (error) {
-        return next(new ErrorHandler(error, 500))
+        return next(new ErrorHandler(error.message, 500))
     }
 })
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
+export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
+
+    try {
+        const { borrowedBooks } = req.user
+        return res.status(200).json({
+            success: true, borrowedBooks, message: "all borrowed books of a user!"
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export const getBorrowedBooksForAdmin = catchAsyncErrors(async (req, res, next) => {
 
     try {
-
-        return res.status(201).json({
+        const allBorrowedBooks = await BorrowModel.find()
+        return res.status(200).json({
             success: true,
+            allBorrowedBooks,
+            message: "All borrowed books by all users!"
         })
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
@@ -148,17 +165,7 @@ export const getBorrowedBooksForAdmin = catchAsyncErrors(async (req, res, next) 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 
-export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
 
-    try {
-
-        return res.status(201).json({
-            success: true,
-        })
-    } catch (error) {
-        return next(new ErrorHandler(error.message, 500))
-    }
-})
 
 
 
