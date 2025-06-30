@@ -20,7 +20,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
         // find user by email 
 
-        const user = await UserModel.findOne({ email })
+        const user = await UserModel.findOne({ email, accountVerified: true })
         if (!user) return next(new ErrorHandler("User not found!", 404))
 
         // do next when (user and id of book) is present :
@@ -84,7 +84,7 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
         // find user by email 
 
-        const user = await UserModel.findOne({ email })
+        const user = await UserModel.findOne({ email, accountVerified: true })
         if (!user) return next(new ErrorHandler("User not found!", 404))
 
         // do next when (user and id of book) is present :
@@ -97,8 +97,20 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         )
 
         if (!borrowedBook) return next(new ErrorHandler("Book not borrowed!", 400))
+        borrowedBook.returned = true
+        await user.save() // now from user side the book is returned!
+
+        book.quantity += 1
+        book.availability = book.quantity > 0
+        await book.save() //book is also done!
 
         
+
+
+
+
+
+
 
 
         return res.status(201).json({
