@@ -8,6 +8,8 @@ import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import authRouter from "./routes/authRouter.js"
 import bookRouter from "./routes/bookRouter.js"
 import borrowRouter from "./routes/borrowRoutes.js"
+import userRouter from "./routes/userRouter.js"
+
 
 import expressFileupload from "express-fileupload"
 
@@ -30,6 +32,8 @@ app.use(expressFileupload({
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/book", bookRouter)
 app.use("/api/v1/borrow", borrowRouter)
+app.use("/api/v1/user", userRouter)
+
 
 
 connectDB()

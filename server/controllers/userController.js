@@ -48,7 +48,9 @@ export const registerNewAdmin = catchAsyncErrors(
             }
             )
 
-            if (!cloudinaryResponse || !cloudinaryResponse.error) return next(new ErrorHandler("Failed to Upload avatar, Clodinary error!", 500))
+            console.log(99,cloudinaryResponse)
+
+            if (!cloudinaryResponse || cloudinaryResponse.error) return next(new ErrorHandler("Failed to Upload avatar, Clodinary error!", 500))
 
             const admin = await UserModel.create({
                 name, email, password: hashedPassword, role: "Admin", accountVerified: true,
