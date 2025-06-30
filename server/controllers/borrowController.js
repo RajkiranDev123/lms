@@ -100,9 +100,18 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         borrowedBook.returned = true
         await user.save() // now from user side the book is returned!
 
+        // also need to do changes in book!
         book.quantity += 1
         book.availability = book.quantity > 0
         await book.save() //book is also done!
+
+        // now update borrow model
+
+        const borrow = await BorrowModel.findOne({
+            book: bookId, "user.email": email, returnedDate: null
+        })
+
+        if (!borrow) return next(new ErrorHandler("Book not borrowed!", 400))
 
         
 
@@ -113,7 +122,13 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
 
 
-        return res.status(201).json({
+
+
+
+
+
+
+        return res.status(200).json({
             success: true,
         })
     } catch (error) {
