@@ -72,6 +72,45 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
+    const { bookId } = req.params // book id
+    const { email } = req.body // email of user that wants to borrow
+
+
+    try {
+        // find the book by id of the book
+        const book = await BookModel.findById(id)
+        if (!book) return next(new ErrorHandler("Book not found!", 404))
+
+        // find user by email 
+
+        const user = await UserModel.findOne({ email })
+        if (!user) return next(new ErrorHandler("User not found!", 404))
+
+        // do next when (user and id of book) is present :
+        if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
+
+        // bookId is borrow info
+
+        const borrowedBook = user.borrowedBooks.find(
+            b => b.bookId.toString() == bookId && b.returned == false // checked also whether borrowed book is returned!
+        )
+
+        if (!borrowedBook) return next(new ErrorHandler("Book not borrowed!", 400))
+
+        
+
+
+        return res.status(201).json({
+            success: true,
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
 export const getBorrowedBooksForAdmin = catchAsyncErrors(async (req, res, next) => {
 
     try {
@@ -99,20 +138,10 @@ export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
     }
 })
 
-/////////////////////////////////////////////////////////////////////////////////////////////
 
 
-export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
-    try {
 
-        return res.status(201).json({
-            success: true,
-        })
-    } catch (error) {
-        return next(new ErrorHandler(error.message, 500))
-    }
-})
 
 
 
