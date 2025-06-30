@@ -10,7 +10,7 @@ router.get("/borrowed-books-by-users", isAuthenticated, isAuthorized("Admin"), g
 
 router.get("/my-borrowed-books", isAuthenticated, borrowedBooks)
 
-router.put("/return-borrowed-book/:book", isAuthenticated, isAuthorized("Admin"), returnBorrowedBook)
+router.put("/return-borrowed-book/:bookId", isAuthenticated, isAuthorized("Admin"), returnBorrowedBook)
 
 
 

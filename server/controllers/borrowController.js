@@ -4,6 +4,7 @@ import { BorrowModel } from "../models/borrowModel.js"
 import { BookModel } from "../models/bookModel.js"
 import { UserModel } from "../models/userModel.js"
 import ErrorHandler from "../middlewares/errorMiddleware.js"
+import { calculateFine } from "../utils/fineCalculator.js"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,7 +80,7 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
     try {
         // find the book by id of the book
-        const book = await BookModel.findById(id)
+        const book = await BookModel.findById(bookId)
         if (!book) return next(new ErrorHandler("Book not found!", 404))
 
         // find user by email 
@@ -113,26 +114,20 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
         if (!borrow) return next(new ErrorHandler("Book not borrowed!", 400))
 
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
+        borrow.returnedDate = new Date()
+        const fine = calculateFine(borrow.dueDate)
+        borrow.fine = fine
+        await borrow.save()
 
         return res.status(200).json({
             success: true,
+            message:
+                fine == 0 ? `The book has been returned!, Total charges is Rs.${book.price}`
+                    :
+                    `The book has been returned!, Total charges is ${book.price + fine}+`
         })
     } catch (error) {
-        return next(new ErrorHandler(error.message, 500))
+        return next(new ErrorHandler(error, 500))
     }
 })
 
