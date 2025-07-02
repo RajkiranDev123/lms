@@ -108,6 +108,55 @@ const authSlice = createSlice({
             state.isAuthenticated = false
         },
         //forgotpassword
+        forgotPasswordRequest(state) {
+            state.loading = true
+            state.error = null
+            state.message = null
+        },
+        forgotPasswordSuccess(state, action) {
+            state.loading = false
+            state.message = action.payload.message
+        },
+        forgotPasswordFailed(state, action) {
+            state.loading = false
+            state.error = action.payload
+        },
+        //reset-password
+        resetPasswordRequest(state) {
+            state.loading = true
+            state.error = null
+            state.message = null
+        },
+        //automatically login will be true when : resetPasswordSuccess
+        resetPasswordSuccess(state, action) {
+            state.loading = false
+            state.message = action.payload.message
+            state.user = action.payload.user
+            state.isAuthenticated = true
+        },
+        resetPasswordFailed(state, action) {
+            state.loading = false
+            state.error = action.payload
+        },
+
+        //update-password
+        updatePasswordRequest(state) {
+            state.loading = true
+            state.error = null
+            state.message = null
+        },
+        //automatically login will be true when : resetPasswordSuccess
+        updatePasswordSuccess(state, action) {
+            state.loading = false
+            state.message = action.payload
+
+        },
+        updatePasswordFailed(state, action) {
+            state.loading = false
+            state.error = action.payload
+        },
+
+
 
 
 
@@ -195,6 +244,50 @@ export const getUser = () => async (dispatch) => {
         dispatch(authSlice.actions.getUserFailed(error.response.data.message))
     })
 }
+
+export const forgotPassword = (email) => async (dispatch) => {
+    dispatch(authSlice.actions.forgotPasswordRequest())
+    await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password-forgot`, { email }, {
+        withCredentials: true,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => {
+        dispatch(authSlice.actions.forgotPasswordSuccess(res.data.message))
+    }).catch(error => {
+        dispatch(authSlice.actions.forgotPasswordFailed(error.response.data.message))
+    })
+}
+
+export const resetPassword = (data, token) => async (dispatch) => {
+    dispatch(authSlice.actions.resetPasswordRequest())
+    await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password-reset/${token}`, data, {
+        withCredentials: true,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => {
+        dispatch(authSlice.actions.resetPasswordSuccess(res.data.message))
+    }).catch(error => {
+        dispatch(authSlice.actions.resetPasswordFailed(error.response.data.message))
+    })
+}
+
+export const updatePassword = (data) => async (dispatch) => {
+    dispatch(authSlice.actions.updatePasswordRequest())
+    await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password/update`, data, {
+        withCredentials: true,
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(res => {
+        dispatch(authSlice.actions.updatePasswordSuccess(res.data.message))
+    }).catch(error => {
+        dispatch(authSlice.actions.updatePasswordFailed(error.response.data.message))
+    })
+}
+
+export default authSlice.reducer
 
 
 

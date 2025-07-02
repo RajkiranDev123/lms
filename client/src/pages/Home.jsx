@@ -1,8 +1,14 @@
-import React from "react";
+import React,{useState} from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const Home = () => {
-  return <>home</>;
+   
+  
+
+  return <>
+  
+  
+  </>;
 };
 
 export default Home;
