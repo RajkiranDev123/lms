@@ -81,7 +81,7 @@ const authSlice = createSlice({
             state.message = null
         },
 
-        //reset
+        //reset 
         resetAuthSlice(state) {
             state.loading = false
             state.error = null
@@ -167,6 +167,10 @@ const authSlice = createSlice({
 
     }
 })
+
+
+
+
 
 export const resetAuthSlice = (data) => async (dispatch) => {
     dispatch(authSlice.actions.resetAuthSlice())
