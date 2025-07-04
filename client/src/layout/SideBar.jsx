@@ -11,11 +11,15 @@ import { RiAdminFill } from "react-icons/ri";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout, resetAuthSlice } from "../store/slices/authSlice";
+import { toggleAddNewAdminPopup } from "../store/slices/popUpSlice";
+
+import AddNewAdmin from "../popups/AddNewAdmin"
+
 import { toast } from "react-toastify"
 
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
-  const { toggleAddNewAdminPopup } = useSelector((state) => state.popup);
+  const { addNewAdminPopup } = useSelector((state) => state.popup);
 
   const { loading, error, message, isAuthenticated, user } = useSelector((state) => state.auth);
 
@@ -153,7 +157,10 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
 
 
       </aside>
-      {/* {addNewAdminPopup && <AddNewAdmin />}  */}
+
+      {/* modals */}
+      {addNewAdminPopup && <AddNewAdmin />}
+
     </>
   );
 };
