@@ -40,3 +40,8 @@ const popupSlice = createSlice({
         }
     }
 })
+
+export const { closeAllPopup, toggleSettingPopup, toggleAddBookPopup,
+    toggleReadBookPopup, toggleRecordBookPopup, toggleReturnBookPopup, toggleAddNewAdminPopup
+} = popupSlice.actions
+export default popupSlice.reducer
