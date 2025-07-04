@@ -15,7 +15,7 @@ import { toast } from "react-toastify"
 
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
-  const { addNewAdminPopup } = useSelector((state) => state.popup);
+  const { toggleAddNewAdminPopup } = useSelector((state) => state.popup);
 
   const { loading, error, message, isAuthenticated, user } = useSelector((state) => state.auth);
 
