@@ -176,7 +176,7 @@ export const resetAuthSlice = (data) => async (dispatch) => {
     dispatch(authSlice.actions.resetAuthSlice())
 }
 
-
+////////////////////////////////////////// we get dispatch from :  dispatch(register(data))
 export const register = (data) => async (dispatch) => {
     dispatch(authSlice.actions.registerRequest())
     await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`, data, {
