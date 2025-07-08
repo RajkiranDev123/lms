@@ -172,6 +172,7 @@ const authSlice = createSlice({
 
 
 
+
 export const resetAuthSlice = (data) => async (dispatch) => {
     dispatch(authSlice.actions.resetAuthSlice())
 }
