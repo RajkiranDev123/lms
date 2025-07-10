@@ -181,14 +181,15 @@ export const resetAuthSlice = (data) => async (dispatch) => {
 export const register = (data) => async (dispatch) => {
     dispatch(authSlice.actions.registerRequest())
     await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`, data, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.registerSuccess(res.data))
+        dispatch(authSlice.actions.registerSuccess(res?.data))
     }).catch(error => {
-        dispatch(authSlice.actions.registerFailed(error.response.data.message))
+        console.log("err from reg==>",error)
+        dispatch(authSlice.actions.registerFailed(error?.response?.data?.message))
     })
 }
 
@@ -209,14 +210,14 @@ export const otpVerification = (email, otp) => async (dispatch) => {
 export const login = (data) => async (dispatch) => {
     dispatch(authSlice.actions.loginRequest())
     await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`, data, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.loginSuccess(res.data))
+        dispatch(authSlice.actions.loginSuccess(res?.data))
     }).catch(error => {
-        dispatch(authSlice.actions.loginFailed(error.response.data.message))
+        dispatch(authSlice.actions.loginFailed(error?.response?.data?.message))
     })
 }
 
