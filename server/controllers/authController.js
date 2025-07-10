@@ -44,7 +44,8 @@ export const register = catchAsyncErrors(
             next(error)
         }
 
-    }, console.log("register is called!")
+    }, 
+    // console.log("register is called!")
 )
 
 //////////////////////////////////////////////////// verify otp //////////////////////////////////////////
