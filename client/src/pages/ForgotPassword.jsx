@@ -14,6 +14,10 @@ const ForgotPassword = () => {
     dispatch(forgotPassword(email))
   }
   useEffect(() => {
+    if (message) {
+      toast.success(message)
+      dispatch(resetAuthSlice())
+    }
     if (error) {
       toast.error(error)
       dispatch(resetAuthSlice())
@@ -66,6 +70,7 @@ const ForgotPassword = () => {
           <form onSubmit={handleforgotpassword}>
             <div className="mb-4">
               <input type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"

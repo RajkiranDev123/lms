@@ -17,7 +17,7 @@ const OTP = () => {
     dispatch(otpVerification(email, otp))
   }
   useEffect(() => {
-    // if (message) toast.success(message)
+    // if (message){ toast.success(message)}
     if (error) {
       toast.error(error)
       dispatch(resetAuthSlice())
