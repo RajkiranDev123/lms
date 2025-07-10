@@ -254,7 +254,7 @@ export const getUser = () => async (dispatch) => {
 export const forgotPassword = (email) => async (dispatch) => {
     dispatch(authSlice.actions.forgotPasswordRequest())
     await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password-forgot`, { email }, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }
