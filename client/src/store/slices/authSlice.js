@@ -27,7 +27,8 @@ const authSlice = createSlice({
             state.error = action.payload
 
         },
-        //otp
+
+        //////////////////////////////////////////  otp  ///////////////////////////////////////////////////
         otpVerificationRequest(state) {
             state.loading = true
             state.error = null
@@ -155,23 +156,8 @@ const authSlice = createSlice({
             state.loading = false
             state.error = action.payload
         },
-
-
-
-
-
-
-
-
-
-
     }
 })
-
-
-
-
-
 
 export const resetAuthSlice = (data) => async (dispatch) => {
     dispatch(authSlice.actions.resetAuthSlice())
@@ -229,10 +215,10 @@ export const logout = () => async (dispatch) => {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.loginSuccess(res.data.message))
+        dispatch(authSlice.actions.loginSuccess(res?.data?.message))
         dispatch(authSlice.actions.resetAuthSlice())
     }).catch(error => {
-        dispatch(authSlice.actions.logoutFailed(error.response.data.message))
+        dispatch(authSlice.actions.logoutFailed(error?.response?.data?.message))
     })
 }
 
@@ -244,10 +230,10 @@ export const getUser = () => async (dispatch) => {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.getUserSuccess(res.data))
+        dispatch(authSlice.actions.getUserSuccess(res?.data))
 
     }).catch(error => {
-        dispatch(authSlice.actions.getUserFailed(error.response.data.message))
+        dispatch(authSlice.actions.getUserFailed(error?.response?.data?.message))
     })
 }
 
@@ -259,23 +245,23 @@ export const forgotPassword = (email) => async (dispatch) => {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.forgotPasswordSuccess(res.data.message))
+        dispatch(authSlice.actions.forgotPasswordSuccess(res?.data?.message))
     }).catch(error => {
-        dispatch(authSlice.actions.forgotPasswordFailed(error.response.data.message))
+        dispatch(authSlice.actions.forgotPasswordFailed(error?.response?.data?.message))
     })
 }
 
 export const resetPassword = (data, token) => async (dispatch) => {
     dispatch(authSlice.actions.resetPasswordRequest())
     await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password-reset/${token}`, data, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.resetPasswordSuccess(res.data.message))
+        dispatch(authSlice.actions.resetPasswordSuccess(res?.data?.message))
     }).catch(error => {
-        dispatch(authSlice.actions.resetPasswordFailed(error.response.data.message))
+        dispatch(authSlice.actions.resetPasswordFailed(error?.response?.data?.message))
     })
 }
 
@@ -287,12 +273,12 @@ export const updatePassword = (data) => async (dispatch) => {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.updatePasswordSuccess(res.data.message))
+        dispatch(authSlice.actions.updatePasswordSuccess(res?.data?.message))
     }).catch(error => {
-        dispatch(authSlice.actions.updatePasswordFailed(error.response.data.message))
+        dispatch(authSlice.actions.updatePasswordFailed(error?.response?.data?.message))
     })
 }
-
+// export const { registerRequest } = authSlice.actions
 export default authSlice.reducer
 
 
