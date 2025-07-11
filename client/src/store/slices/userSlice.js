@@ -47,3 +47,21 @@ export const fetchAllUsers = () => async (dispatch) => {
         })
 }
 
+export const addNewAdmin = (data) => async (dispatch) => {
+    dispatch(userSlice.actions.addNewAdminRequest())
+    await axios
+        .post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/add/new-admin`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        .then(res => {
+            dispatch(userSlice.actions.addNewAdminSuccess(res?.data?.users))
+            toast.success(res?.data?.message)
+        })
+        .catch(err => {
+            dispatch(userSlice.actions.addNewAdminFailed(err?.response?.data?.message))
+            toast.error(err?.response?.data?.message)
+        })
+}
+export default userSlice.reducer

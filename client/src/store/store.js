@@ -9,6 +9,6 @@ export const store = configureStore({
     reducer: {
         auth: authReducer,
         popup: popupReducer,
-        
+        user: userReducer,
     }
 })
