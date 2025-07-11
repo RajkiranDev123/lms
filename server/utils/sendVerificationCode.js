@@ -14,7 +14,7 @@ export async function sendVerificationCode(verificationCode, email, res) {
             message
         })
 
-        res.status(200)
+        return res.status(200)
             .json({
                 success: true,
                 message: "Verification code sent Successfully!"

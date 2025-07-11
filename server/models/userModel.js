@@ -62,14 +62,14 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.generateVerificationCode = function () {
 
     function generate5digits() {
-        const firstDigit = Math.floor(Math.random() * 9) + 1 // 1 to 8 and plus 1 = 9
-        const remainingDigits = Math.floor(Math.random() * 10000) // 1 to 9,999
-            .toString().padStart(4, 0) // 4 is target and what to put is 0
+        const firstDigit = Math.floor(Math.random() * 9) + 1 // 1 to 8 and plus 1 = 9 : single digit
+        const remainingDigits = Math.floor(Math.random() * 10000) // 1 to 9,999 : 4 digits : can give even 1 digit sometimes
+            .toString().padStart(4, 0) // 4 is target and what to put is 0 : if 8 then 0008
         return parseInt(firstDigit + remainingDigits)
     }
     const verificationCode = generate5digits()
     this.verificationCode = verificationCode//save to db too!
-    this.verificationCodeExpire = Date.now() + 15 * 60 * 1000
+    this.verificationCodeExpire = Date.now() + 15 * 60 * 1000 // 15 mins
     return verificationCode
 
 }

@@ -18,26 +18,26 @@ export const register = catchAsyncErrors(
                 return next(new ErrorHandler("All fields are required!", 400))
             }
 
-            const isRegistered = await UserModel.findOne({ email, accountVerified: true })
+            const isAlreadyRegistered = await UserModel.findOne({ email, accountVerified: true })
 
-            if (isRegistered) return next(new ErrorHandler("User Already exists!", 400))
+            if (isAlreadyRegistered) return next(new ErrorHandler("User Already exists!", 400))
 
-            const registrationAttempts = await UserModel.find({
+            const registrationAttempts = await UserModel.find({ // [{},{}]
                 email, accountVerified: false
             })
 
             if (registrationAttempts.length >= 5) return next(new ErrorHandler("Exceeded Registration attepmts,Contact Admin!", 400))
 
-            if (password.length < 5 || password.length > 16) {
+            if (password.length < 8 || password.length > 16) {
                 return next(new ErrorHandler("Password must be between 8 & 16 characters!", 400))
             }
             const hashedPassword = await bcrypt.hash(password, 10)
-            const user = await UserModel.create({
+            const user = await UserModel.create({//instance of schema
                 name,
                 email,
                 password: hashedPassword
             })
-            const verificationCode = await user.generateVerificationCode()
+            const verificationCode = await user.generateVerificationCode() //get 5 digits random no
             await user.save()
             sendVerificationCode(verificationCode, email, res)
         } catch (error) {
