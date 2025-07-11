@@ -225,7 +225,7 @@ export const logout = () => async (dispatch) => {
 export const getUser = () => async (dispatch) => {
     dispatch(authSlice.actions.getUserRequest())
     await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/me`, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }
