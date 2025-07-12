@@ -182,7 +182,7 @@ export const register = (data) => async (dispatch) => {
 export const otpVerification = (email, otp) => async (dispatch) => {
     dispatch(authSlice.actions.otpVerificationRequest())
     await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/verify-otp`, { email, otp }, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }
@@ -210,7 +210,7 @@ export const login = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
     dispatch(authSlice.actions.logoutRequest())
     await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/logout`, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }
@@ -268,7 +268,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
 export const updatePassword = (data) => async (dispatch) => {
     dispatch(authSlice.actions.updatePasswordRequest())
     await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password/update`, data, {
-        withCredentials: true,
+        // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
         }

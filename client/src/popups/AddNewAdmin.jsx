@@ -41,7 +41,7 @@ const AddNewAdmin = () => {
 
 
   return <>
-    <h1 className="fixed inset-0 bg-black bg-opacity-50 p-5 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 p-5 flex items-center justify-center z-50">
       <div className="w-full bg-white rounded-lg md:w-1/3">
         <div className="p-6">
           <header
@@ -87,7 +87,7 @@ const AddNewAdmin = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Admin's Email"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md"
               />
 
             </div>
@@ -99,7 +99,7 @@ const AddNewAdmin = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Admin's Password"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md"
               />
 
             </div>
@@ -115,7 +115,7 @@ const AddNewAdmin = () => {
               </button>
 
               <button disabled={loading} className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800"
-                type="button">Add
+                type="submit">Add
               </button>
 
             </div>
@@ -129,11 +129,7 @@ const AddNewAdmin = () => {
       </div>
 
 
-    </h1>
-
-
-
-
+    </div>
   </>;
 };
 
