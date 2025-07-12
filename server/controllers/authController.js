@@ -150,6 +150,7 @@ export const getUser = catchAsyncErrors(
             res.status(200).json({ success: true, user })
 
         } catch (error) {
+            console.log("err from getUser ==>",error.message)
             return next(new ErrorHandler("Internal Server Error!", 500))
         }
 
