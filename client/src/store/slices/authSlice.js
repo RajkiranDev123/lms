@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
-
+import { toast } from "react-toastify"
 
 const authSlice = createSlice({
     name: "auth",
@@ -218,8 +218,9 @@ export const logout = () => async (dispatch) => {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.loginSuccess(res?.data?.message))
+        dispatch(authSlice.actions.logoutSuccess(res?.data?.message))
         dispatch(authSlice.actions.resetAuthSlice())
+        toast.success(res?.data?.message)
         localStorage.clear()
     }).catch(error => {
         dispatch(authSlice.actions.logoutFailed(error?.response?.data?.message))

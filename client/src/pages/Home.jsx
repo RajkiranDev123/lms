@@ -17,11 +17,14 @@ import Users from "../components/Users"
 
 
 const Home = () => {
+
   const [isSideBarOpen, setIsSideBarOpen] = useState(false)
   const [selectedComponent, setSelectedComponent] = useState("")
   const { user, isAuthenticated } = useSelector(state => state.auth)
 
   if (!isAuthenticated) {
+    console.log("home is called!")
+
     return <Navigate to={"/login"} />
   }
 

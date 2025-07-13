@@ -18,20 +18,19 @@ import SettingPopup from "../popups/SettingPopup"
 
 
 import { toast } from "react-toastify"
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
   const { addNewAdminPopup, settingPopup } = useSelector((state) => state.popup);
 
   const { loading, error, message, isAuthenticated, user } = useSelector((state) => state.auth);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login")
+  const handleLogout = async () => {
+     dispatch(logout());
   };
 
   useEffect(() => {
