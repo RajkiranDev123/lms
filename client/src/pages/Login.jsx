@@ -6,9 +6,14 @@ import { login, resetAuthSlice } from "../store/slices/authSlice";
 import { Link, Navigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import "../components/loader.css"
+import eyeOpen from "../assets/eye_open.png"
+import eyeClose from "../assets/eye_close.png"
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [togglePassword, setTogglePassword] = useState(false)
+
   const dispatch = useDispatch()//useDispatch  returns a reference of dispatch function from the redux store
   //dispatch acts as a messenger, delivering instructions (actions) to the state manager (reducer) to update 
   //state. This is the only way to do state change
@@ -62,14 +67,50 @@ const Login = () => {
           <p className="text-gray-800 mb-12 text-center">Please enter your credentials to login!</p>
 
           <form onSubmit={handleLogin}>
+            {/*  */}
+            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Email :
+              <CopyToClipboard text="rajkir783@gmail.com">
+                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+              </CopyToClipboard>
+            </p>
+            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Password :
+              <CopyToClipboard text="12345678">
+                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+              </CopyToClipboard>
+            </p>
+            {/*  */}
+            <hr/>
+
+                      {/*  */}
+            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Email :
+              <CopyToClipboard text="rajkir783@gmail.com">
+                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+              </CopyToClipboard>
+            </p>
+            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Password :
+              <CopyToClipboard text="12345678">
+                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+              </CopyToClipboard>
+            </p>
+            {/*  */}
 
             <div className="mb-4">
               <input className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
                 type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
             </div>
-            <div className="mb-4">
+
+            <div className="mb-4 relative">
               <input className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
-                type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                type={togglePassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+
+              <div className="absolute right-2 top-4">
+                {togglePassword ? <img onClick={() => setTogglePassword(false)} style={{ cursor: "pointer" }} width={19} height={15} src={eyeOpen} alt="eye" />
+                  : <img onClick={() => setTogglePassword(true)} style={{ cursor: "pointer" }} width={19} height={15} src={eyeClose} alt="eye" />}
+
+              </div>
+
+
+
             </div>
 
             <Link to={"/password/forgot"} className="font-semibold rounded-md text-black mb-12 ">Forgot Password ? </Link>
@@ -83,7 +124,7 @@ const Login = () => {
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
               type="submit">
 
-              {loading ? <div style={{display:"flex",justifyContent:"center"}}><div className="loader"></div></div> : "Login"}
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Login"}
 
             </button>
 
