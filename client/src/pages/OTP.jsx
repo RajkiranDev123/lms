@@ -14,8 +14,12 @@ const OTP = () => {
   // const navigate = useNavigate()
   const handleOtpVerification = (e) => {
     e.preventDefault()
-    if(!email || !otp){
+    if (!email || !otp) {
       toast.error("OTP is required!")
+      return
+    }
+    if (otp?.length < 5) {
+      toast.error("OTP must be 5 digits!")
       return
     }
     dispatch(otpVerification(email, otp))

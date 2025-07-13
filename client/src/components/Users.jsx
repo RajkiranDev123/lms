@@ -12,6 +12,7 @@ const Users = () => {
    ${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")} `
 
     const result = `${formattedDate} ${formattedTime}`
+    return result
   }
   return <>
     <main className="relative flex-1 p-6 pt-28">
@@ -54,8 +55,8 @@ const Users = () => {
                         <td className="px-4 py-2">{user?.name}</td>
                         <td className="px-4 py-2">{user?.email}</td>
                         <td className="px-4 py-2">{user?.role}</td>
-                        <td className="px-4 py-2">{user?.borrowedBooks.length}</td>
-                        <td className="px-4 py-2">{formatDate(user?.createdAt)}</td>
+                        <td className="px-4 py-2 text-center">{user?.borrowedBooks.length}</td>
+                        <td className="px-4 py-2 text-center">{formatDate(user?.createdAt)}</td>
                       </tr>
                     ))
                 }

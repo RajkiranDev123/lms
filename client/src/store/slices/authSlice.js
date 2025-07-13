@@ -202,10 +202,14 @@ export const login = (data) => async (dispatch) => {
         }
     }).then(res => {
         dispatch(authSlice.actions.loginSuccess(res?.data))
+        toast.success("You are Logged-In!")
+
         localStorage.setItem("authToken", res?.data?.token);
         console.log("token from login ==>", res?.data?.token)
 
     }).catch(error => {
+       
+
         dispatch(authSlice.actions.loginFailed(error?.response?.data?.message))
     })
 }

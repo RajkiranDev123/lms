@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, resetAuthSlice } from "../store/slices/authSlice";
 import { Link, Navigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import "../components/loader.css"
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -12,13 +13,13 @@ const Login = () => {
   //dispatch acts as a messenger, delivering instructions (actions) to the state manager (reducer) to update 
   //state. This is the only way to do state change
   const { loading, error, message, user, isAuthenticated } = useSelector(state => state.auth)
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
     if (!email || !password) {
       toast.error("All fields are required!")
       return
     }
-    if (password?.length<8) {
+    if (password?.length < 8) {
       toast.error("Password must be greater than or equal to 8 Characters!")
       return
     }
@@ -68,7 +69,7 @@ const Login = () => {
             </div>
             <div className="mb-4">
               <input className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
-                type="text" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
             </div>
 
             <Link to={"/password/forgot"} className="font-semibold rounded-md text-black mb-12 ">Forgot Password ? </Link>
@@ -80,7 +81,11 @@ const Login = () => {
             <button
               className="border-2 mt-5 border-black w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
-              type="submit">Login</button>
+              type="submit">
+
+              {loading ? <div style={{display:"flex",justifyContent:"center"}}><div className="loader"></div></div> : "Login"}
+
+            </button>
 
           </form>
 
