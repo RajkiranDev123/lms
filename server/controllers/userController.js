@@ -29,13 +29,14 @@ export const registerNewAdmin = catchAsyncErrors(
             if (!name || !email || !password) {
                 return next(new ErrorHandler("All fields are required!", 400))
             }
-
-            const isRegistred = await UserModel.findOne({ email, accountVerified: true })
-            if (isRegistred) return next(new ErrorHandler("Account is already registered!", 400))
+            // check email duplicates
+            const isRegistered = await UserModel.findOne({ email, accountVerified: true })
+            if (isRegistered) return next(new ErrorHandler("Account is already registered!", 400))
 
             if (password.length < 8 || password.length > 16) return next(new ErrorHandler("Password must be betn 8 & 16 characters!", 400))
 
             const { avatar } = req.files
+            console.log("req.files ==> ",req.files)
 
             const allowedFormats = ["image/png", "image/jpeg", "image/webp"]
             if (!allowedFormats.includes(avatar.mimetype)) return next(new ErrorHandler("File format not supported!", 400))
@@ -48,7 +49,7 @@ export const registerNewAdmin = catchAsyncErrors(
             }
             )
 
-            console.log(99,cloudinaryResponse)
+            console.log("res from cloudinary ==> ", cloudinaryResponse)
 
             if (!cloudinaryResponse || cloudinaryResponse.error) return next(new ErrorHandler("Failed to Upload avatar, Clodinary error!", 500))
 

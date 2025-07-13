@@ -22,11 +22,11 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ["Admin", "User"],
-        default: "User"         // automatically saved to db because of (default :) even role is not supplied!
+        default: "User"         //role="User" : automatically saved to db because of (default :) even role is not supplied!
     },
+
     accountVerified: { type: Boolean, default: false },
     avatar: { public_id: String, url: String },
-
 
     borrowedBooks: [
         {
@@ -47,14 +47,11 @@ const userSchema = new mongoose.Schema({
         }
     ],
 
-
     verificationCode: Number,
     verificationCodeExpire: Date,
 
     resetPasswordToken: String, // not in db after just creating new acc because of absence of ==> (required or default)
     resetPasswordExpire: Date,
-
-
 
 }, { timestamps: true })
 
