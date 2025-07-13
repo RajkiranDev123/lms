@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, Navigate, useNavigate } from "react-router-dom"
 import { register, resetAuthSlice } from "../store/slices/authSlice"
 import { toast } from "react-toastify"
+import "../components/loader.css"
 const Register = () => {
 
   const [name, setName] = useState("")
@@ -118,7 +119,12 @@ const Register = () => {
             <button
               className="border-2 mt-5 border-black w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
-              type="submit">Sign Up</button>
+              type="submit">
+
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Sign Up "}
+
+
+            </button>
 
           </form>
 

@@ -150,7 +150,6 @@ const authSlice = createSlice({
         updatePasswordSuccess(state, action) {
             state.loading = false
             state.message = action.payload
-
         },
         updatePasswordFailed(state, action) {
             state.loading = false

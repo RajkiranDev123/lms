@@ -4,14 +4,24 @@ import { useDispatch, useSelector } from "react-redux"
 import { updatePassword } from "../store/slices/authSlice"
 import settingIcon from "../assets/setting.png"
 import { toggleSettingPopup } from "../store/slices/popUpSlice"
+import { toast } from 'react-toastify';
+import "../components/loader.css"
 const SettingPopup = () => {
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmNewPassword, setConfirmNewPassword] = useState("")
+
   const dispatch = useDispatch()
-  const { loading } = useSelector(state => state.user)
+  const { loading } = useSelector(state => state.auth)
+
+  console.log("check loading from SettingPopup => ", loading)
+
   const handleUpdatePassword = (e) => {
     e.preventDefault()
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      toast.error("All fields are required!")
+      return
+    }
     const data = new FormData()
     data.append("currentPassword", currentPassword)
     data.append("newPassword", newPassword)
@@ -45,7 +55,7 @@ const SettingPopup = () => {
             <div className="mb-4 sm:flex gap-4 items-center">
               <label className="block text-gray-900 font-medium w-full">Current Password :</label>
               <input
-                type="text"
+                type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Current Password"
@@ -54,9 +64,9 @@ const SettingPopup = () => {
             </div>
 
             <div className="mb-4 sm:flex gap-4 items-center">
-              <label className="block text-gray-900 font-medium w-full">Enter new Password :</label>
+              <label className="block text-gray-900 font-medium w-full">Enter New Password :</label>
               <input
-                type="text"
+                type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="New Password"
@@ -68,7 +78,7 @@ const SettingPopup = () => {
             <div className="mb-4 sm:flex gap-4 items-center">
               <label className="block text-gray-900 font-medium w-full">Enter Confirm Password :</label>
               <input
-                type="text"
+                type="password"
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
                 placeholder="Confirm New Password"
@@ -76,36 +86,18 @@ const SettingPopup = () => {
               />
             </div>
 
-
-
-            {/* fields ended */}
-
-
-            {/* buttons */}
-            {/* <div className="flex justify-end space-x-4 ">
-
-              <button className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
-                type="button" onClick={() => dispatch(toggleAddNewAdminPopup())}>Close
-              </button>
-
-              <button disabled={loading} className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800"
-                type="button">Add
-              </button>
-
-            </div> */}
-
             <div className='flex gap-4 mt-10'>
               <button className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300"
                 type="button" onClick={() => dispatch(toggleSettingPopup())}>Cancel
               </button>
 
-              <button disabled={loading} className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800"
-                type="submit">Confirm
+              <button className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800"
+                type="submit">
+                  
+                {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Confirm "}
+
               </button>
             </div>
-
-
-
           </form>
 
         </div>

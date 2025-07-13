@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addNewAdmin } from "../store/slices/userSlice"
 import { toggleAddNewAdminPopup } from "../store/slices/popUpSlice"
 import { toast } from "react-toastify";
+import "../components/loader.css"
 
 const AddNewAdmin = () => {
   const dispatch = useDispatch()
@@ -121,7 +122,9 @@ const AddNewAdmin = () => {
               </button>
 
               <button disabled={loading} className="px-4 py-2 text-white bg-black rounded-md hover:bg-gray-800"
-                type="submit">Add
+                type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Add"}
+
               </button>
 
             </div>
