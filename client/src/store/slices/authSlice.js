@@ -174,7 +174,7 @@ export const register = (data) => async (dispatch) => {
     }).then(res => {
         dispatch(authSlice.actions.registerSuccess(res?.data))
     }).catch(error => {
-        console.log("err from reg==>",error)
+        console.log("err from reg==>", error)
         dispatch(authSlice.actions.registerFailed(error?.response?.data?.message))
     })
 }
@@ -202,6 +202,9 @@ export const login = (data) => async (dispatch) => {
         }
     }).then(res => {
         dispatch(authSlice.actions.loginSuccess(res?.data))
+        localStorage.setItem("authToken", res?.data?.token);
+        console.log("token from login ==>", res?.data?.token)
+
     }).catch(error => {
         dispatch(authSlice.actions.loginFailed(error?.response?.data?.message))
     })
@@ -217,12 +220,14 @@ export const logout = () => async (dispatch) => {
     }).then(res => {
         dispatch(authSlice.actions.loginSuccess(res?.data?.message))
         dispatch(authSlice.actions.resetAuthSlice())
+        localStorage.clear()
     }).catch(error => {
         dispatch(authSlice.actions.logoutFailed(error?.response?.data?.message))
     })
 }
 
 export const getUser = () => async (dispatch) => {
+    console.log("getUser called!")
     dispatch(authSlice.actions.getUserRequest())
     await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/me`, {
         // withCredentials: true,

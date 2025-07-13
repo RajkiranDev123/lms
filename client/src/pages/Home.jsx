@@ -21,9 +21,9 @@ const Home = () => {
   const [selectedComponent, setSelectedComponent] = useState("")
   const { user, isAuthenticated } = useSelector(state => state.auth)
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to={"/login"} />
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to={"/login"} />
+  }
 
   return <>
     <div className="relative md:pl-64 flex min-h-screen bg-gray-100">
@@ -56,13 +56,13 @@ const Home = () => {
                 return <BookManagement />
 
               case "Catalog":
-                if (user.role == "Admin") return <Catalog />
+                if (user?.role == "Admin") return <Catalog />
 
               case "Users":
-                if (user.role == "Admin") return <Users />
+                if (user?.role == "Admin") return <Users />
 
               case "My Borrowed Books":
-                if (user.role == "Admin") return <MyBorrowedBooks />
+                if (user?.role == "Admin") return <MyBorrowedBooks />
 
               default:
                 return user?.role == "User" ? (<UserDashboard />) : (<AdminDashboard />)

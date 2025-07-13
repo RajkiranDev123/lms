@@ -14,6 +14,10 @@ const OTP = () => {
   // const navigate = useNavigate()
   const handleOtpVerification = (e) => {
     e.preventDefault()
+    if(!email || !otp){
+      toast.error("OTP is required!")
+      return
+    }
     dispatch(otpVerification(email, otp))
   }
   useEffect(() => {

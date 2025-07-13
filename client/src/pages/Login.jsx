@@ -4,7 +4,7 @@ import logo_with_title from "../assets/logo-with-title.png";
 import { useDispatch, useSelector } from "react-redux";
 import { login, resetAuthSlice } from "../store/slices/authSlice";
 import { Link, Navigate } from "react-router-dom"
-import {toast} from "react-toastify"
+import { toast } from "react-toastify"
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -14,6 +14,15 @@ const Login = () => {
   const { loading, error, message, user, isAuthenticated } = useSelector(state => state.auth)
   const handleLogin = (e) => {
     e.preventDefault()
+    if (!email || !password) {
+      toast.error("All fields are required!")
+      return
+    }
+    if (password?.length<8) {
+      toast.error("Password must be greater than or equal to 8 Characters!")
+      return
+    }
+
     const data = new FormData()
     data.append("email", email)
     data.append("password", password)

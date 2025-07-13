@@ -15,6 +15,7 @@ import { fetchAllUsers } from "./store/slices/userSlice"
 
 
 const App = () => {
+  console.log("App component is called!")
   //////// user is available after login success!
   const { user, isAuthenticated } = useSelector(state => state.auth)
   const dispatch = useDispatch()

@@ -31,7 +31,7 @@ const Header = () => {
     return () => clearInterval(intervalId)
   }, [])
   return <>
-    <header className="">
+    <header className="absolute top-0 bg-white w-full py-4 px-6 left-0 shadow-md flex justify-between items-center">
       {/* left side */}
       <div className="flex items-center gap-2">
         <img src={userIcon} alt="userIcon" className="w-6 h-8" />

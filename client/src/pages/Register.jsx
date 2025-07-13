@@ -15,8 +15,13 @@ const Register = () => {
   const navigate = useNavigate()
 
   const handleRegister = (e) => {
-
     e.preventDefault()
+
+    if (!name || !email || !password) {
+      toast.error("All fields are required!")
+      return
+    }
+
     const data = new FormData()
     data.append("name", name)
     data.append("password", password)
