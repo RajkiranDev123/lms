@@ -161,7 +161,7 @@ export const getUser = catchAsyncErrors(
 
 /////////////////////////////////////////////////// forgot Password /////////////////////////////////////////////
 
-//send reset token & reset url to email for recovering password
+//send (reset token & reset url) to email for recovering password
 
 export const forgotPassword = catchAsyncErrors(
     async (req, res, next) => {
