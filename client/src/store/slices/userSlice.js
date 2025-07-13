@@ -5,10 +5,12 @@ import { toggleAddNewAdminPopup } from "./popUpSlice"
 
 const userSlice = createSlice({
     name: "user",
+
     initialState: {
         users: [],
         loading: false
     },
+    
     reducers: {
         fetchAllUsersRequest(state) {
             state.loading = true

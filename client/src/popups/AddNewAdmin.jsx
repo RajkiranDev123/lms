@@ -5,6 +5,7 @@ import keyIcon from "../assets/key.png";
 import { useDispatch, useSelector } from "react-redux"
 import { addNewAdmin } from "../store/slices/userSlice"
 import { toggleAddNewAdminPopup } from "../store/slices/popUpSlice"
+import { toast } from "react-toastify";
 
 const AddNewAdmin = () => {
   const dispatch = useDispatch()
@@ -29,6 +30,11 @@ const AddNewAdmin = () => {
   }
   const handleAddNewAdmin = (e) => {
     e.preventDefault()
+
+    if (!name || !email || !password || !avatar) {
+      toast.error("All fields are required!")
+      return
+    }
     const formData = new FormData()
     formData.append("name", name)
     formData.append("email", email)
