@@ -77,7 +77,7 @@ const borrowSlice = createSlice({
             state.message = null
         },
         //////////////////////////////////////////
-        resetBookSlice(state) {
+        resetBorrowSlice(state) {
             state.loading = false
             state.error = null
             state.message = null
@@ -94,7 +94,7 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
             dispatch(borrowSlice.actions.fetchUserBorrowedBooksSuccess(res?.data?.borrowedBooks))
         })
         .catch(err => {
-            dispatch(bookSlice.actions.fetchUserBorrowedBooksFailed(err?.response?.data?.message))
+            dispatch(borrowSlice.actions.fetchUserBorrowedBooksFailed(err?.response?.data?.message))
         })
 }
 
@@ -106,7 +106,7 @@ export const fetchAllBorrowedBooks = () => async (dispatch) => {
             dispatch(borrowSlice.actions.fetchAllBorrowedBooksSuccess(res?.data?.borrowedBooks))
         })
         .catch(err => {
-            dispatch(bookSlice.actions.fetchAllBorrowedBooksFailed(err?.response?.data?.message))
+            dispatch(borrowSlice.actions.fetchAllBorrowedBooksFailed(err?.response?.data?.message))
         })
 }
 
@@ -122,10 +122,31 @@ export const recordBorrowBook = (email, id) => async (dispatch) => {
             dispatch(borrowSlice.actions.recordBookSuccess(res?.data?.message))
         })
         .catch(err => {
-            dispatch(bookSlice.actions.recordBookFailed(err?.response?.data?.message))
+            dispatch(borrowSlice.actions.recordBookFailed(err?.response?.data?.message))
         })
 }
 
+
+export const returnBorrowBook = (email, id) => async (dispatch) => {
+    dispatch(borrowSlice.actions.returnBookRequest())
+    await axios
+        .post(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/return-borrowed-book/${id}`, { email }, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(res => {
+            dispatch(borrowSlice.actions.returnBookSuccess(res?.data?.message))
+        })
+        .catch(err => {
+            dispatch(borrowSlice.actions.returnBookFailed(err?.response?.data?.message))
+        })
+}
+
+export const resetBorrowSlice = () => (dispatch) => {
+    dispatch(borrowSlice.actions.resetBorrowSlice())
+
+}
 
 
 export default borrowSlice.reducer

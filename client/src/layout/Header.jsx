@@ -31,6 +31,7 @@ const Header = () => {
     return () => clearInterval(intervalId)
   }, [])
   return <>
+    {/*                         top-0 and parent is relative : Home                       */}
     <header className="absolute top-0 bg-white w-full py-4 px-6 left-0 shadow-md flex justify-between items-center">
       {/* left side */}
       <div className="flex items-center gap-2">
