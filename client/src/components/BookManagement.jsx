@@ -21,6 +21,7 @@ const BookManagement = () => {
 
   const [readBook, setReadBook] = useState({})
   const openReadPopup = (id) => {
+    console.log(id,books)
     const book = books.find(book => book._id === id)
     setReadBook(book)
     dispatch(toggleReadBookPopup())
@@ -148,7 +149,7 @@ const BookManagement = () => {
     </main>
 
     {addBookPopup && <AddBookPopup />}
-    {addBookPopup && <ReadBookPopup book={readBook}/>}
+    {readBookPopup && <ReadBookPopup book={readBook}/>}
     {recordBookPopup && <RecordBookPopup bookId={borrowBookId} />}
 
 
