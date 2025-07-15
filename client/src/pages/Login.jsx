@@ -68,26 +68,26 @@ const Login = () => {
 
           <form onSubmit={handleLogin}>
             {/*  */}
-            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Email :
+            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Email :
               <CopyToClipboard text="rajkir783@gmail.com">
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>
             </p>
-            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Password :
+            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Password :
               <CopyToClipboard text="12345678">
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>
             </p>
             {/*  */}
-            <hr/>
+            <hr />
 
-                      {/*  */}
-            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Email :
-              <CopyToClipboard text="rajkir783@gmail.com">
+            {/*  */}
+            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Email :
+              <CopyToClipboard text="rk7889666@gmail.com">
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>
             </p>
-            <p style={{ fontSize: 14, color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Password :
+            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Password :
               <CopyToClipboard text="12345678">
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>

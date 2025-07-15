@@ -124,7 +124,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
             </button>
           )}
 
-          {/*                                role when user                                            */}
+          {/*                                role when user ended                                        */}
 
           {/* Update Credentials only in mobile version */}
           <button

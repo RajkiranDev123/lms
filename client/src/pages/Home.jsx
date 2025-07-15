@@ -65,7 +65,7 @@ const Home = () => {
                 if (user?.role == "Admin") return <Users />
 
               case "My Borrowed Books":
-                if (user?.role == "Admin") return <MyBorrowedBooks />
+                if (user?.role == "User") return <MyBorrowedBooks />
 
               default:
                 return user?.role == "User" ? (<UserDashboard />) : (<AdminDashboard />)
