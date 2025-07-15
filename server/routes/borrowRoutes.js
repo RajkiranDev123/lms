@@ -3,7 +3,7 @@ import { recordBorrowedBook, getBorrowedBooksForAdmin, borrowedBooks, returnBorr
 import { isAuthenticated, isAuthorized } from "../middlewares/authMiddleware.js"
 const router = express.Router()
 
-router.post("/record-borrowed-book/:id", isAuthenticated, isAuthorized("Admin"), recordBorrowedBook)
+router.post("/record-borrow-book/:id", isAuthenticated, isAuthorized("Admin"), recordBorrowedBook)
 
 
 router.put("/return-borrowed-book/:bookId", isAuthenticated, isAuthorized("Admin"), returnBorrowedBook)
