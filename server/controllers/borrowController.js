@@ -24,11 +24,11 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         const user = await UserModel.findOne({ email, accountVerified: true })
         if (!user) return next(new ErrorHandler("User not found!", 404))
 
-        // do next when (user and id of book) is present :
+        // do next when (user and id of book) is present : check quantity
         if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
 
-        // bookId is borrow info
-        //
+        // bookId : borrow info
+        
         const isAlreadyBorrowed = user.borrowedBooks.find(
             b => b.bookId.toString() == id && b.returned == false // checked also whether borrowed book is returned!
         )
@@ -64,7 +64,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         })
 
         return res.status(200).json({
-            success: true, message: "recorded borrowed book Successfully!"
+            success: true, message: "Recorded borrowed book Successfully!"
         })
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
