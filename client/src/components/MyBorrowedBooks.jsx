@@ -3,6 +3,7 @@ import { BookA } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux"
 import { toggleReadBookPopup } from "../store/slices/popUpSlice"
 import Header from "../layout/Header";
+import ReadBookPopup from "../popups/ReadBookPopup"
 
 const MyBorrowedBooks = () => {
   const dispatch = useDispatch()
@@ -109,8 +110,8 @@ const MyBorrowedBooks = () => {
                     <tr key={index} className={(index + 1) % 2 == 0 ? "bg-gray-50" : ""}>
                       <td className="px-4 py-2">{index + 1}</td>
                       <td className="px-4 py-2">{book?.bookTitle}</td>
-                      <td className="px-4 py-2">{book?.borrowDate}</td>
-                      <td className="px-4 py-2">{book?.dueDate}</td>
+                      <td className="px-4 py-2">{formatDate(book?.borrowedDate)}</td>
+                      <td className="px-4 py-2">{formatDate(book?.dueDate)}</td>
                       <td className="px-4 py-2">{book?.returned ? "Yes" : "No"}</td>
                       <td className="px-4 py-2"><BookA onClick={() => openReadPopup()} /></td>
                     </tr>
@@ -121,18 +122,17 @@ const MyBorrowedBooks = () => {
             </table>
 
           </div>
-        ) : ""
+        ) : filter === "returned" ? (
+          <h3 className="text-3xl mt-5 font-medium">No returned books found!</h3>
+        ) : (
+          <h3 className="text-3xl mt-5 font-medium">No non-returned books found!</h3>
 
-      }
+        )}
 
       {/* data */}
-
-
-
-
-
-
     </main>
+
+    {readBookPopup && <ReadBookPopup book={readBook}/>}
 
   </>;
 };
