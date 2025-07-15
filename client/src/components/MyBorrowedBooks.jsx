@@ -13,7 +13,11 @@ const MyBorrowedBooks = () => {
 
   const [readBook, setReadBook] = useState({})
   const openReadPopup = (id) => {
+    // console.log(id)
+    // console.log(books)
     const book = books.find(book => book._id === id)
+    // console.log("book from my borrowed books ==>",book)
+
     setReadBook(book)
     dispatch(toggleReadBookPopup())
   }
@@ -41,6 +45,7 @@ const MyBorrowedBooks = () => {
   })
 
   const booksToDisplay = filter === "returned" ? returnedBooks : nonReturnedBooks
+  // console.log(booksToDisplay)
 
 
   return <>
@@ -101,6 +106,8 @@ const MyBorrowedBooks = () => {
                   <th className="px-4 py-2 text-left">Date & Time</th>
                   <th className="px-4 py-2 text-left">Due Date</th>
                   <th className="px-4 py-2 text-left">View</th>
+                  <th className="px-4 py-2 text-left"></th>
+
                 </tr>
               </thead>
 
@@ -113,7 +120,7 @@ const MyBorrowedBooks = () => {
                       <td className="px-4 py-2">{formatDate(book?.borrowedDate)}</td>
                       <td className="px-4 py-2">{formatDate(book?.dueDate)}</td>
                       <td className="px-4 py-2">{book?.returned ? "Yes" : "No"}</td>
-                      <td className="px-4 py-2"><BookA onClick={() => openReadPopup()} /></td>
+                      <td className="px-4 py-2"><BookA onClick={() => openReadPopup(book?.bookId)} /></td>
                     </tr>
                   ))
                 }
