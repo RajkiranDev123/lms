@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BookA, NotebookPen } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux"
 import { toggleReadBookPopup, toggleRecordBookPopup, toggleAddBookPopup } from "../store/slices/popUpSlice"
@@ -18,6 +18,9 @@ import Stack from '@mui/material/Stack';
 
 
 const BookManagement = () => {
+  //pagination place 0
+  const didMount = useRef(false);
+  //
   const dispatch = useDispatch()
   const { loading, error, message, books, pageCount } = useSelector(state => state.book)
   const { user, isAuthenticated } = useSelector(state => state.auth)
@@ -54,20 +57,33 @@ const BookManagement = () => {
 
   }, [dispatch, message, error, loading, borrowSliceError, borrowSliceLoading, borrowSliceMessage])
 
-  const [searchKeyword, setSearchKeyword] = useState("")
-  const handleSearch = (e) => {
-    setSearchKeyword(e.target.value.toLowerCase())
-  }
-  const searchedBooks = books?.filter(book => book.title.toLowerCase().includes(searchKeyword))
-
-  //
+  //pagination place 1
   const [page, setPage] = useState(1)
+  const [title, setTitle] = useState("")
+  const handleSearch = () => {
+    dispatch(fetchAllBooks(title?.toLowerCase(), 1))
+  }
+  //
+
+
+  //pagination place 2
   const changePage = (event, value) => {
     dispatch(fetchAllBooks("", value))
 
     setPage(value)
 
   }
+  //debouncing 
+  useEffect(() => {
+    let timer1
+    if (didMount.current) {
+      timer1 = setTimeout(() => {
+        handleSearch()
+      }, 2000)
+
+    } else { didMount.current = true }
+    return () => clearTimeout(timer1)
+  }, [title])
 
   return <>
     <main className="relative flex flex-col flex-1 p-6 pt-28">
@@ -93,14 +109,17 @@ const BookManagement = () => {
 
           )}
         </div>
-
-        <input
-          type="text"
-          placeholder="Search books..."
-          className="w-full sm:w-52 border-gray-300 rounded-md"
-          value={searchKeyword}
-          onChange={handleSearch}
-        />
+        <div style={{ display: "flex", gap: 2 }}>
+          <input
+            type="text"
+            placeholder="Search by name..."
+            className="w-full sm:w-52 border-gray-300 rounded-md"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <button onClick={() => { dispatch(fetchAllBooks("", 1)); setTitle(""); setPage(1) }}
+            className="bg-green-900 text-white rounded-md p-2 hover:bg-green-500">Clear</button>
+        </div>
 
       </header>
 
@@ -126,7 +145,7 @@ const BookManagement = () => {
               </thead>
               <tbody>
                 {
-                  searchedBooks?.map((book, index) => (
+                  books?.map((book, index) => (
                     <tr key={book?._id} className={(index + 1) % 2 === 0 ? "bg-gray-50" : ""}>
                       <td className="px-4 py-2 ">{index + 1 + (page - 1) * 5}</td>
                       <td className="px-4 py-2 ">{book?.title}</td>
