@@ -23,14 +23,17 @@ const App = () => {
   const { user, isAuthenticated } = useSelector(state => state.auth)
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(getUser())
-    dispatch(fetchAllBooks())
+    // if (isAuthenticated) {
+      dispatch(getUser())
+      dispatch(fetchAllBooks())
+    // }
+
 
     if (isAuthenticated && user?.role == "Admin") {
       dispatch(fetchAllUsers())
     }
 
-    
+
     if (isAuthenticated && user?.role == "User") {
       dispatch(fetchUserBorrowedBooks())
     }
