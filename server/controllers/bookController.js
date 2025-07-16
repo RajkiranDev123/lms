@@ -26,10 +26,22 @@ export const addBook = catchAsyncErrors(async (req, res, next) => {
 })
 
 export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
+    const title = req.headers.title || ""
+    const page = req.headers.page || 1
+    const ITEM_PER_PAGE = 5
     try {
-        const books = await BookModel.find()
+
+
+        //for pagination
+        const query = { title: { $regex: title, $options: "i" } }
+        const totalDocs = await BookModel.countDocuments(query)
+        const pageCount = Math.ceil(totalDocs / ITEM_PER_PAGE)//pageCount is total pages 8/4=2 pages
+        const skip = (page - 1) * ITEM_PER_PAGE
+
+        const books = await BookModel.find(query).skip(skip).limit(ITEM_PER_PAGE)
+
         res.status(200).json({
-            success: true, message: "All books fetched successfully!", books
+            success: true, message: "All books fetched successfully!", books, pagination: { pageCount }
         })
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error", 500))
