@@ -11,17 +11,22 @@ import AddBookPopup from "../popups/AddBookPopup"
 import ReadBookPopup from "../popups/ReadBookPopup"
 import RecordBookPopup from "../popups/RecordBookPopup"
 
+//pagination
+
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 
 const BookManagement = () => {
   const dispatch = useDispatch()
-  const { loading, error, message, books } = useSelector(state => state.book)
+  const { loading, error, message, books, pageCount } = useSelector(state => state.book)
   const { user, isAuthenticated } = useSelector(state => state.auth)
   const { addBookPopup, readBookPopup, recordBookPopup } = useSelector(state => state.popup)
   const { loading: borrowSliceLoading, error: borrowSliceError, message: borrowSliceMessage } = useSelector(state => state.borrow)
 
   const [readBook, setReadBook] = useState({})
   const openReadPopup = (id) => {
-    console.log(id,books)
+    console.log(id, books)
     const book = books.find(book => book._id === id)
     setReadBook(book)
     dispatch(toggleReadBookPopup())
@@ -54,6 +59,15 @@ const BookManagement = () => {
     setSearchKeyword(e.target.value.toLowerCase())
   }
   const searchedBooks = books?.filter(book => book.title.toLowerCase().includes(searchKeyword))
+
+  //
+  const [page, setPage] = useState(1)
+  const changePage = (event, value) => {
+    dispatch(fetchAllBooks("", value))
+
+    setPage(value)
+
+  }
 
   return <>
     <main className="relative flex flex-col flex-1 p-6 pt-28">
@@ -114,7 +128,7 @@ const BookManagement = () => {
                 {
                   searchedBooks?.map((book, index) => (
                     <tr key={book?._id} className={(index + 1) % 2 === 0 ? "bg-gray-50" : ""}>
-                      <td className="px-4 py-2 ">{index + 1}</td>
+                      <td className="px-4 py-2 ">{index + 1 + (page - 1) * 5}</td>
                       <td className="px-4 py-2 ">{book?.title}</td>
                       <td className="px-4 py-2 ">{book?.author}</td>
                       {isAuthenticated && user?.role === "Admin" && (
@@ -134,6 +148,12 @@ const BookManagement = () => {
                 }
               </tbody>
             </table>
+            <div className="flex justify-center p-3">
+              <Stack spacing={2}>
+                <Pagination color="primary" onChange={changePage} page={page} count={pageCount} />
+              </Stack>
+            </div>
+
 
           </div>
         ) : (
@@ -149,7 +169,7 @@ const BookManagement = () => {
     </main>
 
     {addBookPopup && <AddBookPopup />}
-    {readBookPopup && <ReadBookPopup book={readBook}/>}
+    {readBookPopup && <ReadBookPopup book={readBook} />}
     {recordBookPopup && <RecordBookPopup bookId={borrowBookId} />}
 
 

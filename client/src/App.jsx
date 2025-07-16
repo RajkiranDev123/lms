@@ -13,7 +13,7 @@ import { useEffect } from "react"
 import { getUser } from "./store/slices/authSlice"
 import { fetchAllUsers } from "./store/slices/userSlice"
 import { fetchAllBooks } from "./store/slices/bookSlice"
-import { fetchUserBorrowedBooks } from "./store/slices/borrowSlice"
+import { fetchUserBorrowedBooks, fetchAllBorrowedBooks } from "./store/slices/borrowSlice"
 
 
 
@@ -24,13 +24,14 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     // if (isAuthenticated) {
-      dispatch(getUser())
-      dispatch(fetchAllBooks())
+    dispatch(getUser())
+    dispatch(fetchAllBooks())
     // }
 
 
     if (isAuthenticated && user?.role == "Admin") {
       dispatch(fetchAllUsers())
+      dispatch(fetchAllBorrowedBooks())
     }
 
 

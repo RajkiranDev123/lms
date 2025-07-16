@@ -104,7 +104,7 @@ export const fetchAllBorrowedBooks = () => async (dispatch) => {
     await axios
         .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/borrowed-books-by-users`)
         .then(res => {
-            dispatch(borrowSlice.actions.fetchAllBorrowedBooksSuccess(res?.data?.borrowedBooks))
+            dispatch(borrowSlice.actions.fetchAllBorrowedBooksSuccess(res?.data?.allBorrowedBooks))
         })
         .catch(err => {
             dispatch(borrowSlice.actions.fetchAllBorrowedBooksFailed(err?.response?.data?.message))

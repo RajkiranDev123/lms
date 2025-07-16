@@ -10,7 +10,8 @@ const bookSlice = createSlice({
         error: null,
         message: null,
 
-        books: []
+        books: [],
+        pageCount: null
     },
     reducers: {
         fetchBooksRequest(state) {
@@ -27,6 +28,10 @@ const bookSlice = createSlice({
             state.loading = false
             state.error = action.payload
             state.message = null
+        },
+        setPageCount(state, action) {
+            state.pageCount = action.payload
+
         },
         //////////////////////////////////////
         addBookRequest(state) {
@@ -53,12 +58,21 @@ const bookSlice = createSlice({
     }
 })
 
-export const fetchAllBooks = () => async (dispatch) => {
+export const fetchAllBooks = (title, page) => async (dispatch) => {
     dispatch(bookSlice.actions.fetchBooksRequest())
     await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/book/all`)
+        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/book/all`, {
+            headers: {
+                "Content-Type": "application/json",
+                "page": page,
+                "title": title
+            }
+
+        })
         .then(res => {
             dispatch(bookSlice.actions.fetchBooksSuccess(res?.data?.books))
+            dispatch(bookSlice.actions.setPageCount(res?.data?.pagination?.pageCount))
+
         })
         .catch(err => {
             dispatch(bookSlice.actions.fetchBooksFailed(err?.response?.data?.message))
