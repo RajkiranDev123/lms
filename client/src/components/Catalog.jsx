@@ -47,14 +47,14 @@ const Catalog = () => {
   useEffect(() => {
     if (message) {
       toast.success(message)
-      dispatch(fetchAllBooks)
-      dispatch(fetchAllBorrowedBooks)
-      dispatch(resetBookSlice)
-      dispatch(resetBorrowSlice)
+      dispatch(fetchAllBooks())
+      dispatch(fetchAllBorrowedBooks())
+      dispatch(resetBookSlice())
+      dispatch(resetBorrowSlice())
     }
     if (error) {
       toast.error(error)
-      dispatch(resetBorrowSlice)
+      dispatch(resetBorrowSlice())
     }
 
   }, [dispatch, error, loading,message])
