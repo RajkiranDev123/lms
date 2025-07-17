@@ -37,6 +37,7 @@ const Catalog = () => {
   const booksToDisplay = filter === "borrowed" ? borrowedBooks : overdueBooks //do setFilter(".....") to change
   const [email, setEmail] = useState("")
   const [borrowedBookId, setBorrowedBookId] = useState("")
+
   const openReturnBookPopup = (bookId, email) => {
     setBorrowedBookId(bookId)
     setEmail(email)
@@ -56,7 +57,7 @@ const Catalog = () => {
       dispatch(resetBorrowSlice)
     }
 
-  }, [dispatch, error, loading])
+  }, [dispatch, error, loading,message])
 
   return <>
     <main className="relative flex-1 p-6 pt-28">
@@ -132,7 +133,7 @@ const Catalog = () => {
                             <FaSquareCheck className="w-6 h-6" />
                           ) : (
                             <PiKeyReturnBold className="w-6 h-6"
-                              onClick={() => openReturnBookPopup(book?._id, book?.user?.email)} />
+                              onClick={() => openReturnBookPopup(book?.book, book?.user?.email)} />
                           )
                         }
 
