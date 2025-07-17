@@ -28,9 +28,10 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
 
         // bookId : borrow info
-        
+
         const isAlreadyBorrowed = user.borrowedBooks.find(
             b => b.bookId.toString() == id && b.returned == false // checked also whether borrowed book is returned!
+            // false : then cant give same book more than once to a guy
         )
 
         if (isAlreadyBorrowed) return next(new ErrorHandler("Book already borrowed!", 400))
@@ -77,7 +78,6 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
     const { bookId } = req.params // book id
     const { email } = req.body // email of user that wants to borrow
 
-
     try {
         // find the book by id of the book
         const book = await BookModel.findById(bookId)
@@ -91,13 +91,13 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         // do next when (user and id of book) is present :
         if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
 
-        // bookId is borrow info
-
+        //
         const borrowedBook = user.borrowedBooks.find(
             b => b.bookId.toString() == bookId && b.returned == false // checked also whether borrowed book is returned!
         )
+        // !null is true
+        if (!borrowedBook) return next(new ErrorHandler("Book not borrowed!", 400))//cant return when book is not borrowed!
 
-        if (!borrowedBook) return next(new ErrorHandler("Book not borrowed!", 400))
         borrowedBook.returned = true
         await user.save() // now from user side the book is returned!
 
@@ -106,7 +106,7 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         book.availability = book.quantity > 0
         await book.save() //book is also done!
 
-        // now update borrow model
+        // now lastly update borrow model
 
         const borrow = await BorrowModel.findOne({
             book: bookId, "user.email": email, returnedDate: null
@@ -131,7 +131,7 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
     }
 })
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////get borrowedBooks of user//////////////////////////////////////////////////
 
 export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
 
