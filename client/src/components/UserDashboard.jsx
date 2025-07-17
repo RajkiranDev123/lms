@@ -64,7 +64,7 @@ const UserDashboard = () => {
               </div>
 
               {/*  */}
-             <div className="flex items-center gap-3 bg-white p-1 min-h-[60px] overflow-y-hidden rounded-lg 
+              <div className="flex items-center gap-3 bg-white p-1 min-h-[60px] overflow-y-hidden rounded-lg 
               transition hover:shadow-inner duration-300">
                 <span className="w-[2px] bg-black h-5 lg:h-full"></span>
                 <span className="bg-gray-300 h-8 lg:h-full min-w-20 flex justify-center items-center rounded-lg">
