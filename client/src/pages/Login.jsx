@@ -96,6 +96,7 @@ const Login = () => {
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>
             </p>
+            <br/>
             {/*  */}
 
             <div className="mb-4">
