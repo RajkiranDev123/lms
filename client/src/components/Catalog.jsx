@@ -57,7 +57,7 @@ const Catalog = () => {
       dispatch(resetBorrowSlice())
     }
 
-  }, [dispatch, error, loading,message])
+  }, [dispatch, error, loading])
 
   return <>
     <main className="relative flex-1 p-6 pt-28">
