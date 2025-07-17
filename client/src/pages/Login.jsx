@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import logo from "../assets/black-logo.png";
 import logo_with_title from "../assets/logo-with-title.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,8 @@ const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [togglePassword, setTogglePassword] = useState(false)
+
+  const inputRef = useRef(null)
 
   const dispatch = useDispatch()//useDispatch  returns a reference of dispatch function from the redux store
   //dispatch acts as a messenger, delivering instructions (actions) to the state manager (reducer) to update 
@@ -36,6 +38,8 @@ const Login = () => {
 
   }
   useEffect(() => {
+
+    inputRef?.current?.focus()
     // if (message) {
     //   toast.success(message)
     //   dispatch(resetAuthSlice())
@@ -95,7 +99,7 @@ const Login = () => {
             {/*  */}
 
             <div className="mb-4">
-              <input className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
+              <input ref={inputRef} className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
                 type="text" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
             </div>
 
