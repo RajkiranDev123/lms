@@ -40,7 +40,7 @@ const Header = () => {
         <div className="flex flex-col">
 
           <span className="text-sm font-medium sm:text-lg lg:text-xl sm:font-semibold">
-            {user && user.name}
+           hi, {user && user.name?.[0]?.toUpperCase()+user.name?.slice(1)}
           </span>
 
           <span className="text-sm font-medium sm:text-lg sm:font-semibold">
