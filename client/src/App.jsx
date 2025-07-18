@@ -49,7 +49,7 @@ const App = () => {
         <Route path="/otp-verification/:email" element={<OTP />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
       </Routes>
-      <ToastContainer theme="dark" />
+      <ToastContainer theme="dark" autoClose={1000} />
     </Router>
   );
 };
