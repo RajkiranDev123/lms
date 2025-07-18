@@ -105,8 +105,8 @@ const MyBorrowedBooks = () => {
                   <th className="px-4 py-2 text-left">Book Title</th>
                   <th className="px-4 py-2 text-left">Date & Time</th>
                   <th className="px-4 py-2 text-left">Due Date</th>
+                  <th className="px-4 py-2 text-left">Returned?</th>
                   <th className="px-4 py-2 text-left">View</th>
-                  <th className="px-4 py-2 text-left"></th>
 
                 </tr>
               </thead>
@@ -119,7 +119,7 @@ const MyBorrowedBooks = () => {
                       <td className="px-4 py-2">{book?.bookTitle}</td>
                       <td className="px-4 py-2">{formatDate(book?.borrowedDate)}</td>
                       <td className="px-4 py-2">{formatDate(book?.dueDate)}</td>
-                      <td className="px-4 py-2">{book?.returned ? "Yes" : "No"}</td>
+                      <td className="px-4 py-2 text-center">{book?.returned ? <span className="text-green-600">Yes</span>: <span className="text-red-600">No</span>}</td>
                       <td className="px-4 py-2"><BookA onClick={() => openReadPopup(book?.bookId)} /></td>
                     </tr>
                   ))

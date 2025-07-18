@@ -66,7 +66,7 @@ const Register = () => {
             <p className="text-center font-mono">Welcome to LMS</p>
 
           </div>
-          <p className="text-gray-300 mb-12">Already have Account? Sign in now!</p>
+          <p className="text-gray-300 mb-12">Already have an Account? Sign in now!</p>
           <Link className="border-2 rounded-lg font-semibold border-white py-2 px-8 hover:bg-white hover:text-black transition"
             to={"/login"}>Sign In</Link>
         </div>
@@ -90,7 +90,7 @@ const Register = () => {
 
           </div>
 
-          <p className="text-center text-gray-800 mb-12">Please Provide Your Info to Sign Up</p>
+          <p className="text-center text-gray-800 mb-12">Please Provide Your Info to Sign Up!</p>
           <form onSubmit={handleRegister}>
 
             <div className="mb-2">

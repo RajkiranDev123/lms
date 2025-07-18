@@ -35,16 +35,16 @@ const Header = () => {
     <header className="absolute top-0 bg-white w-full py-4 px-6 left-0 shadow-md flex justify-between items-center">
       {/* left side */}
       <div className="flex items-center gap-2">
-        <img src={userIcon} alt="userIcon" className="w-6 h-8" />
+        <img src={userIcon} alt="userIcon" className="w-4 h-4" />
 
         <div className="flex flex-col">
 
           <span className="text-sm font-medium sm:text-lg lg:text-xl sm:font-semibold">
-           hi, {user && user.name?.[0]?.toUpperCase()+user.name?.slice(1)}
+           hi, {user && user?.name?.[0]?.toUpperCase()+user?.name?.slice(1)}
           </span>
 
           <span className="text-sm font-medium sm:text-lg sm:font-semibold">
-            {user && user.role}
+          <span className="text-red-700">Role :</span>  {user && user?.role} | Email : <span className="text-blue-800 italic">{user && user?.email}</span>
           </span>
 
         </div>

@@ -11,7 +11,8 @@ const bookSlice = createSlice({
         message: null,
 
         books: [],
-        pageCount: null
+        pageCount: null,
+        booksCount: null
     },
     reducers: {
         fetchBooksRequest(state) {
@@ -29,9 +30,11 @@ const bookSlice = createSlice({
             state.error = action.payload
             state.message = null
         },
-        setPageCount(state, action) {
+        setPagesCount(state, action) {
             state.pageCount = action.payload
-
+        },
+        setBooksCount(state, action) {
+            state.booksCount = action.payload
         },
         //////////////////////////////////////
         addBookRequest(state) {
@@ -71,8 +74,8 @@ export const fetchAllBooks = (title, page) => async (dispatch) => {
         })
         .then(res => {
             dispatch(bookSlice.actions.fetchBooksSuccess(res?.data?.books))
-            dispatch(bookSlice.actions.setPageCount(res?.data?.pagination?.pageCount))
-
+            dispatch(bookSlice.actions.setPagesCount(res?.data?.pagination?.pageCount))
+            dispatch(bookSlice.actions.setBooksCount(res?.data?.pagination?.totalBooks))
         })
         .catch(err => {
             dispatch(bookSlice.actions.fetchBooksFailed(err?.response?.data?.message))

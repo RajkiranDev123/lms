@@ -6,6 +6,7 @@ import logo_with_title from "../assets/logo-with-title-black.svg";
 import returnIcon from "../assets/redo.png";
 import browseIcon from "../assets/pointing.png";
 import bookIcon from "../assets/book-square.png";
+import { Link } from "react-router-dom"
 
 import { Pie } from "react-chartjs-2";
 
@@ -18,6 +19,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 
 const UserDashboard = () => {
   const { settingPopup } = useSelector(state => state.popup)
+  const { booksCount } = useSelector(state => state.book)
+
   const { userBorrowedBooks } = useSelector(state => state.borrow)
   const [totalBorrowedBooks, setTotalBorrowedBooks] = useState(0)
   const [totalReturnedBooks, setTotalReturnedBooks] = useState(0)
@@ -37,7 +40,7 @@ const UserDashboard = () => {
     datasets: [
       {
         data: [totalBorrowedBooks, totalReturnedBooks],
-        backgroundColor: ["#3D3E3E", "#151619"],
+        backgroundColor: ["red", "green"],
         hoverOffset: 4
       }
     ]
@@ -60,7 +63,7 @@ const UserDashboard = () => {
                 <span className="bg-gray-300 h-8 lg:h-full min-w-20 flex justify-center items-center rounded-lg">
                   <img src={bookIcon} alt="book" className="w-5 h-5" />
                 </span>
-                <p>Your Borrowed Book List</p>
+                <p>Your Borrowed Books : <span className="font-semibold">{totalBorrowedBooks}</span> </p>
               </div>
 
               {/*  */}
@@ -70,7 +73,7 @@ const UserDashboard = () => {
                 <span className="bg-gray-300 h-8 lg:h-full min-w-20 flex justify-center items-center rounded-lg">
                   <img src={returnIcon} alt="book" className="w-5 h-5" />
                 </span>
-                <p>Your Returned Book List</p>
+                <p>Your Returned Books : <span className="font-semibold">{totalReturnedBooks}</span>  </p>
               </div>
 
             </div>
@@ -81,11 +84,11 @@ const UserDashboard = () => {
               transition hover:shadow-inner duration-300">
                 <span className="w-[2px] bg-black h-20 lg:h-full"></span>
                 <span className="bg-gray-300 h-20 lg:h-full min-w-20 flex justify-center items-center rounded-lg">
-                  <img src={browseIcon} alt="book" className="w-8 h-8" />
+                  {/* <img src={browseIcon} alt="book" className="w-8 h-8" /> */}⌸
                 </span>
-                <p>Let's browse books inventory</p>
+                <p> Total books in our inventory : <span className="font-semibold">{booksCount}</span> </p>
               </div>
-              <img style={{height:"100px"}} src={logo_with_title} alt="logo" className="hidden lg:block width-auto justify-end" />
+              <img style={{ height: "100px" }} src={logo_with_title} alt="logo" className="hidden lg:block width-auto justify-end" />
             </div>
 
           </div>
@@ -119,11 +122,11 @@ const UserDashboard = () => {
 
             <div className="flex flex-col gap-5">
               <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[#3D3E3E]"></span>
+                <span className="w-3 h-3 rounded-full bg-[red]"></span>
                 <span>Total Borrowed Books</span>
               </p>
               <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[#151619]"></span>
+                <span className="w-3 h-3 rounded-full bg-[green]"></span>
                 <span>Total Returned Books</span>
               </p>
             </div>

@@ -14,6 +14,7 @@ import { getUser } from "./store/slices/authSlice"
 import { fetchAllUsers } from "./store/slices/userSlice"
 import { fetchAllBooks } from "./store/slices/bookSlice"
 import { fetchUserBorrowedBooks, fetchAllBorrowedBooks } from "./store/slices/borrowSlice"
+import BookManagement from "./components/BookManagement"
 
 
 
@@ -48,6 +49,8 @@ const App = () => {
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/otp-verification/:email" element={<OTP />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
+        <Route path="/books" element={<BookManagement />} />
+
       </Routes>
       <ToastContainer theme="dark" autoClose={1000} />
     </Router>

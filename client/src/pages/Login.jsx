@@ -149,7 +149,7 @@ const Login = () => {
             <p className="text-center font-mono">Welcome to LMS</p>
 
           </div>
-          <p className="text-gray-300 mb-12">New to our platform ? Sign up now.</p>
+          <p className="text-gray-300 mb-12">New to our platform ? Sign Up now!</p>
           <Link
             className="border-2 mt-5 border-white px-8 w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
