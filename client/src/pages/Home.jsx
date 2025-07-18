@@ -23,7 +23,7 @@ const Home = () => {
   const { user, isAuthenticated } = useSelector(state => state.auth)
 
   if (!isAuthenticated) {
-    console.log("home is called!")
+    console.log("home is called : if (!isAuthenticated)!")
 
     return <Navigate to={"/login"} />
   }

@@ -62,6 +62,7 @@ const bookSlice = createSlice({
 })
 
 export const fetchAllBooks = (title, page) => async (dispatch) => {
+    console.log("fetchAllBooks called!")
     dispatch(bookSlice.actions.fetchBooksRequest())
     await axios
         .get(`${import.meta.env.VITE_BASE_URL}/api/v1/book/all`, {

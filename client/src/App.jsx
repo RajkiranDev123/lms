@@ -19,15 +19,16 @@ import BookManagement from "./components/BookManagement"
 
 
 const App = () => {
-  console.log("App component is called!")
   //////// user is available after login success!
   const { user, isAuthenticated } = useSelector(state => state.auth)
+  console.log("App component is called!")
+
   const dispatch = useDispatch()
   useEffect(() => {
-    // if (isAuthenticated) {
+
     dispatch(getUser())
     dispatch(fetchAllBooks())
-    // }
+
 
 
     if (isAuthenticated && user?.role == "Admin") {

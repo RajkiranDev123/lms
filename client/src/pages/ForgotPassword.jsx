@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "../assets/black-logo.svg";
-import logo_with_title from "../assets/logo-with-title.png";
+import logo_with_title from "../assets/logo-with-title-black.svg";
+
 import { useDispatch, useSelector } from "react-redux"
 import { forgotPassword, resetAuthSlice } from "../store/slices/authSlice"
 import { Link, Navigate } from "react-router-dom"
@@ -31,7 +32,7 @@ const ForgotPassword = () => {
     <div className="flex flex-col justify-center md:flex-row h-screen">
 
       {/* left side */}
-      <div className="hidden w-full md:w-1/2 bg-black text-white md:flex 
+      <div className="hidden w-full md:w-1/2 bg-gradient-to-r from-indigo-950 to-purple-900 text-white md:flex 
       flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
         <div className="text-center h-[450px] ">
           <div className="flex justify-center mb-12">
@@ -49,7 +50,7 @@ const ForgotPassword = () => {
       <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8 relative">
 
         <Link to={"/login"}
-          className="border-2 border-black rounded-3xl font-bold w-52 py-2 px-4 fixed top-10 -left-20
+          className="border-2 text-white border-white rounded-3xl font-bold w-52 py-2 px-4 fixed top-10 -left-20
            hover:bg-black hover:text-white transition duration-300 text-end">
           Back
         </Link>

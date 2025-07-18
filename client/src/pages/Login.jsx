@@ -75,12 +75,12 @@ const Login = () => {
             {/*  */}
             <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Email :
               <CopyToClipboard text="rajkir783@gmail.com">
-                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
               </CopyToClipboard>
             </p>
             <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Password :
               <CopyToClipboard text="12345678">
-                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
               </CopyToClipboard>
             </p>
             {/*  */}
@@ -89,12 +89,12 @@ const Login = () => {
             {/*  */}
             <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Email :
               <CopyToClipboard text="rk7889666@gmail.com">
-                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
               </CopyToClipboard>
             </p>
             <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Password :
               <CopyToClipboard text="12345678">
-                <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
+                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
               </CopyToClipboard>
             </p>
             <br />
