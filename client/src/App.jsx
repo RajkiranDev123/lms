@@ -27,18 +27,19 @@ const App = () => {
   useEffect(() => {
     console.log("useEffect of App.jsx is called!")
     dispatch(getUser())
-    dispatch(fetchAllBooks())
-
-
 
     if (isAuthenticated && user?.role == "Admin") {
       dispatch(fetchAllUsers())
       dispatch(fetchAllBorrowedBooks())
+      dispatch(fetchAllBooks())
+
     }
 
 
     if (isAuthenticated && user?.role == "User") {
       dispatch(fetchUserBorrowedBooks())
+      dispatch(fetchAllBooks())
+
     }
   }, [isAuthenticated])
   return (
