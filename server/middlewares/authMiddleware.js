@@ -10,9 +10,6 @@ export const isAuthenticated = catchAsyncErrors(
         // console.log("cookie ==>", req.cookies)
         // const { token } = req.cookies
         // if (!token) return next(new ErrorHandler("User is not authenticated!", 401))
-
-
-
         const authHeader = req.headers.authorization;
 
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
