@@ -9,8 +9,8 @@ export function generateVerificationOtpEmailTemplate(verificationCode) {
 
 export function generateForgotpasswordEmailTemplate(url,resetToken) {
     return `
-    <span>Reset password url for lms is  : <a href=${url}>Click here to go to reset password!</a> </span>
-    <p>Copy : ${resetToken}</p>
+   
+    <p>Copy the Reset Token : ${resetToken}</p>
     
     `
 }
