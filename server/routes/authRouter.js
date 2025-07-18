@@ -15,11 +15,4 @@ router.put("/password-reset/:token", resetPassword)
 // update password from ui
 router.put("/password/update",isAuthenticated, updatePassword)
 
-
-
-
-
-
-
-
 export default router
