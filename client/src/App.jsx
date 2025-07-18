@@ -25,7 +25,7 @@ const App = () => {
 
   const dispatch = useDispatch()
   useEffect(() => {
-
+    console.log("useEffect of App.jsx is called!")
     dispatch(getUser())
     dispatch(fetchAllBooks())
 
@@ -49,11 +49,11 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/otp-verification/:email" element={<OTP />} />
-        <Route path="/password/reset/:token" element={<ResetPassword />} />
+        <Route path="/password/reset" element={<ResetPassword />} />
         <Route path="/books" element={<BookManagement />} />
 
       </Routes>
-      <ToastContainer theme="dark" autoClose={1000} />
+      <ToastContainer theme="dark" autoClose={3000} />
     </Router>
   );
 };

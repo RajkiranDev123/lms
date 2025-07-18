@@ -117,7 +117,7 @@ const authSlice = createSlice({
         },
         forgotPasswordSuccess(state, action) {
             state.loading = false
-            state.message = action.payload.message
+            state.message = action.payload
         },
         forgotPasswordFailed(state, action) {
             state.loading = false
@@ -132,9 +132,9 @@ const authSlice = createSlice({
         //automatically login will be true when : resetPasswordSuccess
         resetPasswordSuccess(state, action) {
             state.loading = false
-            state.message = action.payload.message
-            state.user = action.payload.user
-            state.isAuthenticated = true
+            state.message = action.payload
+            // state.user = action.payload.user
+            // state.isAuthenticated = true
         },
         resetPasswordFailed(state, action) {
             state.loading = false
@@ -255,6 +255,7 @@ export const forgotPassword = (email) => async (dispatch) => {
             "Content-Type": "application/json"
         }
     }).then(res => {
+        // console.log(88,res.data.message)
         dispatch(authSlice.actions.forgotPasswordSuccess(res?.data?.message))
     }).catch(error => {
         dispatch(authSlice.actions.forgotPasswordFailed(error?.response?.data?.message))

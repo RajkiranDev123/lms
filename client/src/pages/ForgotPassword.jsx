@@ -4,30 +4,33 @@ import logo_with_title from "../assets/logo-with-title-black.svg";
 
 import { useDispatch, useSelector } from "react-redux"
 import { forgotPassword, resetAuthSlice } from "../store/slices/authSlice"
-import { Link, Navigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import "../components/loader.css"
 const ForgotPassword = () => {
   const [email, setEmail] = useState("")
   const dispatch = useDispatch()
-  const { loading, error, message, user, isAuthenticated } = useSelector(state => state.auth)
+  const navigate = useNavigate()
+
+  const { loading, error, message } = useSelector(state => state.auth)
   const handleforgotpassword = (e) => {
     e.preventDefault()
     dispatch(forgotPassword(email))
   }
   useEffect(() => {
+
     if (message) {
       toast.success(message)
       dispatch(resetAuthSlice())
+      navigate("/password/reset")
     }
     if (error) {
       toast.error(error)
       dispatch(resetAuthSlice())
     }
 
-  }, [dispatch, isAuthenticated, error, loading])
-  if (isAuthenticated) {
-    return <Navigate to={"/"} />
-  }
+  }, [error, loading])
+
   return <>
     <div className="flex flex-col justify-center md:flex-row h-screen">
 
@@ -39,9 +42,9 @@ const ForgotPassword = () => {
             <img src={logo_with_title} alt="logo" className="mb-12 h-44 w-auto" />
           </div>
           <h3
-            className="text-gray-300 mb-12 max-w-[320px] mx-auto text-3xl font-medium leading-10"
+            className="text-gray-300 mb-12 max-w-[320px] mx-auto text-sm font-medium leading-10"
           >
-            Your digital library for borrowing & reading Books !
+            A token for resetting your password will be sent to your email after you provide your email !
           </h3>
         </div>
       </div>
@@ -83,7 +86,10 @@ const ForgotPassword = () => {
             <button disabled={loading ? true : false}
               className="border-2 mt-5 border-black w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
-              type="submit">Reset Password</button>
+              type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Send Token"}
+
+            </button>
 
           </form>
         </div>

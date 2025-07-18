@@ -8,41 +8,51 @@ import { toast } from "react-toastify"
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("")
+  const [token, setToken] = useState("")
+
   const [confirmPassword, setConfirmPassword] = useState("")
-  const { token } = useParams()
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { loading, error, user, message, isAuthenticated } = useSelector(state => state.auth)
+  const { loading, message, error } = useSelector(state => state.auth)
 
   const handleResetPassword = (e) => {
     e.preventDefault()
+
+    if (!token) {
+      toast.error("Token is missing!")
+      return
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Password and Confirm Password should match!")
+      return
+    }
     const formData = new FormData()
     formData.append("password", password)
     formData.append("confirmPassword", confirmPassword)
-    dispatch(resetPassword(formData, token))
+    dispatch(resetPassword(formData, token?.trim()))
   }
   useEffect(() => {
     if (message) {
       toast.success(message)
       dispatch(resetAuthSlice())
 
-      navigate(`/otp-verification/${email}`)
+      navigate(`/login`)
     }
     if (error) {
       toast.error(error)
       dispatch(resetAuthSlice())
     }
 
-  }, [message, dispatch, isAuthenticated, error, loading])
+  }, [error, loading])
 
-  if (isAuthenticated) {
-    return <Navigate to={"/"} />
-  }
+
 
   return <>
     <div className="flex flex-col justify-center md:flex-row h-screen">
       {/* left */}
-      <div className="hidden w-full md:w-1/2 bg-black text-white md:flex 
+      <div className="hidden w-full md:w-1/2 bg-gradient-to-r from-indigo-950 to-purple-900 text-white md:flex 
       flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
         <div className="text-center h-[450px] ">
           <div className="flex justify-center mb-12">
@@ -51,7 +61,7 @@ const ResetPassword = () => {
           <h3
             className="text-gray-300 mb-12 max-w-[320px] mx-auto text-3xl font-medium leading-10"
           >
-            Your digital library for borrowing & reading Books !
+            Finally now you can reset your password here!
           </h3>
         </div>
 
@@ -64,7 +74,7 @@ const ResetPassword = () => {
 
         <Link to={"/password/forgot"}
           className="border-2 border-black rounded-3xl font-bold w-52 py-2 px-4 fixed top-10 -left-20
-           hover:bg-black hover:text-white transition duration-300 text-end">
+           hover:bg-black text-white hover:text-white transition duration-300 text-end">
           Back
         </Link>
 
@@ -83,7 +93,17 @@ const ResetPassword = () => {
           </p>
           <form onSubmit={handleResetPassword}>
             <div className="mb-4">
-              <input type="text"
+              <input type="password"
+
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                placeholder="Paste your token here..."
+                className="w-full px-4 py-3 border-black rounded-md focus:outline-none"
+
+              />
+            </div>
+            <div className="mb-4">
+              <input type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,7 +114,7 @@ const ResetPassword = () => {
             </div>
 
             <div className="mb-4">
-              <input type="text"
+              <input type="password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -104,10 +124,13 @@ const ResetPassword = () => {
               />
             </div>
 
-            <button disabled={loading ? true : false}
+            <button
               className="border-2 mt-5 border-black w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
-              type="submit">Reset Password</button>
+              type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Reset"}
+
+            </button>
 
           </form>
         </div>
