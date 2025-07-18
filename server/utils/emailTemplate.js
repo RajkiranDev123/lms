@@ -1,7 +1,7 @@
 
 export function generateVerificationOtpEmailTemplate(verificationCode) {
     return `
-    <span>Your verification code for lms is : ${verificationCode}</span>
+    <span>LMS : Your OTP  for Account Creation is : ${verificationCode}</span>
     
     `
 }
