@@ -41,7 +41,7 @@ export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
         const books = await BookModel.find(query).skip(skip).limit(ITEM_PER_PAGE)
 
         res.status(200).json({
-            success: true, message: "All books fetched successfully!", books, pagination: { pageCount }
+            success: true, message: "All books fetched successfully!", books, pagination: { pageCount, totalBooks: totalDocs }
         })
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error", 500))
