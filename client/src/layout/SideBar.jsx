@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import logo_with_title from "../assets/logo-with-title.png";
+import logo_with_title from "../assets/logo-with-title-black.svg";
+
 import logoutIcon from "../assets/logout.png";
 import closeIcon from "../assets/white-close-icon.png";
 import dashboardIcon from "../assets/element.png";
@@ -30,7 +31,7 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
   const { loading, error, message, isAuthenticated, user } = useSelector((state) => state.auth);
 
   const handleLogout = async () => {
-     dispatch(logout());
+    dispatch(logout());
   };
 
   useEffect(() => {
@@ -48,13 +49,14 @@ const SideBar = ({ isSideBarOpen, setIsSideBarOpen, setSelectedComponent }) => {
     <>
 
       <aside className={`${isSideBarOpen ? "left-0" : "-left-full"} 
-        z-10 transition-all duration-700 md:relative md:left-0 flex w-64 bg-gray-800 text-white flex-col h-full`}
+        z-10 transition-all duration-700 md:relative md:left-0 flex w-64 bg-gradient-to-r from-indigo-950 to-purple-900 text-white flex-col h-full`}
         style={{ position: "fixed" }}
       >
 
         {/* logo */}
-        <div className="px-6 py-4 my-8">
-          <img src={logo_with_title} alt="logo" />
+        <div className="flex flex-col justify-center px-6 my-8 py-4">
+          <img style={{ height: "100px" }} src={logo_with_title} alt="logo" />
+          <p className="text-center font-mono">Welcome to LMS</p>
         </div>
         {/* logo ends */}
 

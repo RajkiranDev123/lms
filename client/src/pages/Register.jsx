@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import logo from "../assets/black-logo.png";
-import logo_with_title from "../assets/logo-with-title.png";
+import logo from "../assets/black-logo.svg";
+import logo_with_title from "../assets/logo-with-title-black.svg";
+
 import { useDispatch, useSelector } from "react-redux"
 import { Link, Navigate, useNavigate } from "react-router-dom"
 import { register, resetAuthSlice } from "../store/slices/authSlice"
@@ -57,11 +58,13 @@ const Register = () => {
 
     <div className="flex flex-col  md:flex-row h-screen">
       {/* left side */}
-      <div className="hidden w-full md:w-1/2 bg-black text-white md:flex flex-col 
+      <div className="hidden w-full md:w-1/2 bg-gradient-to-r from-indigo-950 to-purple-900 text-white md:flex flex-col 
       items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px] ">
         <div className="text-center h-[376px]">
-          <div className="flex justify-center mb-12">
+          <div className="flex flex-col justify-center">
             <img src={logo_with_title} alt="logo" className="mb-12 h-44 w-auto" />
+            <p className="text-center font-mono">Welcome to LMS</p>
+
           </div>
           <p className="text-gray-300 mb-12">Already have Account? Sign in now!</p>
           <Link className="border-2 rounded-lg font-semibold border-white py-2 px-8 hover:bg-white hover:text-black transition"

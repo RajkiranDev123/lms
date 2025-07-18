@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import logo from "../assets/black-logo.png";
-import logo_with_title from "../assets/logo-with-title.png";
+import logo from "../assets/black-logo.svg";
+import logo_with_title from "../assets/logo-with-title-black.svg";
+
 import { useDispatch, useSelector } from "react-redux";
 import { login, resetAuthSlice } from "../store/slices/authSlice";
 import { Link, Navigate } from "react-router-dom"
@@ -96,7 +97,7 @@ const Login = () => {
                 <span style={{ cursor: "pointer", color: "grey", display: "flex", alignItems: "center" }}> Copy 🗍</span>
               </CopyToClipboard>
             </p>
-            <br/>
+            <br />
             {/*  */}
 
             <div className="mb-4">
@@ -141,10 +142,12 @@ const Login = () => {
 
       {/* right side */}
       <div
-        className="hidden w-full md:1/2 bg-black text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px] ">
+        className="hidden w-full md:1/2 bg-gradient-to-r from-indigo-950 to-purple-900 text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px] ">
         <div className="text-center h-[400px]">
-          <div className="flex justify-center mb-12">
+          <div className="mb-12 flex flex-col justify-center">
             <img src={logo_with_title} alt="logo" className="w-auto mb-12 h-44" />
+            <p className="text-center font-mono">Welcome to LMS</p>
+
           </div>
           <p className="text-gray-300 mb-12">New to our platform ? Sign up now.</p>
           <Link

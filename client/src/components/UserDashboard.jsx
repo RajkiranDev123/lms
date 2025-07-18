@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import Header from "../layout/Header"
 
-import logo_with_title from "../assets/logo-with-title-black.png";
+import logo_with_title from "../assets/logo-with-title-black.svg";
 import returnIcon from "../assets/redo.png";
 import browseIcon from "../assets/pointing.png";
 import bookIcon from "../assets/book-square.png";
@@ -12,7 +12,7 @@ import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement
 } from "chart.js";
-import logo from "../assets/black-logo.png";
+import logo from "../assets/black-logo.svg";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement);
 
@@ -85,7 +85,7 @@ const UserDashboard = () => {
                 </span>
                 <p>Let's browse books inventory</p>
               </div>
-              <img src={logo_with_title} alt="logo" className="hidden lg:block width-auto justify-end" />
+              <img style={{height:"100px"}} src={logo_with_title} alt="logo" className="hidden lg:block width-auto justify-end" />
             </div>
 
           </div>

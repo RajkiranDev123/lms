@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../assets/black-logo.png";
+import logo from "../assets/black-logo.svg";
 import logo_with_title from "../assets/logo-with-title.png";
 import { useParams, useNavigate, Navigate, Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"

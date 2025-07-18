@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import logo from "../assets/black-logo.png";
+import logo from "../assets/black-logo.svg";
 import logo_with_title from "../assets/logo-with-title.png";
 import { useDispatch, useSelector } from "react-redux"
 import { forgotPassword, resetAuthSlice } from "../store/slices/authSlice"

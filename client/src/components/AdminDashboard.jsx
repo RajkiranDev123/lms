@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement,
 } from "chart.js";
-import logo from "../assets/black-logo.png";
+import logo from "../assets/black-logo.svg";
 import Header from "../layout/Header";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement
