@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/black-logo.svg";
-import logo_with_title from "../assets/logo-with-title.png";
-import { useParams, useNavigate, Navigate, Link } from "react-router-dom"
+import logo_with_title from "../assets/logo-with-title-black.svg";
+
+import { useParams, useNavigate, Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { otpVerification, resetAuthSlice } from "../store/slices/authSlice";
 import { toast } from "react-toastify"
+import "../components/loader.css"
 
 const OTP = () => {
   const { email } = useParams()
   const [otp, setOtp] = useState("")
   const dispatch = useDispatch()
-  const { loading, error, message, user, isAuthenticated } = useSelector(state => state.auth)//from store
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
+
+  const { loading, error, message } = useSelector(state => state.auth)//from store
+
   const handleOtpVerification = (e) => {
     e.preventDefault()
     if (!email || !otp) {
@@ -25,16 +29,17 @@ const OTP = () => {
     dispatch(otpVerification(email, otp))
   }
   useEffect(() => {
-    // if (message){ toast.success(message)}
+    if (message) {
+      toast.success(message)
+      navigate("/login")
+    }
     if (error) {
       toast.error(error)
       dispatch(resetAuthSlice())
     }
-  }, [dispatch, isAuthenticated, error, loading])
+  }, [error, loading])
 
-  if (isAuthenticated) {
-    return <Navigate to={"/"} />
-  }
+
   return <>
     {/* top div */}
     <div className="flex flex-col justify-center md:flex-row h-screen">
@@ -65,7 +70,9 @@ const OTP = () => {
             <button
               className="border-2 mt-5 border-black w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
-              type="submit">Verify</button>
+              type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Verify"}
+            </button>
 
           </form>
 
@@ -75,14 +82,14 @@ const OTP = () => {
 
       {/* right side */}
       <div
-        className="hidden w-full md:1/2 bg-black text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px] ">
+        className="hidden w-full md:1/2 bg-gradient-to-r from-indigo-950 to-purple-900 text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px] ">
         <div className="text-center h-[400px]">
           <div className="flex justify-center mb-12">
             <img src={logo_with_title} alt="logo" className="w-auto mb-12 h-44" />
           </div>
           <p className="text-gray-300 mb-12">New to our platform ? Sign up now.</p>
           <Link
-            className="border-2 mt-5 border-white px-8 w-full font-semibold bg-black
+            className="border-2 mt-5 border-black px-8 w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
             to={"/register"}>Sign Up</Link>
         </div>

@@ -38,8 +38,7 @@ const authSlice = createSlice({
         otpVerificationSuccess(state, action) {
             state.loading = false
             state.message = action.payload.message
-            state.isAuthenticated = true
-            state.user = action.payload.user
+        
 
         },
         otpVerificationFailed(state, action) {
@@ -187,9 +186,9 @@ export const otpVerification = (email, otp) => async (dispatch) => {
             "Content-Type": "application/json"
         }
     }).then(res => {
-        dispatch(authSlice.actions.otpVerificationSuccess(res.data))
+        dispatch(authSlice.actions.otpVerificationSuccess(res?.data))
     }).catch(error => {
-        dispatch(authSlice.actions.otpVerificationFailed(error.response.data.message))
+        dispatch(authSlice.actions.otpVerificationFailed(error?.response?.data?.message))
     })
 }
 
