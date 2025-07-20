@@ -249,16 +249,12 @@ export const updatePassword = catchAsyncErrors(
             if (!isPasswordMatched) return next(new ErrorHandler("Current Password is not correct!", 400))
 
 
-            if (newPassword.length < 8 ||
-                newPassword.length > 16 ||
-                confirmNewPassword.length < 8 ||
-                confirmNewPassword.length > 8
-            ) {
-                return next(new ErrorHandler("password must be between 8 & 16 characters!", 400))
+            const isPasswordValid = validatePassword(newPassword, confirmNewPassword)
+
+            if (isPasswordValid) {
+                return next(new ErrorHandler(isPasswordValid, 400))
             }
-            if (newPassword !== confirmNewPassword) {
-                return next(new ErrorHandler("newPassword & confirmNewPassword do not match!", 400))
-            }
+
             const hashedPassword = await bcrypt.hash(newPassword, 10)
             user.password = hashedPassword
             await user.save()

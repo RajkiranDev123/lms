@@ -22,7 +22,7 @@ export const isAuthenticated = catchAsyncErrors(
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
         console.log("from isAuthenticated==>", decoded)
         // req.user=decoded
-        req.user = await UserModel.findById(decoded?.id)
+        req.user = await UserModel.findById(decoded?.id).select("-resetPasswordToken -resetPasswordExpire -verificationCode -verificationCodeExpire")
         console.log("user from auth middleqware==>", req.user)
         next()
     }
