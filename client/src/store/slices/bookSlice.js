@@ -51,6 +51,25 @@ const bookSlice = createSlice({
             state.loading = false
             state.error = action.payload
         },
+        ////////////////////////////////////////////////////
+        deleteBookRequest(state) {
+            state.loading = true
+            state.error = null
+            state.message = null
+        },
+        deleteBookSuccess(state, action) {
+            state.loading = false
+            state.message = action.payload.message
+            state.books = state.books.filter(
+                book => book._id !== action.payload.bookId
+            )
+
+        },
+        deleteBookFailed(state, action) {
+            state.loading = false
+            state.error = action.payload
+        },
+
         ////////////////////////////////////////////////////////
         resetBookSlice(state, action) {
             state.loading = false
@@ -102,6 +121,26 @@ export const addBook = (data) => async (dispatch) => {
             dispatch(bookSlice.actions.addBookFailed(err?.response?.data?.message))
         })
 }
+
+// delete book
+export const deleteBook = (bookId) => async (dispatch) => {
+    dispatch(bookSlice.actions.deleteBookRequest())
+    const { data } = await axios
+        .delete(`${import.meta.env.VITE_BASE_URL}/api/v1/book/delete/${bookId}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(res => {
+            dispatch(bookSlice.actions.deleteBookSuccess({ message: data?.message, bookId: bookId }))
+
+
+        })
+        .catch(err => {
+            dispatch(bookSlice.actions.deleteBookFailed(err?.response?.data?.message))
+        })
+}
+//
 
 export const resetBookSlice = (data) => (dispatch) => {
     dispatch(bookSlice.actions.resetBookSlice())
