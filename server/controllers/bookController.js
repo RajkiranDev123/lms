@@ -53,11 +53,15 @@ export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
 export const deleteBook = catchAsyncErrors(async (req, res, next) => {
     try {
         const { id } = req.params
-        const book = await BookModel.findById(id)
+        // const book = await BookModel.findById(id)
+        // if (!book) {
+        //     return next(new ErrorHandler("Book not found!", 404))
+        // }
+        // await book.deleteOne()
+        const book = await BookModel.findByIdAndDelete(id)
         if (!book) {
-            return next(new ErrorHandler("Book not found!", 404))
+            return next(new ErrorHandler("Book not found.", 404))
         }
-        await book.deleteOne()
         res.status(200).json({
             success: true,
             message: "Book deleted Successfully!"
