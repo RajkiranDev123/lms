@@ -190,7 +190,7 @@ export const forgotPassword = catchAsyncErrors(
             user.resetPasswordToken = undefined
             user.resetPasswordExpire = undefined
             await user.save({ validateBeforeSave: false })
-            return next(new ErrorHandler(error.message|| "Internal Server Error", 500))
+            return next(new ErrorHandler(error.message || "Internal Server Error", 500))
         }
     }
 )
@@ -211,14 +211,11 @@ export const resetPassword = catchAsyncErrors(
             })
             // console.log(user)
             if (!user) return next(new ErrorHandler("Reset password token is invalid or expired!", 400))
-            if (req.body.password !== req.body.confirmPassword) return next(new ErrorHandler("Password & Confirm password don't match!", 400))
 
-            if (req.body.password.length < 8 ||
-                req.body.password.length > 16 ||
-                req.body.confirmPassword.length < 8 ||
-                req.body.confirmPassword.length > 16
-            ) {
-                return next(new ErrorHandler("Password must be between 8 & 16 characters!", 400))
+            const isPasswordValid = validatePassword(req.body.password, req.body.confirmPassword)
+
+            if (isPasswordValid) {
+                return next(new ErrorHandler(isPasswordValid, 400))
             }
 
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
