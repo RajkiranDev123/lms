@@ -8,6 +8,7 @@ import { sendVerificationCode } from "../utils/sendVerificationCode.js"
 import { sendToken } from "../utils/sendToken.js"
 import { sendEmail } from "../utils/sendEmail.js"
 import { generateForgotpasswordEmailTemplate } from "../utils/emailTemplate.js"
+import { validatePassword } from "../utils/validatePassword.js"
 
 export const register = catchAsyncErrors(
 
@@ -28,8 +29,10 @@ export const register = catchAsyncErrors(
 
             if (registrationAttempts.length >= 5) return next(new ErrorHandler("Exceeded Registration attepmts,Contact Admin!", 400))
 
-            if (password.length < 8 || password.length > 16) {
-                return next(new ErrorHandler("Password must be between 8 & 16 characters!", 400))
+            const isPasswordValid = validatePassword(password)
+
+            if (isPasswordValid) {
+                return next(new ErrorHandler(isPasswordValid, 400))
             }
             const hashedPassword = await bcrypt.hash(password, 10)
             const user = await UserModel.create({//instance of schema
@@ -187,7 +190,7 @@ export const forgotPassword = catchAsyncErrors(
             user.resetPasswordToken = undefined
             user.resetPasswordExpire = undefined
             await user.save({ validateBeforeSave: false })
-            return next(new ErrorHandler(error.message, 500))
+            return next(new ErrorHandler(error.message|| "Internal Server Error", 500))
         }
     }
 )
