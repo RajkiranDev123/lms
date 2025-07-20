@@ -24,6 +24,10 @@ export const isAuthenticated = catchAsyncErrors(
         // req.user=decoded
         req.user = await UserModel.findById(decoded?.id).select("-resetPasswordToken -resetPasswordExpire -verificationCode -verificationCodeExpire")
         console.log("user from auth middleqware==>", req.user)
+
+        if (!req.user) {
+            return next(new ErrorHandler("User not found.", 404));
+        }
         next()
     }
 )
