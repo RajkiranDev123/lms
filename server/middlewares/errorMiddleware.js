@@ -17,7 +17,7 @@ export const errorMiddleware = (err, req, res, next) => {
 
     if (err.code == 11000) {
         const statusCode = 400
-        const message = "Duplicate field return"
+        const message = `Duplicate ${Object.keys(err.keyValue)} entered`
         err = new ErrorHandler(message, statusCode)
     }
 
