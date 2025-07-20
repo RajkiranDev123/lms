@@ -23,7 +23,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
         // const user = await UserModel.findOne({ email, accountVerified: true })
         // if (!user) return next(new ErrorHandler("User not found!", 404))
-        
+
         //send reqs at once
         const [book, user] = await Promise.all([
             BookModel.findById(id), UserModel.findOne({ email: email.trim() })
@@ -88,17 +88,16 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
     const { email } = req.body // email of user that wants to borrow
 
     try {
-        // find the book by id of the book
-        const book = await BookModel.findById(bookId)
+        //send multiple reqs at once
+        const [book, user] = await Promise.all([
+            BookModel.findById(bookId), UserModel.findOne({ email: email.trim() })
+        ])
+
         if (!book) return next(new ErrorHandler("Book not found!", 404))
-
-        // find user by email 
-
-        const user = await UserModel.findOne({ email, accountVerified: true })
         if (!user) return next(new ErrorHandler("User not found!", 404))
 
         // do next when (user and id of book) is present :
-        if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
+        if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 404))
 
         //
         const borrowedBook = user.borrowedBooks.find(
