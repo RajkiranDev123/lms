@@ -68,7 +68,7 @@ const Login = () => {
             </div>
 
           </div>
-          <h1 className="text-4xl font-medium text-center mb-12 overflow-hidden">Welcome Back!</h1>
+          <h1 className="text-4xl font-medium text-center mb-12 overflow-hidden">Welcome to LMS!</h1>
           <p className="text-gray-800 mb-12 text-center">Please enter your credentials to login!</p>
 
           <form onSubmit={handleLogin}>

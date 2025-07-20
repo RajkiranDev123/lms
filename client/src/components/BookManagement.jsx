@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { BookA, NotebookPen } from "lucide-react";
+import { BookA, NotebookPen, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux"
-import { toggleReadBookPopup, toggleRecordBookPopup, toggleAddBookPopup } from "../store/slices/popUpSlice"
+import { toggleReadBookPopup, toggleRecordBookPopup, toggleAddBookPopup,toggleDeleteBookPopup } from "../store/slices/popUpSlice"
 import { toast } from "react-toastify"
 import { fetchAllBooks, resetBookSlice } from "../store/slices/bookSlice"
 import { fetchAllBorrowedBooks, resetBorrowSlice } from "../store/slices/borrowSlice"
@@ -15,6 +15,7 @@ import RecordBookPopup from "../popups/RecordBookPopup"
 
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import DeleteBookPopup from "../popups/DeleteBookPopup";
 
 
 const BookManagement = () => {
@@ -24,7 +25,7 @@ const BookManagement = () => {
   const dispatch = useDispatch()
   const { loading, error, message, books, pageCount } = useSelector(state => state.book)
   const { user, isAuthenticated } = useSelector(state => state.auth)
-  const { addBookPopup, readBookPopup, recordBookPopup } = useSelector(state => state.popup)
+  const { addBookPopup, readBookPopup, recordBookPopup, deleteBookPopup, bookIdToDelete } = useSelector(state => state.popup)
   const { loading: borrowSliceLoading, error: borrowSliceError, message: borrowSliceMessage } = useSelector(state => state.borrow)
 
   const [readBook, setReadBook] = useState({})
@@ -159,6 +160,7 @@ const BookManagement = () => {
                         <td className="px-4 py-2 flex space-x-2 my-3 justify-center">
                           <BookA onClick={() => openReadPopup(book?._id)} />
                           <NotebookPen onClick={() => openRecordBookPopup(book?._id)} />
+                          <Trash2 onClick={()=>dispatch(toggleDeleteBookPopup(book?._id))} className="text-red-500 cursor-pointer"/>
 
                         </td>
                       )}
@@ -190,6 +192,8 @@ const BookManagement = () => {
     {addBookPopup && <AddBookPopup />}
     {readBookPopup && <ReadBookPopup book={readBook} />}
     {recordBookPopup && <RecordBookPopup bookId={borrowBookId} />}
+    {deleteBookPopup && <DeleteBookPopup bookId={bookIdToDelete} />}
+
 
 
 

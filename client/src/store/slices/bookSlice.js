@@ -125,16 +125,14 @@ export const addBook = (data) => async (dispatch) => {
 // delete book
 export const deleteBook = (bookId) => async (dispatch) => {
     dispatch(bookSlice.actions.deleteBookRequest())
-    const { data } = await axios
+    await axios
         .delete(`${import.meta.env.VITE_BASE_URL}/api/v1/book/delete/${bookId}`, {
             headers: {
                 "Content-Type": "application/json"
             }
         })
         .then(res => {
-            dispatch(bookSlice.actions.deleteBookSuccess({ message: data?.message, bookId: bookId }))
-
-
+            dispatch(bookSlice.actions.deleteBookSuccess({ message: res?.data?.message, bookId: bookId }))
         })
         .catch(err => {
             dispatch(bookSlice.actions.deleteBookFailed(err?.response?.data?.message))
