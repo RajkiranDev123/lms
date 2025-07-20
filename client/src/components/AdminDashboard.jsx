@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import adminIcon from "../assets/pointing.png";
+import avatarHolder from "../assets/placeholder.jpg";
+
 import usersIcon from "../assets/people-black.png";
 import bookIcon from "../assets/book-square.png";
 import { Pie } from "react-chartjs-2";
@@ -148,8 +150,8 @@ const AdminDashboard = () => {
             <div className="flex flex-col lg:flex-row flex-1">
               <div className="flex flex-col lg:flex-row flex-1 items-center justify-center">
                 <div className="bg-white p-2 rounded-lg shadow-lg h-full flex flex-col justify-center items-center gap-4">
-                  <img src={user && user?.avatar?.url} alt="avatar" className="rounded-full w-32 h-32 object-cover" />
-                  <h2>{user && user?.name}</h2>
+                  <img src={(user && user?.avatar?.url) || avatarHolder} alt="avatar" className="rounded-full w-32 h-32 object-cover" />
+                  <h2>hi, {user && user?.name}</h2>
                   <p className="text-gray-800 text-sm 2xl:text-base text-center">Welcome ! Now Manage all the settings and monitor the statistics!</p>
 
                 </div>
