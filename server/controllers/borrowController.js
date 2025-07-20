@@ -16,13 +16,21 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
     try {
         // find the book by id of the book
-        const book = await BookModel.findById(id)
-        if (!book) return next(new ErrorHandler("Book not found!", 404))
+        // const book = await BookModel.findById(id)
+        // if (!book) return next(new ErrorHandler("Book not found!", 404))
 
         // find user by email 
 
-        const user = await UserModel.findOne({ email, accountVerified: true })
+        // const user = await UserModel.findOne({ email, accountVerified: true })
+        // if (!user) return next(new ErrorHandler("User not found!", 404))
+
+        const [book, user] = await Promise.all([
+            BookModel.findById(id), UserModel.findOne({ email: email.trim() })
+        ])
+
+        if (!book) return next(new ErrorHandler("Book not found!", 404))
         if (!user) return next(new ErrorHandler("User not found!", 404))
+
 
         // do next when (user and id of book) is present : check quantity
         if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
