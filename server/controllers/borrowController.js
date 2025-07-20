@@ -23,7 +23,8 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
         // const user = await UserModel.findOne({ email, accountVerified: true })
         // if (!user) return next(new ErrorHandler("User not found!", 404))
-
+        
+        //send reqs at once
         const [book, user] = await Promise.all([
             BookModel.findById(id), UserModel.findOne({ email: email.trim() })
         ])
