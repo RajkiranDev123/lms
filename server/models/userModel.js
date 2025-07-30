@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        lowercase: true
     },
     password: {
         type: String,
@@ -23,18 +22,18 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: ["Admin", "User"],
-        default: "User"         //role="User" : automatically saved to db because of (default :) even role is not supplied!
+        default: "User"         //automatically saved to the db because of (default:"User") even if role is not supplied!
     },
 
     accountVerified: { type: Boolean, default: false },
-    avatar: { public_id: String, url: String },
+    avatar: { public_id: String, url: String },//if type is not mentioned then its avatar:{} (object)
 
     borrowedBooks: [
         {
 
             bookId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Borrow"
+                ref: "Book"
             },
             returned: {
                 type: Boolean,
