@@ -22,11 +22,10 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         if (!user) return next(new ErrorHandler("User not found!", 404))
 
 
-        // do next when (user and id of book) is present : check quantity
+        // do next when (user and id of book) is present : check quantity of book
         if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 400))
 
-        // bookId : borrow info
-
+        // check in borrowedBooks:[] of user
         const isAlreadyBorrowed = user.borrowedBooks.find(
             b => b.bookId.toString() == bookId && b.returned == false // checked also whether borrowed book is returned!
             // false : then cant give same book more than once to a guy
