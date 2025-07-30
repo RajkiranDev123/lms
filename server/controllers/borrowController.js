@@ -136,7 +136,7 @@ export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
             success: true, borrowedBooks, message: "all borrowed books of a user!"
         })
     } catch (error) {
-        return next(new ErrorHandler(error.message, 500))
+        return next(new ErrorHandler(error?.message||"Internal Server Error", 500))
     }
 })
 
