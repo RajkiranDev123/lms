@@ -153,7 +153,7 @@ export const getBorrowedBooksForAdmin = catchAsyncErrors(async (req, res, next) 
             message: "All borrowed books by all users!"
         })
     } catch (error) {
-        return next(new ErrorHandler(error.message, 500))
+        return next(new ErrorHandler(error?.message||"Internal Server Error", 500))
     }
 })
 
