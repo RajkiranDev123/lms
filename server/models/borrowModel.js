@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-//record borrow info
+//record borrow info at the time of borrowing :
 
 const borrowSchema = new mongoose.Schema({
     user: {
@@ -28,7 +28,7 @@ const borrowSchema = new mongoose.Schema({
         ref: "Book",
         required: true
     },
-    borrowDate: {
+    borrowDate: { //borrowedDate would be nice
         type: Date,
         default: Date.now,
         required: true

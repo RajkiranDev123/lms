@@ -4,8 +4,6 @@
 
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js"
 import { BookModel } from "../models/bookModel.js"
-import { UserModel } from "../models/userModel.js"
-
 import ErrorHandler from "../middlewares/errorMiddleware.js"
 
 
@@ -30,8 +28,6 @@ export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
     const page = req.headers.page || 1
     const ITEM_PER_PAGE = 5
     try {
-
-
         //for pagination
         const query = { title: { $regex: title, $options: "i" } }
         const totalDocs = await BookModel.countDocuments(query)
@@ -53,11 +49,6 @@ export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
 export const deleteBook = catchAsyncErrors(async (req, res, next) => {
     try {
         const { id } = req.params
-        // const book = await BookModel.findById(id)
-        // if (!book) {
-        //     return next(new ErrorHandler("Book not found!", 404))
-        // }
-        // await book.deleteOne()
         const book = await BookModel.findByIdAndDelete(id)
         if (!book) {
             return next(new ErrorHandler("Book not found.", 404))
