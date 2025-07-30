@@ -8,7 +8,6 @@ const borrowSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true
-
         },
         name: {
             type: String,
@@ -20,10 +19,9 @@ const borrowSchema = new mongoose.Schema({
         }
     },
 
-    price: { // price to borrow the book
+    price: { // price to borrow the book , let say like rent for some days
         type: Number,
         required: true,
-
     },
     book: {
         type: mongoose.Schema.Types.ObjectId,
@@ -51,8 +49,6 @@ const borrowSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-
-
 }, { timestamps: true })
 
 export const BorrowModel = mongoose.model("Borrow", borrowSchema)
