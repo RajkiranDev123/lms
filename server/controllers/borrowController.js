@@ -15,15 +15,6 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
     const { email } = req.body // email of user that wants to borrow
 
     try {
-        // find the book by id of the book
-        // const book = await BookModel.findById(id)
-        // if (!book) return next(new ErrorHandler("Book not found!", 404))
-
-        // find user by email 
-
-        // const user = await UserModel.findOne({ email, accountVerified: true })
-        // if (!user) return next(new ErrorHandler("User not found!", 404))
-
         //send reqs at once
         const [book, user] = await Promise.all([
             BookModel.findById(id), UserModel.findOne({ email: email.trim() })
@@ -57,7 +48,6 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
             bookTitle: book.title,
             borrowedDate: new Date(),
             dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-
         })
         await user.save()
 
