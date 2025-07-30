@@ -6,8 +6,6 @@ import { UserModel } from "../models/userModel.js"
 import ErrorHandler from "../middlewares/errorMiddleware.js"
 import { calculateFine } from "../utils/fineCalculator.js"
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 // aim : admin will record borrowed book by user!
 
 export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
