@@ -30,7 +30,6 @@ const userSchema = new mongoose.Schema({
 
     borrowedBooks: [
         {
-
             bookId: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Book"
@@ -47,7 +46,7 @@ const userSchema = new mongoose.Schema({
         }
     ],
 
-    verificationCode: Number,
+    verificationCode: Number,// directly setting dt 
     verificationCodeExpire: Date,
 
     resetPasswordToken: String, // not in db after just creating new acc because of absence of ==> (required or default)
@@ -60,13 +59,13 @@ userSchema.methods.generateVerificationCode = function () {
 
     function generate5digits() {
         const firstDigit = Math.floor(Math.random() * 9) + 1 // 1 to 8 and plus 1 = 9 : single digit
-        const remainingDigits = Math.floor(Math.random() * 10000) // 1 to 9,999 : 4 digits : can give even 1 digit sometimes
-            .toString().padStart(4, 0) // 4 is target and what to put is 0 : if 8 then 0008
-        return parseInt(firstDigit + remainingDigits)
+        const remainingDigits = Math.floor(Math.random() * 10000) // 1 to 9,999 : 4 digits : can give even 1/2/3 digit sometimes
+            .toString().padStart(4, 0) // 4 is target/length and what to put is 0 : if 8 then 0008
+        return parseInt(firstDigit + remainingDigits)//parseInt("10.5"); // Returns 10 
     }
     const verificationCode = generate5digits()
     this.verificationCode = verificationCode//save to db too!
-    this.verificationCodeExpire = Date.now() + 15 * 60 * 1000 // 15 mins
+    this.verificationCodeExpire = Date.now() + 15 * 60 * 1000 // 15 mins // Mongoose only saves fields that are defined in your schema. 
     return verificationCode
 
 }
