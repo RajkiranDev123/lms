@@ -57,7 +57,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
             },
             book: book._id,
             dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            price: book.price
+            price: book.price//entire book price for 7 days
         })
 
         return res.status(200).json({
@@ -68,7 +68,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
     }
 })
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////// bring back books to library /////////////////////////////////////////////////////
 
 export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
     const { bookId } = req.params // book id
@@ -83,15 +83,11 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         if (!book) return next(new ErrorHandler("Book not found!", 404))
         if (!user) return next(new ErrorHandler("User not found!", 404))
 
-        // do next when (user and id of book) is present :
-        if (book.quantity == 0) return next(new ErrorHandler("Books not available!", 404))
-
-        //
         const borrowedBook = user.borrowedBooks.find(
-            b => b.bookId.toString() == bookId && b.returned == false // checked also whether borrowed book is returned!
+            b => b.bookId.toString() == bookId && b.returned == false //cant return already returned book
         )
-        // !null is true
-        if (!borrowedBook) return next(new ErrorHandler("Book not borrowed!", 400))//cant return when book is not borrowed!
+
+        if (!borrowedBook) return next(new ErrorHandler("Book not borrowed!", 400))
 
         borrowedBook.returned = true
         await user.save() // now from user side the book is returned!
@@ -109,7 +105,7 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 
         if (!borrow) return next(new ErrorHandler("Book not borrowed!", 400))
 
-        borrow.returnedDate = new Date()
+        borrow.returnedDate = new Date()//today's date
         const fine = calculateFine(borrow.dueDate)
         borrow.fine = fine
         await borrow.save()
@@ -136,7 +132,7 @@ export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
             success: true, borrowedBooks, message: "all borrowed books of a user!"
         })
     } catch (error) {
-        return next(new ErrorHandler(error?.message||"Internal Server Error", 500))
+        return next(new ErrorHandler(error?.message || "Internal Server Error", 500))
     }
 })
 
@@ -153,7 +149,7 @@ export const getBorrowedBooksForAdmin = catchAsyncErrors(async (req, res, next) 
             message: "All borrowed books by all users!"
         })
     } catch (error) {
-        return next(new ErrorHandler(error?.message||"Internal Server Error", 500))
+        return next(new ErrorHandler(error?.message || "Internal Server Error", 500))
     }
 })
 
