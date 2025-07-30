@@ -9,13 +9,13 @@ import { calculateFine } from "../utils/fineCalculator.js"
 // aim : admin will record borrowed book by user!
 
 export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
-    const { id } = req.params // book id
+    const { bookId } = req.params // book id
     const { email } = req.body // email of user that wants to borrow
 
     try {
         //send reqs at once
         const [book, user] = await Promise.all([
-            BookModel.findById(id), UserModel.findOne({ email: email.trim() })
+            BookModel.findById(bookId), UserModel.findOne({ email: email.trim() })
         ])
 
         if (!book) return next(new ErrorHandler("Book not found!", 404))
@@ -28,7 +28,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         // bookId : borrow info
 
         const isAlreadyBorrowed = user.borrowedBooks.find(
-            b => b.bookId.toString() == id && b.returned == false // checked also whether borrowed book is returned!
+            b => b.bookId.toString() == bookId && b.returned == false // checked also whether borrowed book is returned!
             // false : then cant give same book more than once to a guy
         )
 
