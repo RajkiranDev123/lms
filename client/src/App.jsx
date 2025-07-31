@@ -54,7 +54,7 @@ const App = () => {
         <Route path="/books" element={<BookManagement />} />
 
       </Routes>
-      <ToastContainer theme="dark" autoClose={3000} />
+      <ToastContainer theme="dark" autoClose={1000} />
     </Router>
   );
 };

@@ -74,11 +74,12 @@ const ForgotPassword = () => {
           <form onSubmit={handleforgotpassword}>
             <div className="mb-4">
               <input type="email"
+                style={{ border: "1px solid grey" }}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
-                className="w-full px-4 py-3 border-black rounded-md focus:outline-none"
+                className="w-full px-4 py-3 border-black  rounded-md focus:outline-none"
 
               />
             </div>

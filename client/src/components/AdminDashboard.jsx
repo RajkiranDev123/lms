@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import adminIcon from "../assets/pointing.png";
 import avatarHolder from "../assets/placeholder.jpg";
 
@@ -6,17 +6,20 @@ import usersIcon from "../assets/people-black.png";
 import bookIcon from "../assets/book-square.png";
 import { Pie } from "react-chartjs-2";
 import { useSelector } from "react-redux";
-
+import QRCode from "react-qr-code"
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement,
 } from "chart.js";
 import logo from "../assets/black-logo.svg";
 import Header from "../layout/Header";
+import downloadPdf from "../utils/downloadAsPdf.js";
+import { FaRegFilePdf } from "react-icons/fa";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement
 );
 
 const AdminDashboard = () => {
+  const pdfRef = useRef()
 
   const { user } = useSelector(state => state.auth)
   const { users } = useSelector(state => state.user)
@@ -48,7 +51,7 @@ const AdminDashboard = () => {
     datasets: [
       {
         data: [totalBorrowedBooks, totalReturnedBooks],
-        backgroundColor: ["#3D3E3E", "#151619"],
+        backgroundColor: ["#32cc27", "#c22424"],
         hoverOffset: 4
       }
     ]
@@ -61,9 +64,9 @@ const AdminDashboard = () => {
       <div className="flex flex-col-reverse xl:flex-row">
 
         {/* ls */}
-        <div className="flex-[2] flex-col gap-7 lg:flex-row flex lg:items-center 
+        <div   className="flex-[2] flex-col gap-7 lg:flex-row flex lg:items-center 
         xl:flex-col justify-between xl:gap-20 py-5">
-          <div className="xl:flex-[4] flex items-end w-full content-center">
+          <div  className="xl:flex-[4] flex items-end w-full content-center">
             <Pie
               data={data}
               options={{ cutout: 0 }}
@@ -76,11 +79,11 @@ const AdminDashboard = () => {
 
             <div className="flex flex-col gap-3">
               <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[#3D3E3E]"></span>
+                <span className="w-3 h-3 rounded-full bg-[#32cc27]"></span>
                 <span>Total Borrowed Books</span>
               </p>
               <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[#151619]"></span>
+                <span className="w-3 h-3 rounded-full bg-[#c22424]"></span>
                 <span>Total Returned Books</span>
               </p>
             </div>
@@ -131,6 +134,7 @@ const AdminDashboard = () => {
               {/*  */}
               <div className="flex items-center gap-3 bg-white p-5 max-h-[120px] overflow-y-hidden 
                rounded-lg transition hover:shadow-inner duration-200 w-full lg:max-w-[360px]">
+
                 <span className="bg-gray-300 h-20 min-w-20 flex justify-center items-center rounded-lg">
                   <img className="w-8 h-8" src={adminIcon} alt="adminIcon" />
                 </span>
@@ -140,7 +144,12 @@ const AdminDashboard = () => {
                   <h4 className="font-black text-3xl">{totalAdmins}</h4>
                   <p className="font-light text-gray-700 text-sm">Total Admins</p>
                 </div>
+              </div>
 
+              <div className="flex flex-col items-center gap-2">
+                <QRCode style={{ height: 80, width: 80 }}
+                  value={`Total Users : ${totalUsers}, Total Books : ${totalBooks}, Total Admins : ${totalAdmins}`} />
+                  <p className="text-gray-500 text-sm">Scan and Share!</p>
               </div>
 
               {/*  */}
@@ -160,11 +169,13 @@ const AdminDashboard = () => {
 
           </div>
 
-          <div className="hidden xl:flex bg-white p-7 text-lg sm:text-xl xl:text-3xl 2xl:text-4xl min-h-52 relative font-semibold
-           flex-[3] justify-center items-center rounded-2xl">
-            <h4 className="overflow-y-hidden">Welcome to the LMS!</h4>
-            <p className="text-gray-700 text-sm sm:text-lg absolute right-[35px] sm:right-[78px] bottom-[10px]  ">~ Raj Team</p>
-          </div>
+          {/* <div >
+            <button onClick={() => downloadPdf(pdfRef)}
+              style={{ border: "none", borderRadius: 4, cursor: "pointer" }}>
+              <FaRegFilePdf />
+            </button>
+
+          </div> */}
 
         </div>
 

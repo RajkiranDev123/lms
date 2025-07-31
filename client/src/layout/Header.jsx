@@ -39,12 +39,13 @@ const Header = () => {
 
         <div className="flex flex-col">
 
-          <span className="text-sm font-medium sm:text-lg lg:text-xl sm:font-semibold italic">
-           hi, {user && user?.name?.[0]?.toUpperCase()+user?.name?.slice(1)}
+          <span className="text-sm font-medium sm:text-lg lg:text-sm sm:font-semibold italic">
+            hi, {user && user?.name?.[0]?.toUpperCase() + user?.name?.slice(1)}
           </span>
 
-          <span className="text-sm font-medium sm:text-lg sm:font-semibold">
-          <span className="text-gray-700">Role :</span>  {user && user?.role} | <span className="text-gray-700">Email :</span> <span className="italic">{user && user?.email}</span>
+          <span className="text-sm font-medium sm:text-lg lg:text-sm sm:font-semibold">
+            <p className="text-gray-700">Role &nbsp;&nbsp;: {user && user?.role} </p>
+            <p className="text-gray-700">Email : {user && user?.email}</p>
           </span>
 
         </div>
