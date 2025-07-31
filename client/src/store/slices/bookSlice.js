@@ -11,6 +11,7 @@ const bookSlice = createSlice({
         message: null,
 
         books: [],
+        nonPaginatedBooks:[],
         pageCount: null,
         booksCount: null
     },
@@ -22,8 +23,9 @@ const bookSlice = createSlice({
         },
         fetchBooksSuccess(state, action) {
             state.loading = false
-            state.books = action.payload
+            state.books = action.payload.books
             state.message = null
+            state.nonPaginatedBooks=action.payload.nonPaginatedBooks
         },
         fetchBooksFailed(state, action) {
             state.loading = false
@@ -93,7 +95,7 @@ export const fetchAllBooks = (title, page) => async (dispatch) => {
 
         })
         .then(res => {
-            dispatch(bookSlice.actions.fetchBooksSuccess(res?.data?.books))
+            dispatch(bookSlice.actions.fetchBooksSuccess(res?.data))
             dispatch(bookSlice.actions.setPagesCount(res?.data?.pagination?.pageCount))
             dispatch(bookSlice.actions.setBooksCount(res?.data?.pagination?.totalBooks))
         })

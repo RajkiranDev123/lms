@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { BookA } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux"
 import { toggleReadBookPopup } from "../store/slices/popUpSlice"
 import Header from "../layout/Header";
 import ReadBookPopup from "../popups/ReadBookPopup"
+import { fetchUserBorrowedBooks } from "../store/slices/borrowSlice.js"
+
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const MyBorrowedBooks = () => {
   const dispatch = useDispatch()
-  const { books } = useSelector(state => state.book)
-  const { userBorrowedBooks } = useSelector(state => state.borrow)
+  const { nonPaginatedBooks } = useSelector(state => state.book)
+  const { userBorrowedBooks, loading, pageCount } = useSelector(state => state.borrow)
   const { readBookPopup } = useSelector(state => state.popup)
 
   const [readBook, setReadBook] = useState({})
   const openReadPopup = (id) => {
     // console.log(id)
     // console.log(books)
-    const book = books.find(book => book._id === id)
+    const book = nonPaginatedBooks.find(book => book._id === id)
     // console.log("book from my borrowed books ==>",book)
 
     setReadBook(book)
@@ -37,15 +41,13 @@ const MyBorrowedBooks = () => {
 
   const [filter, setFilter] = useState("returned")
 
-  const returnedBooks = userBorrowedBooks?.filter(book => {
-    return book.returned === true
-  })
-  const nonReturnedBooks = userBorrowedBooks?.filter(book => {
-    return book.returned === false
-  })
-
-  const booksToDisplay = filter === "returned" ? returnedBooks : nonReturnedBooks
-  // console.log(booksToDisplay)
+  //pagination place 1
+  const [page, setPage] = useState(1)
+  //pagination place 2
+  const changePage = (event, value) => {
+    dispatch(fetchUserBorrowedBooks(value, filter))
+    setPage(value)
+  }
 
 
   return <>
@@ -66,7 +68,7 @@ const MyBorrowedBooks = () => {
       {/* header 2 */}
 
       <header className="flex flex-col gap-3 sm:flex-row md:items-center">
-        <button onClick={() => setFilter("returned")}
+        <button onClick={() => { setFilter("returned"); dispatch(fetchUserBorrowedBooks(1, "returned")) }}
           className={`relative rounded sm:rounded-br-none sm:rounded-tr-none sm:rounded-tl-lg 
           sm:rounded-bl-lg text-center border-2 font-semibold py-2 w-full sm:w-72 ${filter === "returned" ?
               "bg-black text-white border-black"
@@ -77,7 +79,7 @@ const MyBorrowedBooks = () => {
 
         </button>
 
-        <button onClick={() => setFilter("nonReturned")}
+        <button onClick={() => { setFilter("nonReturned"); dispatch(fetchUserBorrowedBooks(1, "nonReturned")) }}
           className={`relative rounded sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-lg 
           sm:rounded-br-lg text-center border-2 font-semibold py-2 w-full sm:w-72 ${filter === "nonReturned" ?
               "bg-black text-white border-black"
@@ -95,7 +97,7 @@ const MyBorrowedBooks = () => {
       {/* data */}
 
       {
-        booksToDisplay && booksToDisplay?.length > 0 ? (
+        userBorrowedBooks && userBorrowedBooks?.length > 0 ? (
           <div className="mt-6 overflow-auto bg-white rounded-md shadow-lg">
 
             <table className="min-w-full border-collapse">
@@ -113,13 +115,13 @@ const MyBorrowedBooks = () => {
 
               <tbody>
                 {
-                  booksToDisplay?.map((book, index) => (
+                  userBorrowedBooks?.map((book, index) => (
                     <tr key={index} className={(index + 1) % 2 == 0 ? "bg-gray-50" : ""}>
                       <td className="px-4 py-2">{index + 1}</td>
                       <td className="px-4 py-2">{book?.bookTitle}</td>
                       <td className="px-4 py-2">{formatDate(book?.borrowedDate)}</td>
                       <td className="px-4 py-2">{formatDate(book?.dueDate)}</td>
-                      <td className="px-4 py-2 text-center">{book?.returned ? <span className="text-green-600">Yes</span>: <span className="text-red-600">No</span>}</td>
+                      <td className="px-4 py-2 text-center">{book?.returned ? <span className="text-green-600">Yes</span> : <span className="text-red-600">No</span>}</td>
                       <td className="px-4 py-2"><BookA onClick={() => openReadPopup(book?.bookId)} /></td>
                     </tr>
                   ))
@@ -127,6 +129,14 @@ const MyBorrowedBooks = () => {
               </tbody>
 
             </table>
+            {/* pagination */}
+            <div className="flex justify-center p-3">
+              <Stack spacing={2}>
+                <Pagination color="primary" onChange={changePage} page={page} count={pageCount} />
+              </Stack>
+            </div>
+            {/* pagination ends */}
+
 
           </div>
         ) : filter === "returned" ? (
@@ -139,7 +149,7 @@ const MyBorrowedBooks = () => {
       {/* data */}
     </main>
 
-    {readBookPopup && <ReadBookPopup book={readBook}/>}
+    {readBookPopup && <ReadBookPopup book={readBook} />}
 
   </>;
 };

@@ -8,10 +8,9 @@ const borrowSlice = createSlice({
         loading: false,
         error: null,
         message: null,
-
         userBorrowedBooks: [],
         allBorrowedBooks: [],
-        pageCount:null
+        pageCount: 1
 
     },
     reducers: {
@@ -55,7 +54,7 @@ const borrowSlice = createSlice({
         fetchAllBorrowedBooksSuccess(state, action) {
             state.loading = false
             state.allBorrowedBooks = action.payload.allBorrowedBooks
-            state.pageCount=action.payload.pageCount
+            state.pageCount = action.payload.pageCount
 
         },
         fetchAllBorrowedBooksFailed(state, action) {
@@ -89,10 +88,16 @@ const borrowSlice = createSlice({
     }
 })
 
-export const fetchUserBorrowedBooks = () => async (dispatch) => {
+export const fetchUserBorrowedBooks = (page, filter) => async (dispatch) => {
     dispatch(borrowSlice.actions.fetchUserBorrowedBooksRequest())
     await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/my-borrowed-books`)
+        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/my-borrowed-books`, {
+            headers: {
+                "page": page,
+                "filter": filter,
+
+            }
+        })
         .then(res => {
             dispatch(borrowSlice.actions.fetchUserBorrowedBooksSuccess(res?.data?.borrowedBooks))
         })
@@ -101,14 +106,14 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
         })
 }
 
-export const fetchAllBorrowedBooks = (page,filter) => async (dispatch) => {
+export const fetchAllBorrowedBooks = (page, filter) => async (dispatch) => {
     dispatch(borrowSlice.actions.fetchAllBorrowedBooksRequest())
     await axios
         .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/all-borrowed-books-by-users`,
             {
-                headers:{
-                    "page":page,
-                    "filter":filter
+                headers: {
+                    "page": page,
+                    "filter": filter
                 }
             }
         )
