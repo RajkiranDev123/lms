@@ -8,16 +8,19 @@ const userSlice = createSlice({
 
     initialState: {
         users: [],
-        loading: false
+        loading: false,
+        pageCount: 1
+
     },
-    
+
     reducers: {
         fetchAllUsersRequest(state) {
             state.loading = true
         },
         fetchAllUsersSuccess(state, action) {
             state.loading = false,
-                state.users = action.payload
+                state.users = action.payload.users
+            state.pageCount = action.payload.pageCount
         },
         fetchAllUsersFailed(state) {
             state.loading = false
@@ -38,12 +41,16 @@ const userSlice = createSlice({
     }
 })
 
-export const fetchAllUsers = () => async (dispatch) => {
+export const fetchAllUsers = (page) => async (dispatch) => {
     dispatch(userSlice.actions.fetchAllUsersRequest())
     await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/user/all`)
+        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/user/all`, {
+            headers: {
+                "page": page
+            }
+        })
         .then(res => {
-            dispatch(userSlice.actions.fetchAllUsersSuccess(res?.data?.users))
+            dispatch(userSlice.actions.fetchAllUsersSuccess(res?.data))
         })
         .catch(err => {
             dispatch(userSlice.actions.fetchAllUsersFailed(err?.response?.data?.message))

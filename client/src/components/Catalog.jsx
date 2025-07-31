@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PiKeyReturnBold } from "react-icons/pi";
-import { FaSquareCheck } from "react-icons/fa6";
+
 import { useDispatch, useSelector } from "react-redux"
 import { formatDateAndTime, formatDate } from "../utils/formatDate.js"
 import { toast } from "react-toastify"
@@ -13,6 +13,7 @@ import Header from "../layout/Header.jsx"
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
+import "../components/loader.css"
 
 const Catalog = () => {
   const dispatch = useDispatch()
@@ -94,6 +95,7 @@ const Catalog = () => {
 
 
       {/* data */}
+      {loading &&<div style={{ display: "flex", justifyContent: "center" ,margin:2}}><div className="loader"></div></div>}
 
       {
         allBorrowedBooks && allBorrowedBooks?.length > 0 ? (
@@ -156,7 +158,8 @@ const Catalog = () => {
           </div>
         ) : (
           <h3 className="text-3xl mt-5 font-medium">No {filter === "borrowed" ? "borrowed" : "overdue"} books found!</h3>
-        )}
+        )
+      }
 
       {/* data */}
     </main>

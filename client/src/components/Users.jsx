@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux"
 import Header from "../layout/Header"
+import "./loader.css"
+
+//pagination
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import { fetchAllUsers } from "../store/slices/userSlice.js"
 const Users = () => {
-  const { users } = useSelector(state => state.user)
+  const { users, pageCount, loading } = useSelector(state => state.user)
   const formatDate = (timeStamp) => {
     const date = new Date(timeStamp)
     const formattedDate = `${String(date.getDate()).padStart(2, "0")}-
@@ -14,6 +20,16 @@ const Users = () => {
     const result = `${formattedDate} ${formattedTime}`
     return result
   }
+  //pagination place 1
+  const [page, setPage] = useState(1)
+
+  //pagination place 2
+  const changePage = (event, value) => {
+    dispatch(fetchAllUsers(value))
+
+    setPage(value)
+
+  }
   return <>
     <main className="relative flex-1 p-6 pt-28">
       <Header />
@@ -23,6 +39,8 @@ const Users = () => {
           Registered Users
         </h2>
       </header>
+      {loading && <div style={{ display: "flex", justifyContent: "center", margin: 2 }}><div className="loader"></div></div>}
+
 
       {/* table */}
       {
@@ -63,6 +81,13 @@ const Users = () => {
               </tbody>
 
             </table>
+            {/* pagination */}
+            <div className="flex justify-center p-3">
+              <Stack spacing={2}>
+                <Pagination color="primary" onChange={changePage} page={page} count={pageCount} />
+              </Stack>
+            </div>
+            {/* pagination ends */}
 
           </div>
         ) : (<h3 className="text-3xl mt-5 font-medium">No registered users found!</h3>)
