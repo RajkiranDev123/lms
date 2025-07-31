@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import  { useState, useEffect, useRef } from "react";
 import adminIcon from "../assets/pointing.png";
 import avatarHolder from "../assets/placeholder.jpg";
 
@@ -12,8 +12,8 @@ import {
 } from "chart.js";
 import logo from "../assets/black-logo.svg";
 import Header from "../layout/Header";
-import downloadPdf from "../utils/downloadAsPdf.js";
-import { FaRegFilePdf } from "react-icons/fa";
+// import downloadPdf from "../utils/downloadAsPdf.js";
+// import { FaRegFilePdf } from "react-icons/fa";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement
 );
@@ -180,20 +180,9 @@ const AdminDashboard = () => {
         </div>
 
         {/* rs */}
-
-
-
-
-
       </div>
 
     </main>
-
-
-
-
-
-
   </>;
 };
 

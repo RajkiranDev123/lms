@@ -93,7 +93,7 @@ const authSlice = createSlice({
 
         //get user
         getUserRequest(state) {
-            state.loading = true
+            // state.loading = true
             state.error = null
             state.message = null
         },
