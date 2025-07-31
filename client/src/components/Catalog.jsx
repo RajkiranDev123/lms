@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PiKeyReturnBold } from "react-icons/pi";
 import { FaSquareCheck } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux"
@@ -10,31 +10,18 @@ import { fetchAllBorrowedBooks, resetBorrowSlice } from "../store/slices/borrowS
 import ReturnBookPopup from "../popups/ReturnBookPopup.jsx"
 import Header from "../layout/Header.jsx"
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 
 const Catalog = () => {
   const dispatch = useDispatch()
   const { returnBookPopup } = useSelector(state => state.popup)//state : destructure and actions : import
-  const { loading, error, allBorrowedBooks, message } = useSelector(state => state.borrow)
-  console.log("allBorrowedBooksByUsers ==>", allBorrowedBooks)
+  const { loading, error, allBorrowedBooks, message, pageCount } = useSelector(state => state.borrow)
+  // console.log("allBorrowedBooksByUsers ==>", allBorrowedBooks)
 
   const [filter, setFilter] = useState("borrowed")
 
-  const currentDate = new Date()//today date
-
-  // not over due : still in borrowed state not returned!
-  const borrowedBooks = allBorrowedBooks?.filter(book => {
-    //let say dueDate is : tommorow
-    const dueDate = new Date(book.dueDate)
-    return dueDate > currentDate//fetch where due date is greater than today : deadline not passed 
-  })
-
-
-  const overdueBooks = allBorrowedBooks?.filter(book => {
-    const dueDate = new Date(book.dueDate)
-    return dueDate <= currentDate
-  })
-
-  const booksToDisplay = filter === "borrowed" ? borrowedBooks : overdueBooks //do setFilter(".....") to change
   const [email, setEmail] = useState("")
   const [borrowedBookId, setBorrowedBookId] = useState("")
 
@@ -44,11 +31,24 @@ const Catalog = () => {
     dispatch(toggleReturnBookPopup())
   }
 
+  //pagination place 1
+  const [page, setPage] = useState(1)
+  //
+
+  //pagination place 2
+  const changePage = (event, value) => {
+    dispatch(fetchAllBorrowedBooks(value, filter))
+
+    setPage(value)
+
+  }
+  //
+
   useEffect(() => {
     if (message) {
       toast.success(message)
       dispatch(fetchAllBooks())
-      dispatch(fetchAllBorrowedBooks())
+      dispatch(fetchAllBorrowedBooks(page, filter))
       dispatch(resetBookSlice())
       dispatch(resetBorrowSlice())
     }
@@ -67,7 +67,7 @@ const Catalog = () => {
       {/* header 2 */}
 
       <header className="flex flex-col gap-3 sm:flex-row md:items-center">
-        <button onClick={() => setFilter("borrowed")}
+        <button onClick={() => { setFilter("borrowed"); dispatch(fetchAllBorrowedBooks(1, "borrowed")) }}
           className={`relative rounded sm:rounded-br-none sm:rounded-tr-none sm:rounded-tl-lg 
           sm:rounded-bl-lg text-center border-2 font-semibold py-2 w-full sm:w-72 ${filter === "borrowed" ?
               "bg-black text-white border-black"
@@ -78,7 +78,7 @@ const Catalog = () => {
 
         </button>
 
-        <button onClick={() => setFilter("overdue")}
+        <button onClick={() => { setFilter("overdue"); dispatch(fetchAllBorrowedBooks(1, "overdue")) }}
           className={`relative rounded sm:rounded-bl-none sm:rounded-tl-none sm:rounded-tr-lg 
           sm:rounded-br-lg text-center border-2 font-semibold py-2 w-full sm:w-72 ${filter === "overdue" ?
               "bg-black text-white border-black"
@@ -96,7 +96,7 @@ const Catalog = () => {
       {/* data */}
 
       {
-        booksToDisplay && booksToDisplay?.length > 0 ? (
+        allBorrowedBooks && allBorrowedBooks?.length > 0 ? (
           <div className="mt-6 overflow-auto bg-white rounded-md shadow-lg">
 
             <table className="min-w-full border-collapse">
@@ -118,7 +118,7 @@ const Catalog = () => {
 
               <tbody>
                 {
-                  booksToDisplay?.map((book, index) => (
+                  allBorrowedBooks?.map((book, index) => (
                     <tr key={index} className={(index + 1) % 2 == 0 ? "bg-gray-50" : ""}>
                       <td className="px-4 py-2">{index + 1}</td>
                       <td className="px-4 py-2">{book?.user?.name}</td>
@@ -130,7 +130,8 @@ const Catalog = () => {
                       <td className="px-4 py-2">
                         {
                           book?.returnedDate ? (
-                            <FaSquareCheck className="w-6 h-6" />
+                            // <FaSquareCheck className="w-6 h-6" />
+                            "Returned"
                           ) : (
                             <PiKeyReturnBold className="w-6 h-6"
                               onClick={() => openReturnBookPopup(book?.book, book?.user?.email)} />
@@ -144,6 +145,13 @@ const Catalog = () => {
               </tbody>
 
             </table>
+            {/* pagination */}
+            <div className="flex justify-center p-3">
+              <Stack spacing={2}>
+                <Pagination color="primary" onChange={changePage} page={page} count={pageCount} />
+              </Stack>
+            </div>
+            {/* pagination ends */}
 
           </div>
         ) : (

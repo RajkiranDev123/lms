@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+
 import { useDispatch } from "react-redux"
 import { toggleReadBookPopup } from "../store/slices/popUpSlice"
+import QRCode from "react-qr-code"
 
 const ReadBookPopup = ({ book }) => {
   // console.log("book from readBookPopup ==> ",book)
@@ -33,10 +34,15 @@ const ReadBookPopup = ({ book }) => {
             <p className='border border-gray-300 rounded-lg px-4 py-2 bg-gray-100'>{book && book?.description}</p>
           </div>
 
+          <div className='mb-4 flex justify-center'>
+            <QRCode style={{ height: 80, width: 80 }}
+              value={`Title : ${book && book?.title}, Author : ${book && book?.author}, Description : ${book && book?.description}`} />
+          </div>
+
         </div>
 
         <div className='flex justify-end px-6 py-4 bg-gray-100 rounded-b-lg'>
-          <button type='button' onClick={()=>dispatch(toggleReadBookPopup())} className='px-4 py-2 bg-gray200 rounded-md hover:bg-gray-300'>
+          <button type='button' onClick={() => dispatch(toggleReadBookPopup())} className='px-4 py-2 bg-gray200 rounded-md hover:bg-gray-300'>
             Close
           </button>
         </div>

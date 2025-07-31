@@ -15,6 +15,7 @@ import RecordBookPopup from "../popups/RecordBookPopup"
 
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+
 import DeleteBookPopup from "../popups/DeleteBookPopup";
 
 
@@ -99,7 +100,7 @@ const BookManagement = () => {
 
             <button onClick={() => dispatch(toggleAddBookPopup())}
               className="relative pl-14 w-full sm:w-52 flex gap-4 justify-center items-center py-2 px-4
-             bg-black text-white rounded-md hover:bg-gray-800"
+             bg-blue-600 text-white rounded-md hover:bg-gray-800"
             >
               <span className="bg-white flex justify-center items-center overflow-hidden rounded-full
                text-black w-[25px] h-[25px] text-[27px] absolute left-5">
@@ -141,7 +142,7 @@ const BookManagement = () => {
                   <th className="px-4 py-2 text-left">Price</th>
                   <th className="px-4 py-2 text-left">Availability</th>
                   {isAuthenticated && user?.role === "Admin" && (
-                    <th className="px-4 py-2 text-center">Record Book</th>
+                    <th className="px-4 py-2 text-center">View/Record/Delete</th>
                   )}
                 </tr>
               </thead>
@@ -170,11 +171,13 @@ const BookManagement = () => {
                 }
               </tbody>
             </table>
+            {/* pagination */}
             <div className="flex justify-center p-3">
               <Stack spacing={2}>
                 <Pagination color="primary" onChange={changePage} page={page} count={pageCount} />
               </Stack>
             </div>
+            {/* pagination ends */}
 
 
           </div>

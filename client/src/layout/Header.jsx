@@ -35,11 +35,11 @@ const Header = () => {
     <header className="absolute top-0 bg-white w-full py-4 px-6 left-0 shadow-md flex justify-between items-center">
       {/* left side */}
       <div className="flex items-center gap-2">
-        <img src={userIcon} alt="userIcon" className="w-4 h-4" />
 
         <div className="flex flex-col">
 
-          <span className="text-sm font-medium sm:text-lg lg:text-sm sm:font-semibold italic">
+          <span className="text-sm font-medium sm:text-lg lg:text-sm sm:font-semibold italic flex items-center">
+            <img src={userIcon} alt="userIcon" className="w-3 h-3 inline-block" />&nbsp;
             hi, {user && user?.name?.[0]?.toUpperCase() + user?.name?.slice(1)}
           </span>
 

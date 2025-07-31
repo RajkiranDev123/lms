@@ -1,9 +1,9 @@
-import  { useState, useEffect, useRef } from "react";
-import adminIcon from "../assets/pointing.png";
+import { useState, useEffect, useRef } from "react";
+import { GrUserAdmin } from "react-icons/gr";
 import avatarHolder from "../assets/placeholder.jpg";
 
-import usersIcon from "../assets/people-black.png";
-import bookIcon from "../assets/book-square.png";
+
+import { SiBookstack } from "react-icons/si";
 import { Pie } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import QRCode from "react-qr-code"
@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import logo from "../assets/black-logo.svg";
 import Header from "../layout/Header";
+import { FaUsers } from "react-icons/fa";
 // import downloadPdf from "../utils/downloadAsPdf.js";
 // import { FaRegFilePdf } from "react-icons/fa";
 
@@ -64,9 +65,9 @@ const AdminDashboard = () => {
       <div className="flex flex-col-reverse xl:flex-row">
 
         {/* ls */}
-        <div   className="flex-[2] flex-col gap-7 lg:flex-row flex lg:items-center 
+        <div className="flex-[2] flex-col gap-7 lg:flex-row flex lg:items-center 
         xl:flex-col justify-between xl:gap-20 py-5">
-          <div  className="xl:flex-[4] flex items-end w-full content-center">
+          <div className="xl:flex-[4] flex items-end w-full content-center">
             <Pie
               data={data}
               options={{ cutout: 0 }}
@@ -102,7 +103,7 @@ const AdminDashboard = () => {
               <div className="flex items-center gap-3 bg-white p-5 max-h-[120px] overflow-y-hidden 
                rounded-lg transition hover:shadow-inner duration-200 w-full lg:max-w-[360px]">
                 <span className="bg-gray-300 h-20 min-w-20 flex justify-center items-center rounded-lg">
-                  <img className="w-8 h-8" src={usersIcon} alt="usersIcon" />
+                  <FaUsers />
                 </span>
                 <span className="w-[2px] bg-black h-20 lg:h-full"></span>
 
@@ -116,7 +117,7 @@ const AdminDashboard = () => {
               <div className="flex items-center gap-3 bg-white p-5 max-h-[120px] overflow-y-hidden 
                rounded-lg transition hover:shadow-inner duration-200 w-full lg:max-w-[360px]">
                 <span className="bg-gray-300 h-20 min-w-20 flex justify-center items-center rounded-lg">
-                  <img className="w-8 h-8" src={bookIcon} alt="bookIcon" />
+                  <SiBookstack />
                 </span>
                 <span className="w-[2px] bg-black h-20 lg:h-full"></span>
 
@@ -136,7 +137,7 @@ const AdminDashboard = () => {
                rounded-lg transition hover:shadow-inner duration-200 w-full lg:max-w-[360px]">
 
                 <span className="bg-gray-300 h-20 min-w-20 flex justify-center items-center rounded-lg">
-                  <img className="w-8 h-8" src={adminIcon} alt="adminIcon" />
+                  <GrUserAdmin />
                 </span>
                 <span className="w-[2px] bg-black h-20 lg:h-full"></span>
 
@@ -149,7 +150,7 @@ const AdminDashboard = () => {
               <div className="flex flex-col items-center gap-2">
                 <QRCode style={{ height: 80, width: 80 }}
                   value={`Total Users : ${totalUsers}, Total Books : ${totalBooks}, Total Admins : ${totalAdmins}`} />
-                  <p className="text-gray-500 text-sm">Scan and Share!</p>
+                <p className="text-gray-500 text-sm">Scan and Share!</p>
               </div>
 
               {/*  */}
@@ -160,7 +161,7 @@ const AdminDashboard = () => {
               <div className="flex flex-col lg:flex-row flex-1 items-center justify-center">
                 <div className="bg-white p-2 rounded-lg shadow-lg h-full flex flex-col justify-center items-center gap-4">
                   <img src={(user && user?.avatar?.url) || avatarHolder} alt="avatar" className="rounded-full w-32 h-32 object-cover" />
-                  <h2>hi, {user && user?.name}</h2>
+                  <h2>hi, {user && user?.name?.[0]?.toUpperCase() + user?.name?.slice(1)}</h2>
                   <p className="text-gray-800 text-sm 2xl:text-base text-center">Welcome ! Now Manage all the settings and monitor the statistics!</p>
 
                 </div>

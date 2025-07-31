@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux"
+import  { useState, useEffect } from "react";
+import { useSelector } from "react-redux"
 import Header from "../layout/Header"
 
 import logo_with_title from "../assets/logo-with-title-black.svg";
 import returnIcon from "../assets/redo.png";
-import browseIcon from "../assets/pointing.png";
+
 import bookIcon from "../assets/book-square.png";
-import { Link } from "react-router-dom"
+
 
 import { Pie } from "react-chartjs-2";
 

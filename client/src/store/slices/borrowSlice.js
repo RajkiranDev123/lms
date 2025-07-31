@@ -10,7 +10,8 @@ const borrowSlice = createSlice({
         message: null,
 
         userBorrowedBooks: [],
-        allBorrowedBooks: []
+        allBorrowedBooks: [],
+        pageCount:null
 
     },
     reducers: {
@@ -53,7 +54,8 @@ const borrowSlice = createSlice({
         },
         fetchAllBorrowedBooksSuccess(state, action) {
             state.loading = false
-            state.allBorrowedBooks = action.payload
+            state.allBorrowedBooks = action.payload.allBorrowedBooks
+            state.pageCount=action.payload.pageCount
 
         },
         fetchAllBorrowedBooksFailed(state, action) {
@@ -99,12 +101,19 @@ export const fetchUserBorrowedBooks = () => async (dispatch) => {
         })
 }
 
-export const fetchAllBorrowedBooks = () => async (dispatch) => {
+export const fetchAllBorrowedBooks = (page,filter) => async (dispatch) => {
     dispatch(borrowSlice.actions.fetchAllBorrowedBooksRequest())
     await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/borrowed-books-by-users`)
+        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/all-borrowed-books-by-users`,
+            {
+                headers:{
+                    "page":page,
+                    "filter":filter
+                }
+            }
+        )
         .then(res => {
-            dispatch(borrowSlice.actions.fetchAllBorrowedBooksSuccess(res?.data?.allBorrowedBooks))
+            dispatch(borrowSlice.actions.fetchAllBorrowedBooksSuccess(res?.data))
         })
         .catch(err => {
             dispatch(borrowSlice.actions.fetchAllBorrowedBooksFailed(err?.response?.data?.message))
