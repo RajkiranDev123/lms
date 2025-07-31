@@ -38,6 +38,7 @@ const BookManagement = () => {
 
   const [borrowBookId, setBorrowBookId] = useState("")
   const openRecordBookPopup = (bookId) => {
+  
     setBorrowBookId(bookId)
     dispatch(toggleRecordBookPopup())
   }

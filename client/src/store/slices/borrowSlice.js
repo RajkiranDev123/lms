@@ -111,10 +111,10 @@ export const fetchAllBorrowedBooks = () => async (dispatch) => {
         })
 }
 
-export const recordBorrowBook = (email, id) => async (dispatch) => {
+export const recordBorrowBook = (email, bookId) => async (dispatch) => {
     dispatch(borrowSlice.actions.recordBookRequest())
     await axios
-        .post(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/record-borrow-book/${id}`, { email }, {
+        .post(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/record-borrow-book/${bookId}`, { email }, {
             headers: {
                 "Content-Type": "application/json"
             }
