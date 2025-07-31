@@ -139,14 +139,34 @@ export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
 
 ////////////////////////////////////////////// return entire docs from Borrow Collection //////////////////////////////////////////////////////////////
 
-export const getBorrowedBooksForAdmin = catchAsyncErrors(async (req, res, next) => {
+export const getAllBorrowedBooksByUsersForAdmin = catchAsyncErrors(async (req, res, next) => {
+    const page = req.headers.page || 1
+    const filter = req.headers.filter || "borrowed"
+
+    const ITEM_PER_PAGE = 5
+    const now = new Date()
+    let query = {};
+    if (filter == "borrowed") {
+        query = {
+            dueDate: { $gt: now }
+        };
+    }
+    if (filter == "overdue") {
+        query = {
+            dueDate: { $lt: now }
+        };
+    }
 
     try {
-        const allBorrowedBooks = await BorrowModel.find()
+        const totalDocs = await BorrowModel.countDocuments(query)
+        const pageCount = Math.ceil(totalDocs / ITEM_PER_PAGE)//pageCount is total pages 8/4=2 pages
+        const skip = (page - 1) * ITEM_PER_PAGE
+        const allBorrowedBooks = await BorrowModel.find(query).skip(skip).limit(ITEM_PER_PAGE)
         return res.status(200).json({
             success: true,
             allBorrowedBooks,
-            message: "All borrowed books by all users!"
+            message: "All borrowed books by all users for admin!",
+            pageCount
         })
     } catch (error) {
         return next(new ErrorHandler(error?.message || "Internal Server Error", 500))
