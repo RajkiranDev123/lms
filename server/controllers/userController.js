@@ -7,10 +7,17 @@ import { v2 as cloudinary } from "cloudinary"
 
 export const getAllUsers = catchAsyncErrors(
     async (req, res, next) => {
+        const page = req.headers.page || 1
+        const ITEM_PER_PAGE = 5
+
         try {
-            const users = await UserModel.find({ accountVerified: true })
-            res.status(200).json({
-                success: true, users, message: "All users fetched!"
+            const totalDocs = await UserModel.countDocuments({ accountVerified: true })
+            const pageCount = Math.ceil(totalDocs / ITEM_PER_PAGE)
+            const skip = (page - 1) * ITEM_PER_PAGE
+
+            const users = await UserModel.find({ accountVerified: true }).skip(skip).limit(ITEM_PER_PAGE)
+            return res.status(200).json({
+                success: true, users, message: "All users fetched!", pageCount
             })
         } catch (error) {
             return next(new ErrorHandler("Internal Server Error!", 500))
@@ -36,7 +43,7 @@ export const registerNewAdmin = catchAsyncErrors(
             if (password.length < 8 || password.length > 16) return next(new ErrorHandler("Password must be betn 8 & 16 characters!", 400))
 
             const { avatar } = req.files
-            console.log("req.files ==> ",req.files)
+            console.log("req.files ==> ", req.files)
 
             const allowedFormats = ["image/png", "image/jpeg", "image/webp"]
             if (!allowedFormats.includes(avatar.mimetype)) return next(new ErrorHandler("File format not supported!", 400))
