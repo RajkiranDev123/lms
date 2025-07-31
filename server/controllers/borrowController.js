@@ -125,11 +125,26 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 ///////////////////////////////////////////////get borrowedBooks of respective user//////////////////////////////////////////////////
 
 export const borrowedBooks = catchAsyncErrors(async (req, res, next) => {
+    const page = req.headers.page || 1
+    const filter = req.headers.filter || "returned"
+
+    const ITEM_PER_PAGE = 5
 
     try {
-        const { borrowedBooks } = req.user
+        const { borrowedBooks } = req.user;
+
+        const filteredBooks = borrowedBooks.filter(book => {
+            return filter === "returned" ? book.returned === true : book.returned === false;
+        });
+
+        const totalDocs = filteredBooks.length;
+        const pageCount = Math.ceil(totalDocs / ITEM_PER_PAGE);
+        const skip = (page - 1) * ITEM_PER_PAGE;
+
+        const paginatedBooks = filteredBooks?.slice(skip, skip + ITEM_PER_PAGE);
+
         return res.status(200).json({
-            success: true, borrowedBooks, message: "all borrowed books of a user!"
+            success: true, borrowedBooks: paginatedBooks, message: "All borrowed books of a user!", pageCount
         })
     } catch (error) {
         return next(new ErrorHandler(error?.message || "Internal Server Error", 500))

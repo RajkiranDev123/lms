@@ -34,10 +34,13 @@ export const getAllBooks = catchAsyncErrors(async (req, res, next) => {
         const pageCount = Math.ceil(totalDocs / ITEM_PER_PAGE)//pageCount is total pages 8/4=2 pages
         const skip = (page - 1) * ITEM_PER_PAGE
 
+        const nonPaginatedBooks = await BookModel.find()
+
+
         const books = await BookModel.find(query).skip(skip).limit(ITEM_PER_PAGE)
 
         res.status(200).json({
-            success: true, message: "All books fetched successfully!", books, pagination: { pageCount, totalBooks: totalDocs }
+            success: true, message: "All books fetched successfully!", nonPaginatedBooks, books, pagination: { pageCount, totalBooks: totalDocs }
         })
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error", 500))
