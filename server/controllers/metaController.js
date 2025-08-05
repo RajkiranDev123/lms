@@ -9,9 +9,6 @@ import { UserModel } from "../models/userModel.js";
 import csv from "fast-csv"
 import fs from "fs"
 
-
-
-
 export const getMetaUser = catchAsyncErrors(async (req, res, next) => {
     const userId = req.user._id;
     const dateRange = req.headers["date-range"];
@@ -25,44 +22,42 @@ export const getMetaUser = catchAsyncErrors(async (req, res, next) => {
     }
 
     try {
-        const user = await UserModel.findById(userId).select("borrowedBooks");
-
-        if (!user) {
-            return next(new ErrorHandler("User not found", 404));
-        }
-
-        // Filter borrowed books by date range if provided
-        const filteredBooks = user.borrowedBooks.filter(book => {
-            if (!startDate || !endDate) return true;
-            const borrowedDate = new Date(book.borrowedDate);
-            return borrowedDate >= startDate && borrowedDate <= endDate;
-        });
-
         const now = new Date();
 
-        // Count books based on status
-        const returnedCounts = filteredBooks.filter(book => book.returned === true).length;
-        const notReturnedCounts = filteredBooks.filter(book => book.returned === false).length;
+        const query = {
+            "user.id": userId,
+        };
 
-        const overdueCounts = filteredBooks.filter(book =>
-            book.returned === false && new Date(book.dueDate) < now
-        ).length;
+        if (startDate && endDate) {
+            query.borrowDate = { $gte: startDate, $lte: endDate };
+        }
 
-        res.status(200).json({
+        const borrowRecords = await BorrowModel.find(query).select("returnedDate dueDate fine");
+
+        const total = borrowRecords.length;
+        const returned = borrowRecords.filter(b => b.returnedDate !== null).length;
+        const notReturned = borrowRecords.filter(b => b.returnedDate === null).length;
+        const overdue = borrowRecords.filter(b => !b.returnedDate && new Date(b.dueDate) < now).length;
+        const fine = borrowRecords.filter(b => b.fine > 0).length;
+
+        return res.status(200).json({
             success: true,
             counts: {
-                total: filteredBooks.length,
-                returned: returnedCounts,
-                notReturned: notReturnedCounts,
-                overdue: overdueCounts,
+                total,
+                returned,
+                notReturned,
+                overdue,
+                fine,
             },
-            message: "Borrowed book counts with return and overdue status fetched successfully!",
+            message: "Borrow stats fetched successfully!",
         });
 
     } catch (error) {
-        return next(new ErrorHandler(error?.message || "Internal Server Error!", 500));
+        return next(new ErrorHandler(error?.message || "Internal Server Error", 500));
     }
 });
+
+
 
 
 
