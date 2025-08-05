@@ -1,145 +1,202 @@
-import  { useState, useEffect } from "react";
-import { useSelector } from "react-redux"
+
+import { useEffect, useState } from "react";
 import Header from "../layout/Header"
+import { fetchMetaDataUser } from "../store/slices/metaSlice"
+import { useSelector, useDispatch } from "react-redux";
+import { IoMdReturnLeft } from "react-icons/io";
+import { GiTireIronCross } from "react-icons/gi";
+import { FcStatistics } from "react-icons/fc";
+import QRCode from "react-qr-code"
 
-import logo_with_title from "../assets/logo-with-title-black.svg";
-import returnIcon from "../assets/redo.png";
+import { TbFilterDown } from "react-icons/tb";
+import DateRange from "../components/DateRange"
+import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
+import { CgLastpass } from "react-icons/cg";
+import "./loader2.css"
 
-import bookIcon from "../assets/book-square.png";
 
-
-import { Pie } from "react-chartjs-2";
-
-import {
-  Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement
-} from "chart.js";
-import logo from "../assets/black-logo.svg";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement);
 
 const UserDashboard = () => {
-  const { settingPopup } = useSelector(state => state.popup)
-  const { booksCount } = useSelector(state => state.book)
+  const dispatch = useDispatch()
 
-  const { userBorrowedBooks } = useSelector(state => state.borrow)
-  const [totalBorrowedBooks, setTotalBorrowedBooks] = useState(0)
-  const [totalReturnedBooks, setTotalReturnedBooks] = useState(0)
+  const { metaData, loading } = useSelector((state) => state.meta);
+
+  const [data, setData] = useState([])
+  useEffect(() => {
+    console.log(metaData)
+    dispatch(fetchMetaDataUser())
+  }, [])
 
   useEffect(() => {
+    let successRate = ((metaData?.returned / metaData?.total) * 100).toFixed(2);
+    let failureRate = (100 - successRate).toFixed(2);
+    const data = [
+      { value: successRate, label: "Success" },
+      { value: failureRate, label: "Failure" },
 
-    let numberOfTotalBorrowedBooks = userBorrowedBooks?.filter(book => book.returned === false)
-    let numberOfTotalReturnedBooks = userBorrowedBooks?.filter(book => book.returned === true)
-    setTotalBorrowedBooks(numberOfTotalBorrowedBooks.length)
-    setTotalReturnedBooks(numberOfTotalReturnedBooks.length)
+    ];
+    setData(data)
 
+  }, [metaData])
 
-  }, [userBorrowedBooks])
-
-  const data = {
-    labels: ["Total Borrowed Books", "Total Returned Books"],
-    datasets: [
-      {
-        data: [totalBorrowedBooks, totalReturnedBooks],
-        backgroundColor: ["red", "green"],
-        hoverOffset: 4
-      }
-    ]
-  }
-
+  const handleFetchMeta = (arg) => {
+    dispatch(fetchMetaDataUser(arg))
+  };
   return <>
     <main className="relative flex-1 p-6 pt-28">
       <Header />
 
-      <div className="flex flex-col-reverse xl:flex-row">
-        {/* left side */}
-        <div className="flex flex-[4] flex-col gap-7 lg:gap-7 lg:py-5 justify-between xl:min-h-[85.5vh] ">
-          <div className="flex flex-col gap-7 flex-[4]">
-
-            <div className="flex flex-col lg:flow-row gap-1 overflow-y-hidden">
-
-              <div className="flex items-center gap-3 bg-white p-1 min-h-[60px] overflow-y-hidden rounded-lg 
-              transition hover:shadow-inner duration-300">
-                <span className="w-[2px] bg-black h-5 lg:h-full"></span>
-                <span className="bg-gray-300 h-8 lg:h-full min-w-20 flex justify-center items-center rounded-lg">
-                  <img src={bookIcon} alt="book" className="w-5 h-5" />
-                </span>
-                <p>Your Borrowed Books : <span className="font-semibold">{totalBorrowedBooks}</span> </p>
-              </div>
-
-              {/*  */}
-              <div className="flex items-center gap-3 bg-white p-1 min-h-[60px] overflow-y-hidden rounded-lg 
-              transition hover:shadow-inner duration-300">
-                <span className="w-[2px] bg-black h-5 lg:h-full"></span>
-                <span className="bg-gray-300 h-8 lg:h-full min-w-20 flex justify-center items-center rounded-lg">
-                  <img src={returnIcon} alt="book" className="w-5 h-5" />
-                </span>
-                <p>Your Returned Books : <span className="font-semibold">{totalReturnedBooks}</span>  </p>
-              </div>
-
-            </div>
-
-            <div className="flex flex-col lg:flex-row gap-7">
-
-              <div className="flex items-center gap-3 bg-white p-3 max-h-[60px] overflow-y-hidden rounded-lg 
-              transition hover:shadow-inner duration-300">
-                <span className="w-[2px] bg-black h-20 lg:h-full"></span>
-                <span className="bg-gray-300 h-20 lg:h-full min-w-20 flex justify-center items-center rounded-lg">
-                  {/* <img src={browseIcon} alt="book" className="w-8 h-8" /> */}⌸
-                </span>
-                <p> Total books in our inventory : <span className="font-semibold">{booksCount}</span> </p>
-              </div>
-              <img style={{ height: "100px" }} src={logo_with_title} alt="logo" className="hidden lg:block width-auto justify-end" />
-            </div>
-
-          </div>
-
-          <div className="bg-white p-1 text-sm sm:text-xl xl:text-xl 2xl:text-2xl min-h-10 font-semibold relative flex-[3] flex justify-center
-           items-center rounded-2xl">
-            <h4 className="overflow-y-hidden">"Welcome to LMS!"</h4>
-            {/* <p className="text-gray-700 text-sm sm:text-lg absolute right-[35px] sm:right-[78px] bottom-[10px]  ">~ Raj Team</p> */}
-
-          </div>
-        </div>
-
-        {/* left side */}
+      <p style={{
+        background: "black",
+        color: "white", display: "flex", alignItems: "center", marginTop: 12
+        , borderRadius: 3, paddingLeft: 3, borderBottom: "2px ridge grey",
+        boxShadow: "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset"
+      }}>  <FcStatistics style={{ height: 22 }} /> &nbsp;Borrowed Info</p>
 
 
-        {/* right side */}
-        <div className="flex-[2] flex-col gap-7 lg:flex-row flex lg:items-center xl:flex-col justify-between xl:gap-20 py-3">
 
-          <div className="xl:flex-[4] flex items-end w-full content-center">
-            <Pie
-              data={data}
-              options={{ cutout: 0 }}
-              className="mx-auto lg:mx-0 w-full h-auto"
-            />
-          </div>
+      {/* meta starts */}
+      {Object?.keys(metaData)?.length > 0 ? <div style={{
+        display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 10, background: "white",
+        boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", margin: 5, padding: 4
+      }}>
 
-          <div className="flex items-center p-1 w-full sm:w-[400px] xl:w-fit mr-55 xl:p-3 2xl:p-6 gap-5 h-fit
-           xl:min-h-[150px] bg-white xl:flex-1 rounded-lg">
-            <img src={logo} alt="logo " className="w-auto h-10 2xl:h-10" />
-            <span className="w-[2px] bg-black h-full"></span>
 
-            <div className="flex flex-col gap-5">
-              <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[red]"></span>
-                <span>Total Borrowed Books</span>
-              </p>
-              <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[green]"></span>
-                <span>Total Returned Books</span>
-              </p>
-            </div>
 
-          </div>
+        {/* pie */}
+        <div
+          style={{
+            // boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 160,
+            height: 160,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+
+          <PieChart
+            hideLegend
+            colors={["blue", "black"]}
+
+            series={[
+              {
+                arcLabel: (item) => `${item.value} %`,
+                arcLabelMinAngle: 45,
+                data,
+                valueFormatter: (item) => `${item.value}%`,
+
+              },
+            ]}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: "white",
+                fontWeight: "",
+                fontSize: 10
+              },
+            }}
+
+            width={100}
+            height={100}
+          />
+          <p style={{ color: "blue", fontSize: 12, textAlign: "center" }}>Success %</p>
+          <p style={{ color: "black", fontSize: 12, textAlign: "center" }}>Failure %</p>
 
         </div>
+        {/* pie ends*/}
 
+        {/* returned counts */}
+        <div
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 195,
+            height: 60,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+          <p style={{ fontFamily: "monospace", fontSize: 14, textAlign: "center", display: "flex", alignItems: "center", gap: 1, color: "grey" }}>
+            <IoMdReturnLeft />Returned &nbsp;  </p>
+          <p style={{ fontSize: 14, textAlign: "center" }}>
+            {metaData?.returned} </p>
+        </div>
+        {/* returned counts */}
 
-        {/* right side */}
+        {/* not returned counts*/}
+        <div
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 195,
+            height: 60,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+          <p style={{ fontFamily: "monospace", fontSize: 14, textAlign: "center", display: "flex", alignItems: "center", gap: 1, color: "grey" }}>
+            <GiTireIronCross />&nbsp;Not Returned&nbsp;  </p>
+          <p style={{ fontSize: 14, textAlign: "center" }}>
+            {metaData?.notReturned} </p>
+        </div>
+        {/* not returned counts ends*/}
 
+        {/* over due counts*/}
+        <div
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 195,
+            height: 60,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+          <p style={{ fontFamily: "monospace", fontSize: 14, textAlign: "center", display: "flex", alignItems: "center", gap: 1, color: "grey" }}>
+            <CgLastpass />&nbsp;Overdue&nbsp;  </p>
+          <p style={{ fontSize: 14, textAlign: "center" }}>
+            {metaData?.overdue} </p>
+        </div>
+        {/* overdue counts ends*/}
 
+      </div> : <div style={{ display: "flex", justifyContent: "center", }}><div className="loader2"></div></div>}
+      {/* meta ends */}
+
+      {/* qr and pdf */}
+      <p style={{ color: "grey", fontSize: 14 }}>Share the info!</p>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-evenly", flexWrap: "wrap", gap: 2, margin: 8 }}>
+        {/* qr */}
+        <QRCode style={{ height: 80, width: 100 }}
+          value={
+            `Returned : ${metaData?.returned}, Not Returned : ${metaData?.notReturned}, Overdue : ${metaData?.overdue}`
+          } />
+
+        {/* qr  ends*/}
       </div>
+
+      {/* qr and pdf ends*/}
+
+      {/* date range */}
+      <div style={{ border: "1px solid grey", borderRadius: 4, padding: 3 }}>
+        <p style={{
+          fontFamily: "monospace", textDecoration: "", display: "flex",
+          alignItems: "center", gap: 1, marginBottom: 3, color: "grey", fontSize: 14
+        }}><TbFilterDown />Date-Range Filter </p>
+        <div style={{ marginTop: 2 }}>
+          <DateRange handleFetchMeta={handleFetchMeta} />
+        </div>
+      </div>
+      {/* date range ends*/}
+
+      {/* loader */}
+      {loading && <div style={{ display: "flex", justifyContent: "center", margin: 5 }}><div style={{ color: "red" }} className="loader2"></div></div>}
+
+
+      {/*  */}
 
     </main>
 

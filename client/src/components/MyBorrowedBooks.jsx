@@ -105,7 +105,7 @@ const MyBorrowedBooks = () => {
                 <tr className="bg-gray-200">
                   <th className="px-4 py-2 text-left">ID</th>
                   <th className="px-4 py-2 text-left">Book Title</th>
-                  <th className="px-4 py-2 text-left">Date & Time</th>
+                  <th className="px-4 py-2 text-left">Borrowed Date</th>
                   <th className="px-4 py-2 text-left">Due Date</th>
                   <th className="px-4 py-2 text-left">Returned?</th>
                   <th className="px-4 py-2 text-left">View</th>

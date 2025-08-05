@@ -1,0 +1,12 @@
+.loader2 {
+  width: 25px;
+  height: 50px;
+  aspect-ratio: 4;
+  background: radial-gradient(circle closest-side,#c40606 90%,#decece00) 0/calc(100%/3) 100% space;
+  clip-path: inset(0 100% 0 0);
+  animation: l1 1s steps(4) infinite;
+}
+@keyframes l1 {to{clip-path: inset(0 -34% 0 0)}}
+
+
+
