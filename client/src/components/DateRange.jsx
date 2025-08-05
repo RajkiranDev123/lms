@@ -29,7 +29,11 @@ const DateRange = ({ handleFetchMeta }) => {
     return (<>
 
 
-        <div style={{ display: "flex", gap: 5, flexWrap: "wrap", justifyContent: "space-between",background:"" }}>
+        <div style={{
+            display: "flex", gap: 5, flexWrap: "wrap",
+            justifyContent: "center", background: "",
+
+        }}>
             <div>
                 {/* start */}
 

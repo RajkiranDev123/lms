@@ -22,6 +22,8 @@ const UserDashboard = () => {
   const { metaData, loading } = useSelector((state) => state.meta);
 
   const [data, setData] = useState([])
+  const [dataOverdue, setDataOverdue] = useState([])
+
   useEffect(() => {
     console.log(metaData)
     dispatch(fetchMetaDataUser())
@@ -29,13 +31,29 @@ const UserDashboard = () => {
 
   useEffect(() => {
     let successRate = ((metaData?.returned / metaData?.total) * 100).toFixed(2);
-    let failureRate = (100 - successRate).toFixed(2);
-    const data = [
+    let failureRate = ((metaData?.notReturned / metaData?.total) * 100).toFixed(2);
+
+
+    const dataReturned = [
       { value: successRate, label: "Success" },
       { value: failureRate, label: "Failure" },
 
     ];
-    setData(data)
+    setData(dataReturned)
+    // overdue
+
+    const successRateOverdue = ((metaData?.fine / metaData?.returned) * 100).toFixed(2); // books fined out of overdue
+    const failureRateOverdue = ((metaData?.overdue / metaData?.notReturned) * 100).toFixed(2); // not fined
+    console.log(787, failureRateOverdue)
+    console.log(7852, successRateOverdue)
+
+    const data2 = [
+      { value: successRateOverdue, label: "Success" },
+      { value: failureRateOverdue, label: "Failure" },
+
+    ];
+
+    setDataOverdue(data2)
 
   }, [metaData])
 
@@ -63,7 +81,7 @@ const UserDashboard = () => {
 
 
 
-        {/* pie */}
+        {/* pie1 */}
         <div
           style={{
             // boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
@@ -76,7 +94,7 @@ const UserDashboard = () => {
           }}
         >
 
-          <PieChart
+          {data?.length > 0 && <PieChart
             hideLegend
             colors={["blue", "black"]}
 
@@ -99,12 +117,55 @@ const UserDashboard = () => {
 
             width={100}
             height={100}
-          />
-          <p style={{ color: "blue", fontSize: 12, textAlign: "center" }}>Success %</p>
-          <p style={{ color: "black", fontSize: 12, textAlign: "center" }}>Failure %</p>
+          />}
+          <p style={{ color: "blue", fontSize: 12, textAlign: "center" }}>Returned  %</p>
+          <p style={{ color: "black", fontSize: 12, textAlign: "center" }}>Not Returned  %</p>
 
         </div>
-        {/* pie ends*/}
+        {/* pie1 ends*/}
+
+        {/* pie 2*/}
+        {dataOverdue?.length > 0 && <div
+          style={{
+            // boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 180,
+            height: 160,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+
+          {dataOverdue?.length > 0 && <PieChart
+            hideLegend
+            colors={["blue", "black"]}
+
+            series={[
+              {
+                arcLabel: (item) => `${item.value} %`,
+                arcLabelMinAngle: 45,
+                data: dataOverdue,
+                valueFormatter: (item) => `${item.value}%`,
+
+              },
+            ]}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: "white",
+                fontWeight: "",
+                fontSize: 10
+              },
+            }}
+
+            width={100}
+            height={100}
+          />}
+          <p style={{ color: "blue", fontSize: 12, textAlign: "center" }}>Overdue fined  %</p>
+          <p style={{ color: "black", fontSize: 12, textAlign: "center" }}>Overdue Not Returned  %</p>
+
+        </div>}
+        {/* pie2 ends*/}
 
         {/* returned counts */}
         <div
@@ -163,6 +224,25 @@ const UserDashboard = () => {
         </div>
         {/* overdue counts ends*/}
 
+        {/* fined counts*/}
+        <div
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 195,
+            height: 60,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+          <p style={{ fontFamily: "monospace", fontSize: 14, textAlign: "center", display: "flex", alignItems: "center", gap: 1, color: "grey" }}>
+            <CgLastpass />&nbsp;Fined Returned&nbsp;  </p>
+          <p style={{ fontSize: 14, textAlign: "center" }}>
+            {metaData?.fine} </p>
+        </div>
+        {/* fined counts ends*/}
+
       </div> : <div style={{ display: "flex", justifyContent: "center", }}><div className="loader2"></div></div>}
       {/* meta ends */}
 
@@ -181,7 +261,10 @@ const UserDashboard = () => {
       {/* qr and pdf ends*/}
 
       {/* date range */}
-      <div style={{ border: "1px solid grey", borderRadius: 4, padding: 3 }}>
+      <div style={{
+        border: "0px solid grey", borderRadius: 4, padding: 3,
+        boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+      }}>
         <p style={{
           fontFamily: "monospace", textDecoration: "", display: "flex",
           alignItems: "center", gap: 1, marginBottom: 3, color: "grey", fontSize: 14
