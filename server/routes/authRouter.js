@@ -1,5 +1,5 @@
 import express from "express"
-import { register, verifyOtp, login, logout ,getUser,forgotPassword,resetPassword,updatePassword} from "../controllers/authController.js"
+import { register, verifyOtp, login, logout ,getUser,forgotPassword,resetPassword,updatePassword,refreshAccessToken} from "../controllers/authController.js"
 import { isAuthenticated } from "../middlewares/authMiddleware.js"
 const router = express.Router()
 
@@ -11,6 +11,8 @@ router.get("/me",isAuthenticated, getUser)
 
 router.post("/password-forgot", forgotPassword)
 router.put("/password-reset/:token", resetPassword)
+router.post("/refreshAccessToken", refreshAccessToken)
+
 
 // update password from ui
 router.put("/password/update",isAuthenticated, updatePassword)

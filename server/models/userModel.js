@@ -75,6 +75,10 @@ userSchema.methods.generateToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE })
 }
 
+userSchema.methods.generateRefreshToken = function () {
+    return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_EXPIRE })
+}
+
 // getResetPasswordToken
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex")

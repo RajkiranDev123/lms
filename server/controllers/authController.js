@@ -9,7 +9,8 @@ import { sendToken } from "../utils/sendToken.js"
 import { sendEmail } from "../utils/sendEmail.js"
 import { generateForgotpasswordEmailTemplate } from "../utils/emailTemplate.js"
 import { validatePassword } from "../utils/validatePassword.js"
-import { connectDB } from "../db/db.js"
+import jwt from "jsonwebtoken"
+
 
 export const register = catchAsyncErrors(
 
@@ -102,7 +103,7 @@ export const verifyOtp = catchAsyncErrors(
 
 export const login = catchAsyncErrors(
     async (req, res, next) => {
-    
+
 
         const { email, password } = req.body
         if (!email || !password) {
@@ -131,11 +132,7 @@ export const login = catchAsyncErrors(
 export const logout = catchAsyncErrors(
     async (req, res, next) => {
         try {
-            res.status(200)
-                .cookie("token", "", {
-                    expires: new Date(Date.now()),
-                    httpOnly: true
-                }).json({ success: true, message: "Logged out successfully!" })
+            res.status(200).json({ success: true, message: "Logged out successfully!" })
 
         } catch (error) {
             return next(new ErrorHandler("Internal Server Error!", 500))
@@ -268,5 +265,50 @@ export const updatePassword = catchAsyncErrors(
         } catch (error) {
             return next(new ErrorHandler(error.message, 500))
         }
+    }
+)
+
+/////////////////////////////////////////////////////// refresh access token
+export const refreshAccessToken = catchAsyncErrors(
+
+    async (req, res, next) => {
+
+        const incomingRefreshToken = req.body.refreshToken
+  
+
+
+        if (!incomingRefreshToken) {
+
+            return next(new ErrorHandler("No refresh token supplied!", 400))
+
+        }
+
+        try {
+                 
+            const decodedToken = jwt.verify(
+                incomingRefreshToken,
+                process.env.REFRESH_TOKEN_SECRET
+            )
+
+      
+
+
+            const user = await UserModel.findById(decodedToken?.id)
+
+            if (!user) {
+                return next(new ErrorHandler("Invalid refresh token!", 400))
+
+            }
+
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE })
+            const rToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_EXPIRE })
+
+            return res.status(200).json({ message: "New access and refresh token sent!", success: true, token: token, newRefreshToken: rToken })
+        } catch (error) {
+      
+            return res.status(500).json({ message: error.message, success: false })
+
+        }
+
     }
 )

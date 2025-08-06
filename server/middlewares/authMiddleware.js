@@ -7,7 +7,7 @@ import { UserModel } from "../models/userModel.js";
 export const isAuthenticated = catchAsyncErrors(
     async (req, res, next) => {
 
-      
+
         const authHeader = req.headers.authorization;
 
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -17,16 +17,21 @@ export const isAuthenticated = catchAsyncErrors(
 
         console.log("Extracted token ==> ", token)
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
-        console.log("from isAuthenticated==>", decoded)
-        // req.user=decoded
-        req.user = await UserModel.findById(decoded?.id).select("-resetPasswordToken -resetPasswordExpire -verificationCode -verificationCodeExpire")
-        console.log("user from auth middleqware==>", req.user)
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY)
+            console.log("from isAuthenticated==>", decoded)
+            // req.user=decoded
+            req.user = await UserModel.findById(decoded?.id).select("-resetPasswordToken -resetPasswordExpire -verificationCode -verificationCodeExpire")
+            console.log("user from auth middleqware==>", req.user)
 
-        if (!req.user) {
-            return next(new ErrorHandler("User not found.", 404));
+            if (!req.user) {
+                return next(new ErrorHandler("User not found9.", 401));
+            }
+            next()
+        } catch (error) {
+            return next(new ErrorHandler("Jwt is expired from ==> authMiddleware!", 401));
+
         }
-        next()
     }
 )
 
