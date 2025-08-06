@@ -58,6 +58,58 @@ export const getMetaUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 
+export const getMetaAdmin = catchAsyncErrors(async (req, res, next) => {
+    const adminId = req.user._id;
+    const dateRange = req.headers["date-range"];
+
+    let startDate, endDate;
+    if (typeof dateRange === "string" && dateRange.includes("--")) {
+        const [start, end] = dateRange.split("--");
+        startDate = new Date(start + "T00:00:00Z");
+        endDate = new Date(end + "T23:59:59Z");
+    }
+
+    try {
+        const now = new Date();
+
+        const query = {
+            recordedBorrowedBookBy: adminId,
+        };
+
+        if (startDate && endDate) {
+            query.borrowDate = { $gte: startDate, $lte: endDate };
+        }
+
+        const borrowRecords = await BorrowModel.find(query).select("returnedDate dueDate fine");
+
+        const total = borrowRecords.length;
+        const returned = borrowRecords.filter(b => b.returnedDate !== null).length;
+        const notReturned = borrowRecords.filter(b => b.returnedDate === null).length;
+        const overdue = borrowRecords.filter(b => !b.returnedDate && new Date(b.dueDate) < now).length;
+        const due = borrowRecords.filter(b => !b.returnedDate && new Date(b.dueDate) >= now).length;
+        const fined = borrowRecords.filter(b => b.fine > 0).length;
+
+        return res.status(200).json({
+            success: true,
+            counts: {
+                total,
+                returned,
+                notReturned,
+                due,
+                overdue,
+                fined,
+            },
+            message: "Borrow stats fetched successfully!",
+        });
+
+    } catch (error) {
+        return next(new ErrorHandler(error?.message || "Internal Server Error", 500));
+    }
+});
+
+
+
+
 
 
 

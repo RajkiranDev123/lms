@@ -28,6 +28,9 @@ const borrowSchema = new mongoose.Schema({
         ref: "Book",
         required: true
     },
+    bookName: {
+        type: String,
+    },
     borrowDate: { //borrowedDate would be nice
         type: Date,
         default: Date.now,
@@ -48,7 +51,17 @@ const borrowSchema = new mongoose.Schema({
     notified: {
         type: Boolean,
         default: false
-    }
+    },
+    recordedBorrowedBookBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+
+    },
+    returnedBorrowedBookBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+
+    },
 }, { timestamps: true })
 
 export const BorrowModel = mongoose.model("Borrow", borrowSchema)

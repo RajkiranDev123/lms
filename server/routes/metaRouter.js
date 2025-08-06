@@ -1,19 +1,19 @@
 import express from "express";
 import { isAuthenticated, isAuthorized } from "../middlewares/authMiddleware.js";
 import {
-    getMetaUser
+    getMetaUser,getMetaAdmin
 } from "../controllers/metaController.js";
 
 const router = express.Router();
 
 
 
-// router.get(
-//     "/admin",
-//     isAuthenticated,
-//     isAuthorized("Admin"),
-//     getMetaEmployer
-// );
+router.get(
+    "/admin",
+    isAuthenticated,
+    isAuthorized("Admin"),
+    getMetaAdmin
+);
 
 router.get(
     "/user",

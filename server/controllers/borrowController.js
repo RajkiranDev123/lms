@@ -9,8 +9,9 @@ import { calculateFine } from "../utils/fineCalculator.js"
 // aim : admin will record borrowed book by user!
 
 export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
-    const { bookId } = req.params // book id
-    const { email } = req.body // email of user that wants to borrow
+    const { bookId } = req?.params // book id
+    const { email } = req?.body // email of user that wants to borrow
+    const adminId = req?.user?._id
 
     try {
         //send reqs at once
@@ -56,8 +57,10 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
                 email: user.email,
             },
             book: book._id,
+            bookName:book.title,
             dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            price: book.price//entire book price for 7 days
+            price: book.price,//entire book price for 7 days
+            recordedBorrowedBookBy: adminId
         })
 
         return res.status(200).json({
@@ -73,6 +76,7 @@ export const recordBorrowedBook = catchAsyncErrors(async (req, res, next) => {
 export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
     const { bookId } = req.params // book id
     const { email } = req.body // email of user that wants to borrow
+    const adminId = req?.user?._id
 
     try {
         //send multiple reqs at once
@@ -106,6 +110,7 @@ export const returnBorrowedBook = catchAsyncErrors(async (req, res, next) => {
         if (!borrow) return next(new ErrorHandler("Book not borrowed!", 400))
 
         borrow.returnedDate = new Date()//today's date
+        borrow.returnedBorrowedBookBy=adminId
         const fine = calculateFine(borrow.dueDate)
         borrow.fine = fine
         await borrow.save()
