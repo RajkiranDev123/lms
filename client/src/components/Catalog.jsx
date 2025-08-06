@@ -107,6 +107,8 @@ const Catalog = () => {
                   <th className="px-4 py-2 text-left">ID</th>
                   <th className="px-4 py-2 text-left">User</th>
                   <th className="px-4 py-2 text-left">Email</th>
+                  <th className="px-4 py-2 text-left">Book</th>
+
                   <th className="px-4 py-2 text-left">Price</th>
                   <th className="px-4 py-2 text-left">Due Date</th>
                   <th className="px-4 py-2 text-left">Date & Time</th>
@@ -125,6 +127,8 @@ const Catalog = () => {
                       <td className="px-4 py-2">{index + 1}</td>
                       <td className="px-4 py-2">{book?.user?.name}</td>
                       <td className="px-4 py-2">{book?.user?.email}</td>
+                      <td className="px-4 py-2">{book?.bookName}</td>
+
                       <td className="px-4 py-2">{book?.price}</td>
                       <td className="px-4 py-2">{formatDate(book?.dueDate)}</td>
                       <td className="px-4 py-2">{formatDateAndTime(book?.createdAt)}</td>

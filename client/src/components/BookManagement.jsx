@@ -47,7 +47,7 @@ const BookManagement = () => {
   useEffect(() => {
     if (message || borrowSliceMessage) {
       toast.success(message || borrowSliceMessage)
-      dispatch(fetchAllBooks())
+      dispatch(fetchAllBooks("",page))
       dispatch(fetchAllBorrowedBooks())
       dispatch(resetBookSlice())
       dispatch(resetBorrowSlice())
