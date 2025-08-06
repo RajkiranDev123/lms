@@ -125,6 +125,11 @@ const Login = () => {
               <p>New to our platform ? <Link className="text-sm text-gray-500 hover:underline" to={"/register"}>Sign Up</Link></p>
             </div>
 
+            {loading && <p style={{ color: "red", fontSize: 13 }}>Note : Sometimes it may take 40 secs for Login, Since I deployed backend server in free tier, be patient!
+              Things will be normal after Login !
+            </p>}
+
+
             <button
               className="border-2 mt-5 border-black w-full font-semibold bg-black
               text-white py-2 rounded-lg hover:bg-white hover:text-black transition"
@@ -133,6 +138,8 @@ const Login = () => {
               {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Login"}
 
             </button>
+
+
 
           </form>
 
