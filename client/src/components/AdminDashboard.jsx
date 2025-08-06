@@ -1,189 +1,218 @@
-import { useState, useEffect, useRef } from "react";
-import { GrUserAdmin } from "react-icons/gr";
-import avatarHolder from "../assets/placeholder.jpg";
 
-
-import { SiBookstack } from "react-icons/si";
-import { Pie } from "react-chartjs-2";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import Header from "../layout/Header"
+import { fetchMetaDataAdmin } from "../store/slices/metaSlice"
+import { useSelector, useDispatch } from "react-redux";
+import { IoMdReturnLeft } from "react-icons/io";
+import { GiTireIronCross } from "react-icons/gi";
+import { FcStatistics } from "react-icons/fc";
 import QRCode from "react-qr-code"
-import {
-  Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement,
-} from "chart.js";
-import logo from "../assets/black-logo.svg";
-import Header from "../layout/Header";
-import { FaUsers } from "react-icons/fa";
-// import downloadPdf from "../utils/downloadAsPdf.js";
-// import { FaRegFilePdf } from "react-icons/fa";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement, ArcElement
-);
+import { TbFilterDown } from "react-icons/tb";
+import DateRange from "../components/DateRange"
+import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
+
+import "./loader2.css"
+
+
 
 const AdminDashboard = () => {
-  const pdfRef = useRef()
+  const dispatch = useDispatch()
 
-  const { user } = useSelector(state => state.auth)
-  const { users } = useSelector(state => state.user)
-  const { books } = useSelector(state => state.book)
-  const { allBorrowedBooks } = useSelector(state => state.borrow)
-  const { settingPopup } = useSelector(state => state.popup)
+  const { metaData, loading } = useSelector((state) => state.meta);
 
-  const [totalUsers, setTotalUsers] = useState(0)
-  const [totalAdmins, setTotalAdmins] = useState(0)
-  const [totalBooks, setTotalBooks] = useState((books && books?.length) || 0)
-  const [totalBorrowedBooks, setTotalBorrowedBooks] = useState(0)
-  const [totalReturnedBooks, setTotalReturnedBooks] = useState(0)
+  const [data, setData] = useState([])
+
 
   useEffect(() => {
-    let numberOfUsers = users?.filter(user => user?.role === "User")
-    let numberOfAdmins = users?.filter(user => user?.role === "Admin")
-    setTotalUsers(numberOfUsers?.length)
-    setTotalAdmins(numberOfAdmins?.length)
+    console.log(metaData)
+    dispatch(fetchMetaDataAdmin())
+  }, [])
 
-    let numberOfTotalBorrowedBooks = allBorrowedBooks?.filter(book => book?.returnedDate === null)
-    let numberOfTotalReturnedBooks = allBorrowedBooks?.filter(book => book?.returnedDate !== null)
-    setTotalBorrowedBooks(numberOfTotalBorrowedBooks?.length)
-    setTotalReturnedBooks(numberOfTotalReturnedBooks?.length)
+  useEffect(() => {
+    let successRate = ((metaData?.returned / metaData?.total) * 100).toFixed(2);
+    let failureRate = ((metaData?.notReturned / metaData?.total) * 100).toFixed(2);
 
-  }, [users, allBorrowedBooks])
 
-  const data = {
-    labels: ["Total Borrowed Books", "Total Returned Books"],
-    datasets: [
-      {
-        data: [totalBorrowedBooks, totalReturnedBooks],
-        backgroundColor: ["#32cc27", "#c22424"],
-        hoverOffset: 4
-      }
-    ]
-  }
+    const dataReturned = [
+      { value: successRate, label: "Success" },
+      { value: failureRate, label: "Failure" },
+
+    ];
+    setData(dataReturned)
+    // overdue
+
+
+  }, [metaData])
+
+  const handleFetchMeta = (arg) => {
+    dispatch(fetchMetaDataAdmin(arg))
+  };
   return <>
-
     <main className="relative flex-1 p-6 pt-28">
       <Header />
 
-      <div className="flex flex-col-reverse xl:flex-row">
-
-        {/* ls */}
-        <div className="flex-[2] flex-col gap-7 lg:flex-row flex lg:items-center 
-        xl:flex-col justify-between xl:gap-20 py-5">
-          <div className="xl:flex-[4] flex items-end w-full content-center">
-            <Pie
-              data={data}
-              options={{ cutout: 0 }}
-              className="mx-auto lg:mx-0 w-full h-auto"
-            />
-          </div>
-          <div className="flex items-center p-8 w-full sm:w-[480px] xl:w-fit mr-5 xl:p-3 2xl:p-6 gap-5 h-fit xl:min-h-[150px] bg-white xl:flex-1 rounded-lg">
-            <img src={logo} alt="logo" className="w-auto xl:flex-1 rounded-lg" />
-            <span className="w-[2px] bg-black h-full"></span>
-
-            <div className="flex flex-col gap-3">
-              <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[#32cc27]"></span>
-                <span>Total Borrowed Books</span>
-              </p>
-              <p className="flex items-center gap-3">
-                <span className="w-3 h-3 rounded-full bg-[#c22424]"></span>
-                <span>Total Returned Books</span>
-              </p>
-            </div>
-          </div>
-
-        </div>
-
-        {/* ls */}
-
-
-        {/* rs */}
-        <div className="flex flex-[4] flex-col gap-7 lg:gap-16 lg:px-7 lg:py-5 justify-between xl:min-h-[85.5vh] ">
-
-          <div className="flex flex-col-reverse lg:flex-row gap-7 flex-[4]">
-            <div className="flex flex-col gap-7 flex-1">
-              <div className="flex items-center gap-3 bg-white p-5 max-h-[120px] overflow-y-hidden 
-               rounded-lg transition hover:shadow-inner duration-200 w-full lg:max-w-[360px]">
-                <span className="bg-gray-300 h-20 min-w-20 flex justify-center items-center rounded-lg">
-                  <FaUsers />
-                </span>
-                <span className="w-[2px] bg-black h-20 lg:h-full"></span>
-
-                <div className="flex flex-col items-center gap-2">
-                  <h4 className="font-black text-3xl">{totalUsers}</h4>
-                  <p className="font-light text-gray-700 text-sm">Total Users</p>
-                </div>
-
-              </div>
-              {/*  */}
-              <div className="flex items-center gap-3 bg-white p-5 max-h-[120px] overflow-y-hidden 
-               rounded-lg transition hover:shadow-inner duration-200 w-full lg:max-w-[360px]">
-                <span className="bg-gray-300 h-20 min-w-20 flex justify-center items-center rounded-lg">
-                  <SiBookstack />
-                </span>
-                <span className="w-[2px] bg-black h-20 lg:h-full"></span>
-
-                <div className="flex flex-col items-center gap-2">
-                  <h4 className="font-black text-3xl">{totalBooks}</h4>
-                  <p className="font-light text-gray-700 text-sm">Total Books </p>
-                </div>
-
-              </div>
+      <p style={{
+        background: "black",
+        color: "white", display: "flex", alignItems: "center", marginTop: 12
+        , borderRadius: 3, paddingLeft: 3, borderBottom: "2px ridge grey",
+        boxShadow: "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset"
+      }}>  <FcStatistics style={{ height: 22 }} /> &nbsp;Borrowed Info By All Users under Me</p>
 
 
 
-              {/*  */}
+      {/* meta starts */}
+      {Object?.keys(metaData)?.length > 0 ? <div style={{
+        display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 10, background: "white",
+        boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px", margin: 5, padding: 4
+      }}>
 
-              {/*  */}
-              <div className="flex items-center gap-3 bg-white p-5 max-h-[120px] overflow-y-hidden 
-               rounded-lg transition hover:shadow-inner duration-200 w-full lg:max-w-[360px]">
 
-                <span className="bg-gray-300 h-20 min-w-20 flex justify-center items-center rounded-lg">
-                  <GrUserAdmin />
-                </span>
-                <span className="w-[2px] bg-black h-20 lg:h-full"></span>
 
-                <div className="flex flex-col items-center gap-2">
-                  <h4 className="font-black text-3xl">{totalAdmins}</h4>
-                  <p className="font-light text-gray-700 text-sm">Total Admins</p>
-                </div>
-              </div>
+        {/* pie1 */}
+        <div
+          style={{
+            // boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 160,
+            height: 160,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
 
-              <div className="flex flex-col items-center gap-2">
-                <QRCode style={{ height: 80, width: 80 }}
-                  value={`Total Users : ${totalUsers}, Total Books : ${totalBooks}, Total Admins : ${totalAdmins}`} />
-                <p className="text-gray-500 text-sm">Scan and Share!</p>
-              </div>
+          {data?.length > 0 && <PieChart
+            hideLegend
+            colors={["blue", "black"]}
 
-              {/*  */}
-            </div>
+            series={[
+              {
+                arcLabel: (item) => `${item.value} `,
+                arcLabelMinAngle: 45,
+                data,
+                valueFormatter: (item) => `${item.value}`,
 
-            {/*  */}
-            <div className="flex flex-col lg:flex-row flex-1">
-              <div className="flex flex-col lg:flex-row flex-1 items-center justify-center">
-                <div className="bg-white p-2 rounded-lg shadow-lg h-full flex flex-col justify-center items-center gap-4">
-                  <img src={(user && user?.avatar?.url) || avatarHolder} alt="avatar" className="rounded-full w-32 h-32 object-cover" />
-                  <h2>hi, {user && user?.name?.[0]?.toUpperCase() + user?.name?.slice(1)}</h2>
-                  <p className="text-gray-800 text-sm 2xl:text-base text-center">Welcome ! Now Manage all the settings and monitor the statistics!</p>
+              },
+            ]}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: "white",
+                fontWeight: "",
+                fontSize: 10
+              },
+            }}
 
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* <div >
-            <button onClick={() => downloadPdf(pdfRef)}
-              style={{ border: "none", borderRadius: 4, cursor: "pointer" }}>
-              <FaRegFilePdf />
-            </button>
-
-          </div> */}
+            width={100}
+            height={100}
+          />}
+          <p style={{ color: "blue", fontSize: 12, textAlign: "center" }}>Returned  %</p>
+          <p style={{ color: "black", fontSize: 12, textAlign: "center" }}>Not Returned  %</p>
 
         </div>
+        {/* pie1 ends*/}
 
-        {/* rs */}
+
+        {/* returned counts */}
+        <div
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 245,
+            height: 60,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+          <p style={{ fontFamily: "monospace", fontSize: 14, textAlign: "center", display: "flex", alignItems: "center", gap: 1, color: "grey" }}>
+            <span style={{ color: "grey" }}>--</span>Total Borrowed by Users&nbsp;  </p>
+          <p style={{ fontSize: 14, textAlign: "center" }}>
+            {metaData?.total} </p>
+        </div>
+        {/* returned counts */}
+
+        {/* returned counts */}
+        <div
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 145,
+            height: 60,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+          <p style={{ fontFamily: "monospace", fontSize: 14, textAlign: "center", display: "flex", alignItems: "center", gap: 1, color: "grey" }}>
+            <IoMdReturnLeft />Returned &nbsp;  </p>
+          <p style={{ fontSize: 14, textAlign: "center" }}>
+            {metaData?.returned} </p>
+        </div>
+        {/* returned counts */}
+
+        {/* not returned counts*/}
+        <div
+          style={{
+            boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+            padding: 5,
+            borderRadius: 3,
+            width: 145,
+            height: 60,
+            fontFamily: "monospace", fontSize: 14,
+            background: "white", color: "black",
+          }}
+        >
+          <p style={{ fontFamily: "monospace", fontSize: 14, textAlign: "center", display: "flex", alignItems: "center", gap: 1, color: "grey" }}>
+            <GiTireIronCross />&nbsp;Not Returned&nbsp;  </p>
+          <p style={{ fontSize: 14, textAlign: "center" }}>
+            {metaData?.notReturned} </p>
+        </div>
+        {/* not returned counts ends*/}
+
+
+
+
+      </div> : <div style={{ display: "flex", justifyContent: "center", }}><div className="loader2"></div></div>}
+      {/* meta ends */}
+
+      {/* qr and pdf */}
+      <p style={{ color: "grey", fontSize: 14 }}>Share the info!</p>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-evenly", flexWrap: "wrap", gap: 2, margin: 8 }}>
+        {/* qr */}
+        <QRCode style={{ height: 80, width: 100 }}
+          value={
+            `Returned : ${metaData?.returned}, Not Returned : ${metaData?.notReturned}`
+          } />
+
+        {/* qr  ends*/}
       </div>
 
+      {/* qr and pdf ends*/}
+
+      {/* date range */}
+      <div style={{
+        border: "0px solid grey", borderRadius: 4, padding: 3,
+        boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
+      }}>
+        <p style={{
+          fontFamily: "monospace", textDecoration: "", display: "flex",
+          alignItems: "center", gap: 1, marginBottom: 3, color: "grey", fontSize: 14
+        }}><TbFilterDown />Date-Range Filter </p>
+        <div style={{ marginTop: 2 }}>
+          <DateRange handleFetchMeta={handleFetchMeta} />
+        </div>
+      </div>
+      {/* date range ends*/}
+
+      {/* loader */}
+      {loading && <div style={{ display: "flex", justifyContent: "center", margin: 5 }}><div style={{ color: "red" }} className="loader2"></div></div>}
+
+
+      {/*  */}
+
     </main>
+
   </>;
 };
 

@@ -85,6 +85,32 @@ export const fetchMetaDataUser = (date) => async (dispatch) => {
 };
 
 
+//meta admin
+export const fetchMetaDataAdmin = (date) => async (dispatch) => {
+
+    dispatch(metaSlice.actions.requestForMeta());
+    try {
+        const response = await axios.get(
+            `${import.meta.env.VITE_BASE_URL}/api/v1/meta/admin`,
+            {
+                withCredentials: true,
+                headers: {
+                    "date-range": date
+                }
+            }
+        );
+        dispatch(metaSlice.actions.successForMeta(response?.data));
+        dispatch(metaSlice.actions.clearAllErrors());
+    } catch (error) {
+        dispatch(
+            metaSlice.actions.failureForMeta(
+                error.response.data.message
+            )
+        );
+    }
+};
+
+
 
 //pdf download
 export const pdfDownload = (url) => async (dispatch) => {

@@ -142,7 +142,7 @@ const BookManagement = () => {
                   <th className="px-4 py-2 text-left">Price</th>
                   <th className="px-4 py-2 text-left">Availability</th>
                   {isAuthenticated && user?.role === "Admin" && (
-                    <th className="px-4 py-2 text-center">View/Record/Delete</th>
+                    <th className="px-4 py-2 text-center">View/Record</th>
                   )}
                 </tr>
               </thead>
@@ -162,7 +162,7 @@ const BookManagement = () => {
                         <td className="px-4 py-2 flex space-x-2 my-3 justify-center">
                           <BookA onClick={() => openReadPopup(book?._id)} />
                           <NotebookPen onClick={() => openRecordBookPopup(book?._id)} />
-                          <Trash2 onClick={()=>dispatch(toggleDeleteBookPopup(book?._id))} className="text-red-500 cursor-pointer"/>
+                          {/* <Trash2 onClick={()=>dispatch(toggleDeleteBookPopup(book?._id))} className="text-red-500 cursor-pointer"/> */}
 
                         </td>
                       )}
