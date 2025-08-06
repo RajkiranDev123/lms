@@ -102,7 +102,7 @@ export const verifyOtp = catchAsyncErrors(
 
 export const login = catchAsyncErrors(
     async (req, res, next) => {
-        await connectDB()
+    
 
         const { email, password } = req.body
         if (!email || !password) {

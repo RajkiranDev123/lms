@@ -53,5 +53,5 @@ app.use("/api/v1/meta", metaRouter)
 
 
 
-// await connectDB()
+connectDB()
 app.use(errorMiddleware)
