@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios"
+// import axios from "axios"
 import { toast } from "react-toastify"
+import axiosInstance from "../../services/setupAxios";
 
 const authSlice = createSlice({
     name: "auth",
@@ -165,7 +166,7 @@ export const resetAuthSlice = (data) => async (dispatch) => {
 ////////////////////////////////////////// we get dispatch from :  dispatch(register(data))
 export const register = (data) => async (dispatch) => {
     dispatch(authSlice.actions.registerRequest())
-    await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/register`, data, {
+    await axiosInstance.post(`/api/v1/auth/register`, data, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
@@ -180,7 +181,7 @@ export const register = (data) => async (dispatch) => {
 
 export const otpVerification = (email, otp) => async (dispatch) => {
     dispatch(authSlice.actions.otpVerificationRequest())
-    await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/verify-otp`, { email, otp }, {
+    await axiosInstance.post(`/api/v1/auth/verify-otp`, { email, otp }, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
@@ -194,7 +195,7 @@ export const otpVerification = (email, otp) => async (dispatch) => {
 
 export const login = (data) => async (dispatch) => {
     dispatch(authSlice.actions.loginRequest())
-    await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/login`, data, {
+    await axiosInstance.post(`/api/v1/auth/login`, data, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
@@ -215,7 +216,7 @@ export const login = (data) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
     dispatch(authSlice.actions.logoutRequest())
-    await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/logout`, {
+    await axiosInstance.get(`/api/v1/auth/logout`, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
@@ -233,7 +234,7 @@ export const logout = () => async (dispatch) => {
 export const getUser = () => async (dispatch) => {
     console.log("getUser called!")
     dispatch(authSlice.actions.getUserRequest())
-    await axios.get(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/me`, {
+    await axiosInstance.get(`/api/v1/auth/me`, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
@@ -248,7 +249,7 @@ export const getUser = () => async (dispatch) => {
 
 export const forgotPassword = (email) => async (dispatch) => {
     dispatch(authSlice.actions.forgotPasswordRequest())
-    await axios.post(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password-forgot`, { email }, {
+    await axiosInstance.post(`/api/v1/auth/password-forgot`, { email }, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
@@ -263,7 +264,7 @@ export const forgotPassword = (email) => async (dispatch) => {
 
 export const resetPassword = (data, token) => async (dispatch) => {
     dispatch(authSlice.actions.resetPasswordRequest())
-    await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password-reset/${token}`, data, {
+    await axiosInstance.put(`/api/v1/auth/password-reset/${token}`, data, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"
@@ -277,7 +278,7 @@ export const resetPassword = (data, token) => async (dispatch) => {
 
 export const updatePassword = (data) => async (dispatch) => {
     dispatch(authSlice.actions.updatePasswordRequest())
-    await axios.put(`${import.meta.env.VITE_BASE_URL}/api/v1/auth/password/update`, data, {
+    await axiosInstance.put(`/api/v1/auth/password/update`, data, {
         // withCredentials: true,
         headers: {
             "Content-Type": "application/json"

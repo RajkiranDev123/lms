@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+// import axios from "axios";
+import axiosInstance from "../../services/setupAxios";
+
 
 const metaSlice = createSlice({
     name: "meta",
@@ -64,8 +66,8 @@ export const fetchMetaDataUser = (date) => async (dispatch) => {
 
     dispatch(metaSlice.actions.requestForMeta());
     try {
-        const response = await axios.get(
-            `${import.meta.env.VITE_BASE_URL}/api/v1/meta/user`,
+        const response = await axiosInstance.get(
+            `/api/v1/meta/user`,
             {
                 // withCredentials: true,
                 headers: {
@@ -90,8 +92,8 @@ export const fetchMetaDataAdmin = (date) => async (dispatch) => {
 
     dispatch(metaSlice.actions.requestForMeta());
     try {
-        const response = await axios.get(
-            `${import.meta.env.VITE_BASE_URL}/api/v1/meta/admin`,
+        const response = await axiosInstance.get(
+            `/api/v1/meta/admin`,
             {
                 // withCredentials: true,
                 headers: {
@@ -117,8 +119,8 @@ export const pdfDownload = (url) => async (dispatch) => {
 
     dispatch(metaSlice.actions.requestForPdf());
     try {
-        const response = await axios.get(
-            `${import.meta.env.VITE_BASE_URL}/api/v1/meta/pdf`,
+        const response = await axiosInstance.get(
+            `/api/v1/meta/pdf`,
             {
                 withCredentials: true,
                 headers: {

@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+// import axios from "axios"
 import { toggleRecordBookPopup } from "./popUpSlice"
+import axiosInstance from "../../services/setupAxios";
+
 
 const borrowSlice = createSlice({
     name: "borrow",
@@ -90,8 +92,8 @@ const borrowSlice = createSlice({
 
 export const fetchUserBorrowedBooks = (page, filter) => async (dispatch) => {
     dispatch(borrowSlice.actions.fetchUserBorrowedBooksRequest())
-    await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/my-borrowed-books`, {
+    await axiosInstance
+        .get(`/api/v1/borrow/my-borrowed-books`, {
             headers: {
                 "page": page,
                 "filter": filter,
@@ -108,8 +110,8 @@ export const fetchUserBorrowedBooks = (page, filter) => async (dispatch) => {
 
 export const fetchAllBorrowedBooks = (page, filter) => async (dispatch) => {
     dispatch(borrowSlice.actions.fetchAllBorrowedBooksRequest())
-    await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/all-borrowed-books-by-users`,
+    await axiosInstance
+        .get(`/api/v1/borrow/all-borrowed-books-by-users`,
             {
                 headers: {
                     "page": page,
@@ -127,8 +129,8 @@ export const fetchAllBorrowedBooks = (page, filter) => async (dispatch) => {
 
 export const recordBorrowBook = (email, bookId) => async (dispatch) => {
     dispatch(borrowSlice.actions.recordBookRequest())
-    await axios
-        .post(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/record-borrow-book/${bookId}`, { email }, {
+    await axiosInstance
+        .post(`/api/v1/borrow/record-borrow-book/${bookId}`, { email }, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -145,8 +147,8 @@ export const recordBorrowBook = (email, bookId) => async (dispatch) => {
 
 export const returnBorrowBook = (email, id) => async (dispatch) => {
     dispatch(borrowSlice.actions.returnBookRequest())
-    await axios
-        .put(`${import.meta.env.VITE_BASE_URL}/api/v1/borrow/return-borrowed-book/${id}`, { email }, {
+    await axiosInstance
+        .put(`/api/v1/borrow/return-borrowed-book/${id}`, { email }, {
             headers: {
                 "Content-Type": "application/json"
             }

@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+// import axios from "axios"
+import axiosInstance from "../../services/setupAxios";
+
 import { toast } from "react-toastify"
 import { toggleAddNewAdminPopup } from "./popUpSlice"
 
@@ -43,8 +45,8 @@ const userSlice = createSlice({
 
 export const fetchAllUsers = (page) => async (dispatch) => {
     dispatch(userSlice.actions.fetchAllUsersRequest())
-    await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/user/all`, {
+    await axiosInstance
+        .get(`/api/v1/user/all`, {
             headers: {
                 "page": page
             }
@@ -59,8 +61,8 @@ export const fetchAllUsers = (page) => async (dispatch) => {
 
 export const addNewAdmin = (data) => async (dispatch) => {
     dispatch(userSlice.actions.addNewAdminRequest())
-    await axios
-        .post(`${import.meta.env.VITE_BASE_URL}/api/v1/user/add/new-admin`, data, {
+    await axiosInstance
+        .post(`/api/v1/user/add/new-admin`, data, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }

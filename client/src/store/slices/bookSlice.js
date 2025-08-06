@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
-import axios from "axios"
+// import axios from "axios"
 import { toggleAddBookPopup } from "./popUpSlice"
 import { toast } from "react-toastify"
+import axiosInstance from "../../services/setupAxios";
+
 
 const bookSlice = createSlice({
     name: "book",
@@ -85,8 +87,8 @@ const bookSlice = createSlice({
 export const fetchAllBooks = (title, page) => async (dispatch) => {
     console.log("fetchAllBooks called!")
     dispatch(bookSlice.actions.fetchBooksRequest())
-    await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/v1/book/all`, {
+    await axiosInstance
+        .get(`/api/v1/book/all`, {
             headers: {
                 "Content-Type": "application/json",
                 "page": page,
@@ -106,8 +108,8 @@ export const fetchAllBooks = (title, page) => async (dispatch) => {
 
 export const addBook = (data) => async (dispatch) => {
     dispatch(bookSlice.actions.addBookRequest())
-    await axios
-        .post(`${import.meta.env.VITE_BASE_URL}/api/v1/book/admin/add`, data, {
+    await axiosInstance
+        .post(`/api/v1/book/admin/add`, data, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -127,8 +129,8 @@ export const addBook = (data) => async (dispatch) => {
 // delete book
 export const deleteBook = (bookId) => async (dispatch) => {
     dispatch(bookSlice.actions.deleteBookRequest())
-    await axios
-        .delete(`${import.meta.env.VITE_BASE_URL}/api/v1/book/delete/${bookId}`, {
+    await axiosInstance
+        .delete(`/api/v1/book/delete/${bookId}`, {
             headers: {
                 "Content-Type": "application/json"
             }
