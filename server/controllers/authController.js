@@ -117,7 +117,7 @@ export const login = catchAsyncErrors(
             }
             sendToken(user, 200, "User loggged-in successfully!", res)
         } catch (error) {
-            return next(new ErrorHandler("Internal Server Error!", 500))
+            return next(new ErrorHandler(error?.message||"Internal Server Error!", 500))
         }
 
 
