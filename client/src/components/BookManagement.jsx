@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { BookA, NotebookPen, Trash2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux"
-import { toggleReadBookPopup, toggleRecordBookPopup, toggleAddBookPopup,toggleDeleteBookPopup } from "../store/slices/popUpSlice"
+import { toggleReadBookPopup, toggleRecordBookPopup, toggleAddBookPopup, toggleDeleteBookPopup } from "../store/slices/popUpSlice"
 import { toast } from "react-toastify"
 import { fetchAllBooks, resetBookSlice } from "../store/slices/bookSlice"
 import { fetchAllBorrowedBooks, resetBorrowSlice } from "../store/slices/borrowSlice"
@@ -39,7 +39,7 @@ const BookManagement = () => {
 
   const [borrowBookId, setBorrowBookId] = useState("")
   const openRecordBookPopup = (bookId) => {
-  
+
     setBorrowBookId(bookId)
     dispatch(toggleRecordBookPopup())
   }
@@ -47,7 +47,7 @@ const BookManagement = () => {
   useEffect(() => {
     if (message || borrowSliceMessage) {
       toast.success(message || borrowSliceMessage)
-      dispatch(fetchAllBooks("",page))
+      dispatch(fetchAllBooks("", page))
       dispatch(fetchAllBorrowedBooks())
       dispatch(resetBookSlice())
       dispatch(resetBorrowSlice())
@@ -178,6 +178,11 @@ const BookManagement = () => {
               </Stack>
             </div>
             {/* pagination ends */}
+            {/* loader */}
+            {loading && <div style={{ display: "flex", justifyContent: "center", margin: 5 }}><div style={{ color: "red" }} className="loader2"></div></div>}
+
+
+            {/*  */}
 
 
           </div>

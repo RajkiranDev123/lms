@@ -136,6 +136,11 @@ const MyBorrowedBooks = () => {
               </Stack>
             </div>
             {/* pagination ends */}
+            {/* loader */}
+            {loading && <div style={{ display: "flex", justifyContent: "center", margin: 5 }}><div style={{ color: "red" }} className="loader2"></div></div>}
+
+
+            {/*  */}
 
 
           </div>

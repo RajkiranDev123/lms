@@ -67,7 +67,7 @@ export const fetchMetaDataUser = (date) => async (dispatch) => {
         const response = await axios.get(
             `${import.meta.env.VITE_BASE_URL}/api/v1/meta/user`,
             {
-                withCredentials: true,
+                // withCredentials: true,
                 headers: {
                     "date-range": date
                 }
@@ -93,7 +93,7 @@ export const fetchMetaDataAdmin = (date) => async (dispatch) => {
         const response = await axios.get(
             `${import.meta.env.VITE_BASE_URL}/api/v1/meta/admin`,
             {
-                withCredentials: true,
+                // withCredentials: true,
                 headers: {
                     "date-range": date
                 }

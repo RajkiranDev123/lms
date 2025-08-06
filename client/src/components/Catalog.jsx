@@ -14,6 +14,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
 import "../components/loader.css"
+import "./loader2.css"
 
 const Catalog = () => {
   const dispatch = useDispatch()
@@ -95,7 +96,7 @@ const Catalog = () => {
 
 
       {/* data */}
-      {loading &&<div style={{ display: "flex", justifyContent: "center" ,margin:2}}><div className="loader"></div></div>}
+      {loading && <div style={{ display: "flex", justifyContent: "center", margin: 2 }}><div className="loader"></div></div>}
 
       {
         allBorrowedBooks && allBorrowedBooks?.length > 0 ? (
@@ -158,6 +159,11 @@ const Catalog = () => {
               </Stack>
             </div>
             {/* pagination ends */}
+            {/* loader */}
+            {loading && <div style={{ display: "flex", justifyContent: "center", margin: 5 }}><div style={{ color: "red" }} className="loader2"></div></div>}
+
+
+            {/*  */}
 
           </div>
         ) : (
@@ -169,6 +175,9 @@ const Catalog = () => {
     </main>
 
     {returnBookPopup && <ReturnBookPopup bookId={borrowedBookId} email={email} />}
+
+
+
 
   </>;
 };
