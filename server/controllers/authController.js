@@ -9,6 +9,7 @@ import { sendToken } from "../utils/sendToken.js"
 import { sendEmail } from "../utils/sendEmail.js"
 import { generateForgotpasswordEmailTemplate } from "../utils/emailTemplate.js"
 import { validatePassword } from "../utils/validatePassword.js"
+import { connectDB } from "../db/db.js"
 
 export const register = catchAsyncErrors(
 
@@ -101,6 +102,7 @@ export const verifyOtp = catchAsyncErrors(
 
 export const login = catchAsyncErrors(
     async (req, res, next) => {
+        await connectDB()
 
         const { email, password } = req.body
         if (!email || !password) {
@@ -117,7 +119,7 @@ export const login = catchAsyncErrors(
             }
             sendToken(user, 200, "User loggged-in successfully!", res)
         } catch (error) {
-            return next(new ErrorHandler(error?.message||"Internal Server Error!", 500))
+            return next(new ErrorHandler(error?.message || "Internal Server Error!", 500))
         }
 
 
