@@ -204,8 +204,11 @@ export const login = (data) => async (dispatch) => {
         dispatch(authSlice.actions.loginSuccess(res?.data))
         toast.success("You are Logged-In!")
 
-        localStorage.setItem("authToken", res?.data?.token);
-        console.log("token from login ==>", res?.data?.token)
+        localStorage.setItem("token", res?.data?.token);
+        localStorage.setItem("refreshToken", res?.data?.newRefreshToken);
+   
+
+   
 
     }).catch(error => {
        

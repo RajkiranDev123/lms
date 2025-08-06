@@ -11,11 +11,11 @@ const metaSlice = createSlice({
         error: null,
         message: null,
         downloading: false,
-    
+
 
     },
     reducers: {
-   
+
         requestForMeta(state, action) {
             state.loading = true;
             state.error = null;
@@ -46,7 +46,7 @@ const metaSlice = createSlice({
         clearAllErrors(state, action) {
             state.error = null;
             state.metaData = state.metaData;
- 
+
         },
         resetMetaSlice(state, action) {
             state.error = null;
@@ -97,6 +97,7 @@ export const fetchMetaDataAdmin = (date) => async (dispatch) => {
             {
                 // withCredentials: true,
                 headers: {
+        
                     "date-range": date
                 }
             }
@@ -106,7 +107,7 @@ export const fetchMetaDataAdmin = (date) => async (dispatch) => {
     } catch (error) {
         dispatch(
             metaSlice.actions.failureForMeta(
-                error.response.data.message
+                error?.response?.data?.message
             )
         );
     }
