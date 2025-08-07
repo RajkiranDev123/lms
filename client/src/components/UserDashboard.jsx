@@ -44,8 +44,7 @@ const UserDashboard = () => {
 
     const successRateOverdue = ((metaData?.fine / metaData?.returned) * 100).toFixed(2); // books fined out of overdue
     const failureRateOverdue = ((metaData?.overdue / metaData?.notReturned) * 100).toFixed(2); // not fined
-    console.log(787, failureRateOverdue)
-    console.log(7852, successRateOverdue)
+ 
 
     const data2 = [
       { value: successRateOverdue, label: "Success" },

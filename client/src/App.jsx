@@ -26,10 +26,10 @@ const App = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     console.log("useEffect of App.jsx is called!")
-    if (localStorage.getItem("authToken")) {
+ 
       dispatch(getUser())
 
-    }
+
 
     if (isAuthenticated && user?.role == "Admin") {
       dispatch(fetchAllUsers())

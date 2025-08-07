@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import  { useState, useEffect, useRef } from "react";
 import logo from "../assets/black-logo.svg";
 import logo_with_title from "../assets/logo-with-title-black.svg";
 
@@ -9,7 +9,7 @@ import { toast } from "react-toastify"
 import "../components/loader.css"
 import eyeOpen from "../assets/eye_open.png"
 import eyeClose from "../assets/eye_close.png"
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import TestCredentials from "../components/TestCredentials";
 const Login = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -71,34 +71,10 @@ const Login = () => {
           <h1 className="text-4xl font-medium text-center mb-12 overflow-hidden">Welcome to LMS!</h1>
           <p className="text-gray-800 mb-12 text-center">Please enter your credentials to login!</p>
 
-          <form onSubmit={handleLogin}>
-            {/*  */}
-            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Email :
-              <CopyToClipboard text="rajkir783@gmail.com">
-                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
-              </CopyToClipboard>
-            </p>
-            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>Admin Test Password :
-              <CopyToClipboard text="12345678">
-                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
-              </CopyToClipboard>
-            </p>
-            {/*  */}
-            <hr />
 
-            {/*  */}
-            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Email :
-              <CopyToClipboard text="rk7889666@gmail.com">
-                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
-              </CopyToClipboard>
-            </p>
-            <p style={{ fontSize: 12, fontFamily: "monospace", color: "red", display: "flex", alignItems: "center", gap: 2 }}>User Test Password :
-              <CopyToClipboard text="12345678">
-                <span style={{ cursor: "pointer", color: "blue", display: "flex", alignItems: "center", textDecoration: "underline" }}> Copy!</span>
-              </CopyToClipboard>
-            </p>
-            <br />
-            {/*  */}
+          <form onSubmit={handleLogin}>
+          <TestCredentials/>
+
 
             <div className="mb-4">
               <input ref={inputRef} className="w-full px-4 py-3 border border-black rounded-md focus:outline-none"
