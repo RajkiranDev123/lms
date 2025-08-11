@@ -1,7 +1,18 @@
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
+    timeout: 120000,
+});
+
+// Retry failed requests 
+axiosRetry(axiosInstance, {
+    retries: 2,
+    retryDelay: (retryCount) => retryCount * 1000, 
+    retryCondition: (error) =>
+        axiosRetry.isNetworkOrIdempotentRequestError(error) ||
+        error.code === "ECONNABORTED" 
 });
 
 let isRefreshing = false;//flag to prevent multiple refresh token requests.

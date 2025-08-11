@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
@@ -17,13 +17,31 @@ import Users from "../components/Users"
 
 
 const Home = () => {
+  const sidebarRef = useRef(null);
 
   const [isSideBarOpen, setIsSideBarOpen] = useState(false)
   const [selectedComponent, setSelectedComponent] = useState("")
   const { user, isAuthenticated } = useSelector(state => state.auth)
 
+
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        isSideBarOpen
+      ) {
+        setIsSideBarOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSideBarOpen]);
+
   if (!isAuthenticated) {
-    console.log("home is called : if (!isAuthenticated)!")
+    // console.log("home is called : if (!isAuthenticated)!")
 
     return <Navigate to={"/login"} />
   }
@@ -39,11 +57,13 @@ const Home = () => {
       </div>
 
       {/* SideBar & will always open : no restriction with role */}
-      <SideBar
-        isSideBarOpen={isSideBarOpen}
-        setIsSideBarOpen={setIsSideBarOpen}
-        setSelectedComponent={setSelectedComponent}
-      />
+      <div ref={sidebarRef}>
+        <SideBar
+          isSideBarOpen={isSideBarOpen}
+          setIsSideBarOpen={setIsSideBarOpen}
+          setSelectedComponent={setSelectedComponent}
+        />
+      </div>
 
 
       {/* iife : display components here */}
