@@ -40,9 +40,9 @@ const Home = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isSideBarOpen]);
 
-  if (!isAuthenticated) {
-    // console.log("home is called : if (!isAuthenticated)!")
 
+  if (!isAuthenticated) {
+    console.log("home is called : if (!isAuthenticated)!")
     return <Navigate to={"/login"} />
   }
 
