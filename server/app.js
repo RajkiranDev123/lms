@@ -21,10 +21,7 @@ import { removeUnverifiedAccounts } from "./services/removeUnverifiedAccounts.js
 export const app = express()
 
 
-app.use(cors({
-    // origin: "http://localhost:5173",
-    // credentials: true
-}))
+app.use(cors({ origin: "*" }))
 app.use(cookieParser())
 
 // only works on data not files
